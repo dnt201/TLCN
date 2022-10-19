@@ -12,17 +12,18 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "noEmit": true,
+    "isolatedModules": false,
     "jsx": "react-jsx",
     "baseUrl": "./",
     "paths": {
-      "~/*": ["src/screens/*"],
       "@assets/*": ["src/assets/*"],
       "@images/*": ["src/assets/images/*"],
       "@redux/*": ["src/redux/*"],
       "@components/*": ["src/components/*"],
-      "@screens/*": ["src/screens/*"]
+      "@screens/*": ["src/screens/*"],
+      "@icons/*": ["src/icons/*"],
+      "@api/*": ["src/api/*"]
     }
   },
   "include": ["src"]
