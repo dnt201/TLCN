@@ -10,6 +10,7 @@ import Home from "@screens/Home";
 import UserDetail from "@screens/UserDetail";
 import store from "./app/store";
 import Login from "@screens/Auth/Login";
+import "@util/prototype";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

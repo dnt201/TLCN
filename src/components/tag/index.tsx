@@ -25,7 +25,9 @@ const Tag: React.FC<iTagProp> = (props) => {
       <div className="flex-[5] flex flex-col ml-2">
         <p className="text-xs text-dark4  pb-1">{props.title}</p>
         {typeof props.subTitle == "number" ? (
-          <p className="text-ss text-dark3">{props.subTitle} posted this tag</p>
+          <p className="text-ss text-dark3">
+            {String(props.subTitle).prettyNumber()} posted this tag
+          </p>
         ) : (
           <p className="text-ss text-dark3">{props.subTitle}</p>
         )}

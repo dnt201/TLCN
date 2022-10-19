@@ -11,7 +11,8 @@
           "@redux": "./src/redux",
           "@components": "./src/components",
           "@icons": "./src/icons",
-          "@api": "./src/api"
+          "@api": "./src/api",
+          "@util": "./src/util"
         }
       }
     ]

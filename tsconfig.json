@@ -23,7 +23,8 @@
       "@components/*": ["src/components/*"],
       "@screens/*": ["src/screens/*"],
       "@icons/*": ["src/icons/*"],
-      "@api/*": ["src/api/*"]
+      "@api/*": ["src/api/*"],
+      "@util/*": ["src/util/*"]
     }
   },
   "include": ["src"]
