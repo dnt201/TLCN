@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="h-full flex flex-col">
       <Navbar />
-      <div className="min-h-screen pt-[52px] phone:pt-[56px]  bg-smoke">
+      <div className="min-h-[calc(100vh-52px)] mt-[52px]  phone:pt-[56px]  bg-smoke">
         <Outlet />
       </div>
     </div>

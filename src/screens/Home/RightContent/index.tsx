@@ -6,7 +6,7 @@ interface iProps extends React.HTMLProps<HTMLDivElement> {
 
 const RightContent: React.FC<iProps> = (props) => {
   return (
-    <div className={props.className}>
+    <div className={props.className + " hidden lg:block"}>
       <div>Right Content</div>
     </div>
   );

@@ -19,8 +19,9 @@ module.exports = {
     },
     colors: {
       transparent: "transparent",
-      primary: "#0ea5e9",
-      secondary: "#f472b6",
+      primary: "#FF4401",
+      primaryLow: "#ff4e0e",
+      secondary: "#858EAD",
       white: "#fff",
       black: "#0f172a",
       gray: "#cbd5e1",
@@ -29,7 +30,15 @@ module.exports = {
       smokeDark: "#65676b",
       dark4: "#2C353D",
       dark3: "#97989D",
+      bg: "#1E252B",
+      bg2: "#262D34",
+      hover: "#2C353D",
+      no: "#d03248",
+      yes: "#388d37",
+    },
+    backgroundImage: {
+      404: "url('https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif')",
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/line-clamp")],
 };

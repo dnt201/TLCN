@@ -1,36 +1,32 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Notify } from "./icons";
 import { Provider } from "react-redux";
-import Home from "@screens/Home";
-import UserDetail from "@screens/UserDetail";
-import store from "./app/store";
-import Login from "@screens/Auth/Login";
 import "@util/prototype";
+import { Toaster } from "react-hot-toast";
+import store from "@app/store";
+import DeclareRouter from "./router";
+import "react-loading-skeleton/dist/skeleton.css";
+import { SkeletonTheme } from "react-loading-skeleton";
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
-root.render(
+ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<App />}>
-            <Route index element={<Home />} />
-            <Route path="home" element={<Home />} />
-            <Route path="notify" element={<Notify />} />
-            <Route path=":userId" element={<UserDetail />} />
-          </Route>
-          <Route path="/login" element={<Login />} />
-        </Routes>
+        <SkeletonTheme baseColor="#262D34" highlightColor="#444">
+          <Toaster
+            position="bottom-center"
+            containerStyle={{ zIndex: 10001 }}
+          />
+          <DeclareRouter />
+        </SkeletonTheme>
       </BrowserRouter>
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

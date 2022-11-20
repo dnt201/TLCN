@@ -11,7 +11,6 @@ import ListFill from "./ListFill";
 import Newest from "./Newest";
 import Popular from "./Popular";
 import Following from "./Following";
-
 import BitCoin from "./PopularTags/BitCoin";
 import Business from "./PopularTags/Business";
 import Design from "./PopularTags/Design";
@@ -22,8 +21,32 @@ import GoogleLogo from "./GoogleLogo";
 import FacebookLogo from "./FacebookLogo";
 import GithubLogo from "./GithubLogo";
 import AccountLogo from "./AccountLogo";
+import Heart from "./Heart";
+import ChevronLeft from "./ChevronLeft";
+import Bell from "./Bell";
+import BellAlert from "./BellAlert";
+import Message from "./Message";
+import Expand from "./Expand";
+import More from "./More";
+import ArrowLeft from "./ArrowLeft";
+import CheckCircle from "./CheckCircle";
+import XCircle from "./XCircle";
+import LogOut from "./LogOut";
+import Setting from "./Setting";
+import PhoneFill from "./PhoneFill";
+import CareUp from "./CareUp";
+import CareDown from "./CareDown";
+import Twitter from "./Twitter";
+import Write from "./Write";
+import Public from "./Public";
+import Post from "./Post";
+import Seen from "./Seen";
+import Voted from "./Voted";
+import XMark from "./XMark";
+import UpImage from "./UpImage";
 
 export {
+  UpImage,
   MagnifyingGlass,
   Bars3,
   Home,
@@ -47,4 +70,26 @@ export {
   FacebookLogo,
   GithubLogo,
   AccountLogo,
+  Heart,
+  ChevronLeft,
+  Bell,
+  BellAlert,
+  Message,
+  Expand,
+  More,
+  ArrowLeft,
+  CheckCircle,
+  XCircle,
+  LogOut,
+  Setting,
+  PhoneFill,
+  CareUp,
+  CareDown,
+  Twitter,
+  Write,
+  Public,
+  Post,
+  Seen,
+  Voted,
+  XMark,
 };

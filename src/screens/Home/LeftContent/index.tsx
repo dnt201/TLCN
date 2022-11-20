@@ -1,6 +1,5 @@
 import Tag, { iTagProp } from "@components/tag";
-import React from "react";
-import { ClassElement } from "typescript";
+import React, { useState } from "react";
 import {
   Business,
   Design,
@@ -13,32 +12,41 @@ import {
 } from "@icons/index";
 
 interface iProps extends React.HTMLProps<HTMLDivElement> {
-  a?: string;
+  filter: string;
+  onChangeFilter: (filter: string) => void;
 }
 
 const LeftContent: React.FC<iProps> = (props) => {
+  const { filter, onChangeFilter } = props;
   return (
-    <div className={props.className}>
-      <div className="bg-white rounded-lg p-2">
-        {listChose.map((tag) => (
-          <Tag
-            href={tag.href}
-            icon={tag.icon}
-            title={tag.title}
-            subTitle={tag.subTitle}
-          />
-        ))}
-      </div>
-      <div className="bg-white rounded-lg p-2 mt-4">
-        <h3 className="p-2 font-bold">Popular Tags</h3>
-        {listTags.map((tag) => (
-          <Tag
-            href={tag.href}
-            icon={tag.icon}
-            title={tag.tag}
-            subTitle={tag.num}
-          />
-        ))}
+    <div className={props.className + " "}>
+      <div className="flex-1 visible">
+        <div className="bg-bg2 rounded-lg p-2">
+          {listChose.map((tag) => (
+            <Tag
+              key={tag.title}
+              href={tag.href}
+              icon={tag.icon}
+              title={tag.title}
+              subTitle={tag.subTitle}
+              onChangeFilter={onChangeFilter}
+              filter={filter}
+              className="mb-1"
+            />
+          ))}
+        </div>
+        <div className="bg-bg2 rounded-lg p-2 mt-4">
+          <h3 className="p-2 font-bold text-white">Popular Tags</h3>
+          {listTags.map((tag) => (
+            <Tag
+              key={tag.tag}
+              href={tag.href}
+              icon={tag.icon}
+              title={tag.tag}
+              subTitle={tag.num}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -46,21 +54,21 @@ const LeftContent: React.FC<iProps> = (props) => {
 
 export default LeftContent;
 
-const listChose: iTagProp[] = [
+export const listChose: iTagProp[] = [
   {
-    href: "/details",
+    href: "?newest",
     icon: Newest,
     title: "Newest and Recent",
     subTitle: "Find the latest update",
   },
   {
-    href: "/details",
+    href: "?popular",
     icon: Popular,
     title: "Popular of the day",
     subTitle: "Shots featured today by curators",
   },
   {
-    href: "/details",
+    href: "?following",
     icon: Following,
     title: "Following",
     subTitle: "Explore from your favorite person",

@@ -1,0 +1,28 @@
+.wrapper-class {
+  padding: 8px 4px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow-y: auto;
+  flex: 1;
+  background: white;
+  color: black;
+}
+.editor-class {
+  background-color: white;
+  padding: 1rem;
+  border: 1px solid black;
+  height: 100%;
+  margin: 4px;
+  border-width: 0.5;
+  padding: 0 4px;
+  border-radius: 2px;
+}
+.toolbar-class {
+  border: 1px solid black;
+  margin: 0 4px;
+}
+
+/* .toolbar-class:hover * {
+  background-color: #aaa;
+} */

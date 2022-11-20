@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Bars3,
+  Bell,
+  BellAlert,
   Book,
   BookFill,
   Home,
@@ -9,8 +11,14 @@ import {
   List,
   ListFill,
   MagnifyingGlass,
+  Message,
 } from "@icons/index";
-
+import ava1 from "@assets/images/av1.png";
+import PopUpMessenger from "./popupMessenger";
+import PopUpNotify from "./popupNotify";
+import PopUpUser from "./popupUser";
+import { useSelector } from "react-redux/es/exports";
+import { RootState } from "@app/store";
 interface tabItem {
   title: string;
   icon: React.ElementType;
@@ -40,11 +48,35 @@ const listTabItem: tabItem[] = [
 
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(true);
-  // const [isScrollUp, setIsScrollUp] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [selected, setSelected] = useState(listTabItem[0].title);
+  const [showRightNav, setShowRightNav] = useState(0);
+
+  const { accessToken, userInfo } = useSelector(
+    (state: RootState) => state.users
+  );
+  // useEffect(() => {
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, []);
+
+  // function handleScroll() {
+  //   const currentYOffset = window.pageYOffset;
+  //   const visible = yOffset > currentYOffset;
+  //   console.log(currentYOffset);
+  //   console.log(visible);
+
+  //   setYOffset(currentYOffset);
+  //   setVisible(visible);
+  // }
 
   return (
-    <nav className="bg-white fixed top-0 w-full shadow-sm phone:py-2  dark:bg-black dark:border-white  ">
+    <nav
+      className={
+        "bg-bg2 fixed top-0 w-full shadow-sm phone:py-2  dark:bg-black dark:border-white z-[9999]   " +
+        (visible ? " zblock " : " zhidden")
+      }
+    >
       <div className=" flex flex-wrap justify-between items-center">
         {/* Logo */}
         <div className="flex items-center pl-4">
@@ -55,8 +87,8 @@ const Navbar = () => {
               alt=" Teaching Me Logo"
             />
           </Link>
-          <button className="flex bg-smoke h-8 w-8 rounded-full items-center justify-center ">
-            <MagnifyingGlass />
+          <button className="flex bg-transparent h-8 w-8 rounded-full items-center justify-center ">
+            <MagnifyingGlass className="stroke-secondary h-6 w-6" />
           </button>
         </div>
         {/* End Logo */}
@@ -88,14 +120,17 @@ const Navbar = () => {
         >
           <ul className="flex flex-1 justify-center  flex-col  sm:flex-row sm:text-sm sm:font-medium  ">
             {listTabItem.map((item) => (
-              <>
+              <React.Fragment key={item.title}>
                 <li className="flex">
                   <Link
                     to={item.linkTo}
-                    onClick={() => setSelected(item.title)}
+                    onClick={(e) => {
+                      setSelected(item.title);
+                      console.log(e);
+                    }}
                     className={
-                      "relative px-10 py-3 tablet:px-8   phone:py-4 phone:px-4 text-black group transition-all " +
-                      " hover:bg-smoke " +
+                      "relative px-12 py-4 tablet:px-8   phone:py-4 phone:px-4 text-black group transition-all " +
+                      " hover:bg-hover " +
                       " phone:w-screen" +
                       " after:content-[''] after:border-b-2 after:absolute after:w-full after:bottom-0 after:left-0 after:border-primary " +
                       (selected === item.title
@@ -106,7 +141,7 @@ const Navbar = () => {
                   >
                     <span
                       className={
-                        "px-3 py-1 text-[10px] rounded-md group-hover:text-white  bg-primary  scale-0 absolute bottom-[-60%] left-[50%] translate-x-[-50%]  " +
+                        "px-3 py-1 text-[10px] rounded-md group-hover:text-white w-max    absolute   bg-primary  scale-0  -bottom-full left-[50%] translate-x-[-50%]  " +
                         (selected !== item.title && " group-hover:scale-100")
                       }
                     >
@@ -114,20 +149,89 @@ const Navbar = () => {
                     </span>
                     <i className=" w-full">
                       {selected === item.title ? (
-                        <item.iconFill className="w-7 h-7 fill-primary" />
+                        <item.iconFill className="w-5 h-5 fill-primary" />
                       ) : (
-                        <item.icon className="w-7 h-7 stroke-smokeDark " />
+                        <item.icon className="w-5 h-5 stroke-white   " />
                       )}
                     </i>
                   </Link>
                 </li>
-              </>
+              </React.Fragment>
             ))}
           </ul>
         </div>
         {/* End Center menu */}
-        <div>
-          <Link to={"/login"}>Login</Link>
+        <div className="mr-4 flex relative items-center">
+          {accessToken === "" ? (
+            <div>
+              <Link
+                className="text-sm font-semibold px-4 py-2 rounded-full h-full hover:bg-hover duration-500 "
+                to={"/register"}
+              >
+                Đăng ký
+              </Link>
+              <Link
+                className="text-sm font-semibold px-4 py-2 rounded-full h-full bg-primary "
+                to={"/login"}
+              >
+                Đăng nhập
+              </Link>
+            </div>
+          ) : (
+            <>
+              <i
+                id="showMessage"
+                className="relative p-4 rounded-lg hover:bg-hover hover:cursor-pointer "
+                onClick={() => {
+                  if (showRightNav === 1) setShowRightNav(0);
+                  else setShowRightNav(1);
+                }}
+              >
+                <Message />
+              </i>
+
+              <i
+                id="showNotify"
+                className="p-4  rounded-lg hover:bg-hover hover:cursor-pointer  "
+                onClick={() => {
+                  if (showRightNav === 2) setShowRightNav(0);
+                  else setShowRightNav(2);
+                }}
+              >
+                {1 ? <BellAlert /> : <Bell />}
+              </i>
+
+              <i
+                id="showUser"
+                className="px-4 py-2  rounded-lg hover:bg-hover hover:cursor-pointer"
+                onClick={() => {
+                  if (showRightNav === 3) setShowRightNav(0);
+                  else setShowRightNav(3);
+                }}
+              >
+                <img className="h-9 w-9 rounded-full " src={ava1} alt="z" />
+              </i>
+              {showRightNav === 1 ? (
+                <PopUpMessenger
+                  setShow={(show) => {
+                    setShowRightNav(show);
+                  }}
+                />
+              ) : showRightNav === 2 ? (
+                <PopUpNotify
+                  setShow={(show) => {
+                    setShowRightNav(show);
+                  }}
+                />
+              ) : showRightNav === 3 ? (
+                <PopUpUser
+                  setShow={(show) => {
+                    setShowRightNav(show);
+                  }}
+                />
+              ) : null}
+            </>
+          )}
         </div>
         {/* Right */}
       </div>

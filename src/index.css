@@ -7,3 +7,53 @@ html {
   font-family: "Noto sans", sans-serif !important;
   @apply text-black;
 }
+
+body {
+  color: white;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+  padding: 0 1px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  padding: 4px;
+}
+h1 {
+  display: block;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+h2 {
+  display: block;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+h3 {
+  display: block;
+  font-size: 1.25em;
+
+  font-weight: bold;
+}
+
+h4 {
+  display: block;
+  font-weight: bold;
+}
+h5 {
+  display: block;
+  font-weight: bold;
+}
+h6 {
+  display: block;
+  font-weight: bold;
+}
