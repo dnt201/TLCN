@@ -43,10 +43,12 @@ export const userGetMe = createAsyncThunk("user/getMe", async () => {
   //thunkAPI.dispatch();
   try {
     const result = await userApi.getMe();
-    return result.data;
+    if (result.data) return result.data;
+    return result;
   } catch (err) {
+    console.log("getMe error$", err);
+
     // custom error
-    console.log(err);
   }
 });
 export const userUpdateProfile = createAsyncThunk(
@@ -200,6 +202,10 @@ const user = createSlice({
     });
     builder.addCase(userGetMe.fulfilled, (state, action) => {
       state.loading = false;
+      console.log(action);
+      if (action.payload === "Network Error") {
+        state.error = "Network Error";
+      }
       if (action.payload.id !== null && action.payload.email !== null)
         state.userInfo = action.payload;
     });

@@ -40,7 +40,6 @@ const userApi = {
   updateImage: (file: File) => {
     const url = `/users/avatar`;
     const formData = new FormData();
-
     formData.append("file", file);
     return axiosClient.post(url, formData);
   },

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import ava1 from "@assets/images/av1.png";
-import { LogOut, Setting } from "@icons/index";
-import { Link } from "react-router-dom";
+import { ChangePassWord, LogOut, Setting } from "@icons/index";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@app/store";
 import { userLogout } from "@redux/userSlice";
@@ -12,7 +12,7 @@ interface iPopUpUserProps extends React.HTMLProps<HTMLDivElement> {
 const PopUpUser: React.FC<iPopUpUserProps> = (props) => {
   const { className, setShow } = props;
   const popUpUser = useRef<HTMLDivElement>(null);
-
+  const navigate = useNavigate();
   const { userInfo } = useSelector((state: RootState) => state.users);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -73,6 +73,16 @@ const PopUpUser: React.FC<iPopUpUserProps> = (props) => {
           </i>
           <span className="font-medium text-[15px] ml-2 ">Settings</span>
         </div>
+        <div
+          className="flex items-center p-2 rounded-md  hover:cursor-pointer hover:bg-hover"
+          onClick={() => navigate("change-password")}
+        >
+          <i className="h-8 w-8 bg-smokeDark flex items-center justify-center rounded-full">
+            <ChangePassWord />
+          </i>
+          <span className="font-medium text-[15px] ml-2 ">Change password</span>
+        </div>
+
         <div
           className="flex items-center p-2 rounded-md  hover:cursor-pointer hover:bg-hover"
           onClick={(e) => {

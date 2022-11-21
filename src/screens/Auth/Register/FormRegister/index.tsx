@@ -2,14 +2,12 @@ import React from "react";
 
 import { Formik, Form, FastField } from "formik";
 import userApi, { userApiAuth } from "@api/userApi";
-import toast from "react-hot-toast";
 import * as Yup from "yup";
-import { CheckCircle, ChevronLeft, XCircle } from "@icons/index";
+import { CheckCircle, XCircle } from "@icons/index";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogin, userRegister } from "@redux/userSlice";
 import { AppDispatch, RootState } from "src/app/store";
 import ClipLoader from "react-spinners/ClipLoader";
-import axios from "axios";
 interface RegisterValues {
   email: string;
   password: string;

@@ -1,4 +1,4 @@
-import React, { ReactComponentElement, useState } from "react";
+import React, { ReactComponentElement, useState, memo } from "react";
 import { Post, List, Voted, Seen } from "@icons/index";
 interface iNav {
   id: number;
@@ -28,7 +28,7 @@ const listNav: iNav[] = [
   },
 ];
 
-const MainContent = () => {
+const MainContent = memo(function MainContent() {
   const [selectId, setSelectId] = useState(1);
   console.log(selectId);
   return (
@@ -51,6 +51,6 @@ const MainContent = () => {
       </div>
     </div>
   );
-};
+});
 
 export default MainContent;

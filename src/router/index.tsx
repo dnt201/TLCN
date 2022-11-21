@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "@app/store";
 import Home from "@screens/Home";
 import UserDetail from "@screens/UserDetail";
@@ -14,23 +14,30 @@ import { useDispatch, useSelector } from "react-redux";
 import Notify from "@icons/NotifyFill";
 import App from "src/App";
 import { userGetMe, userLogin } from "@redux/userSlice";
+import NetWorkError from "@screens/NetWorkError";
+import ChangePassWord from "@screens/ChangePassWord";
 
 const DeClareRouter = () => {
-  const { accessToken } = useSelector((state: RootState) => state.users);
+  const { error, accessToken } = useSelector((state: RootState) => state.users);
   const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
   const [beLogged, setLogged] = useState(accessTokenFromLocalStorage !== null);
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
+    console.log("Access thay đổi");
     const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
     if (
       accessTokenFromLocalStorage !== null &&
       accessTokenFromLocalStorage.length > 0
     ) {
       setLogged(true);
-      const a = dispatch(userGetMe());
+      dispatch(userGetMe());
     } else setLogged(false);
-  }, [accessToken]);
+    if (error && error === "Network Error") {
+      navigate("networkError");
+    }
+  }, [accessToken, error]);
   return (
     <div>
       <Routes>
@@ -43,7 +50,9 @@ const DeClareRouter = () => {
 
           <Route path="notify" element={<Notify />} />
           <Route path="user-detail/:userId" element={<UserDetail />} />
+          <Route path="change-password" element={<ChangePassWord />} />
           <Route path="*" element={<SomeThingWentWrong />} />
+          <Route path="networkError" element={<NetWorkError />} />
           <Route
             path="/me"
             element={

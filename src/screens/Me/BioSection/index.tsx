@@ -12,10 +12,18 @@ const BioSection: React.FC<iBioProps> = (props) => {
   const [bioInput, setBioInput] = useState("");
   const [changeBio, setChangeBio] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [bioInDatabase, setBioInDatabase] = useState("");
+  const [hasChanged, setHasChanged] = useState(false);
   const { userInfo } = useSelector((state: RootState) => state.users);
+
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
+    if (bioInput === bioInDatabase) setHasChanged(false);
+    else setHasChanged(true);
+  }, [bioInput]);
+  useEffect(() => {
     setBioInput(userInfo?.shortInfo || "");
+    setBioInDatabase(userInfo?.shortInfo || "");
   }, [userInfo]);
   const handleUpdateBio = async () => {
     if (userInfo) {
@@ -28,9 +36,7 @@ const BioSection: React.FC<iBioProps> = (props) => {
       setLoading(true);
       const result = await userApi.updateProFile(userUpdate);
       await setTimeout(() => {
-        console.log("ab", result);
         if (result.status === 200) dispatch(userGetMe());
-
         setLoading(false);
         setChangeBio(false);
       }, 2500);
@@ -86,10 +92,16 @@ const BioSection: React.FC<iBioProps> = (props) => {
                 Hủy
               </button>
               <button
-                className="px-2 py-1 ml-1 bg-primary  border-primary hover:bg-primaryLow   border-[1px]  text-s rounded-md "
+                className={
+                  "px-2 py-1 ml-1  border-[1px]  text-s rounded-md " +
+                  (hasChanged
+                    ? " bg-primary  border-primary hover:bg-primaryLow "
+                    : " cursor-not-allowed bg-smokeDark border-smokeDark")
+                }
                 onClick={() => {
                   handleUpdateBio();
                 }}
+                disabled={!hasChanged}
               >
                 Lưu
               </button>

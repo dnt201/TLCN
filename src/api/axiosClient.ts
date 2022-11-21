@@ -31,6 +31,7 @@ axiosClient.interceptors.request.use(async (config: AxiosRequestConfig) => {
 axiosClient.interceptors.response.use(
   (response) => {
     console.log("response", response);
+
     return response;
   },
   async (error) => {
@@ -39,7 +40,10 @@ axiosClient.interceptors.response.use(
     const prevRequest = error.config;
 
     const refreshToken = await localStorage.getItem("refreshToken");
-    if (
+    console.log(error);
+    if (!error.status) {
+      return error.message;
+    } else if (
       error.response.status === 401 &&
       error.response.data.message === "Unauthorized"
     ) {

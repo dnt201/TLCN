@@ -3,6 +3,10 @@ import { UpImage, XMark } from "@icons/index";
 import Dropzone, { useDropzone } from "react-dropzone";
 import toast, { CheckmarkIcon } from "react-hot-toast";
 import userApi from "@api/userApi";
+import { BeatLoader } from "react-spinners";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@app/store";
+import { userGetMe } from "@redux/userSlice";
 
 interface iPopUpChangeImageProps {
   show: boolean;
@@ -10,16 +14,17 @@ interface iPopUpChangeImageProps {
 }
 
 const PopUpChangeImage: React.FC<iPopUpChangeImageProps> = (props) => {
-  const divPopUpRef = useRef<HTMLDivElement>(null);
-
-  const [isDropOn, setDropOn] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const imageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setSelectedImage(e.target.files[0]);
-    }
-  };
   const { show, setShow } = props;
+  const divPopUpRef = useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const [isDropOn, setDropOn] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  // const imageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files && e.target.files.length > 0) {
+  //     setSelectedImage(e.target.files[0]);
+  //   }
+  // };
   useEffect(() => {
     console.log("selectedImage", selectedImage);
   }, [selectedImage]);
@@ -28,8 +33,24 @@ const PopUpChangeImage: React.FC<iPopUpChangeImageProps> = (props) => {
       toast.error("Something went wrong! Select again,");
     } else {
       console.log(selectedImage);
-      const a = await userApi.updateImage(selectedImage);
-      console.log(a);
+      setLoading(true);
+      console.log(" setLoading(true)");
+      await setTimeout(() => {
+        toast.promise(userApi.updateImage(selectedImage), {
+          loading: "Saving...",
+          success: () => {
+            setLoading(false);
+            setShow(false);
+            dispatch(userGetMe());
+            return "Change image success";
+          },
+          error: (err) => {
+            return err + "";
+          },
+        });
+      }, 2000);
+
+      console.log("setLoading(false);");
     }
   };
 
@@ -40,16 +61,21 @@ const PopUpChangeImage: React.FC<iPopUpChangeImageProps> = (props) => {
       onClick={() => setShow(false)}
     >
       {/* BackGround */}
-      <div className="w-screen h-screen bg-bg opacity-70"></div>
+      <div className="w-screen  h-screen bg-bg opacity-70"></div>
 
       {/* Form */}
       <div
         onClick={(e) => e.stopPropagation()}
         className={
-          "fixed bg-bg2 h-[70vh] w-[50vw] rounded-lg flex flex-col " +
+          "fixed bg-bg2 w-[50vw] rounded-lg flex flex-col " +
           (isDropOn ? " bg-hover " : null)
         }
       >
+        {loading ? (
+          <div className="absolute z-[10001] flex items-center justify-center bg-white opacity-75 p-2  h-full w-full ">
+            <BeatLoader />
+          </div>
+        ) : null}
         {/* Start Header  */}
         <div className="flex  relative items-center   border-b-[1px] border-smokeHover">
           <h3 className="w-full text-center my-2">Cập nhật ảnh đại diện</h3>
@@ -61,10 +87,9 @@ const PopUpChangeImage: React.FC<iPopUpChangeImageProps> = (props) => {
           </button>
         </div>
         {/* End Header  */}
-
         {/* Start Input */}
         {selectedImage ? (
-          <div className="flex  items-center  justify-center mt-8">
+          <div className="flex  items-center  justify-center pt-4">
             <div className="w-fit relative">
               <img
                 src={URL.createObjectURL(selectedImage)}
@@ -128,9 +153,8 @@ const PopUpChangeImage: React.FC<iPopUpChangeImageProps> = (props) => {
           </Dropzone>
         )}
         {/* End Input */}
-
         {/* Start bottomNav */}
-        <div className="mt-6 flex justify-center w-full">
+        <div className="flex justify-center w-full pt-6 pb-4">
           <button
             className="py-2 px-4 border-[1px] border-white rounded-lg mr-2"
             onClick={() => setShow(false)}
@@ -152,7 +176,6 @@ const PopUpChangeImage: React.FC<iPopUpChangeImageProps> = (props) => {
             Lưu
           </button>
         </div>
-
         {/* End bottomNav */}
       </div>
     </div>

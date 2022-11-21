@@ -44,8 +44,14 @@ import Seen from "./Seen";
 import Voted from "./Voted";
 import XMark from "./XMark";
 import UpImage from "./UpImage";
+import ChangePassWord from "./ChangePassWord";
+import SeenFill from "./SeenFill";
+import Gender from "./Gender";
 
 export {
+  Gender,
+  SeenFill,
+  ChangePassWord,
   UpImage,
   MagnifyingGlass,
   Bars3,
