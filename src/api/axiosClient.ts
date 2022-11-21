@@ -29,9 +29,7 @@ axiosClient.interceptors.request.use(async (config: AxiosRequestConfig) => {
   return await config;
 });
 axiosClient.interceptors.response.use(
-  (response) => {
-    console.log("response", response);
-
+  async (response) => {
     return response;
   },
   async (error) => {

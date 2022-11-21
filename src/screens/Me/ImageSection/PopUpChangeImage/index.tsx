@@ -35,20 +35,18 @@ const PopUpChangeImage: React.FC<iPopUpChangeImageProps> = (props) => {
       console.log(selectedImage);
       setLoading(true);
       console.log(" setLoading(true)");
-      await setTimeout(() => {
-        toast.promise(userApi.updateImage(selectedImage), {
-          loading: "Saving...",
-          success: () => {
-            setLoading(false);
-            setShow(false);
-            dispatch(userGetMe());
-            return "Change image success";
-          },
-          error: (err) => {
-            return err + "";
-          },
-        });
-      }, 2000);
+      toast.promise(userApi.updateImage(selectedImage), {
+        loading: "Saving...",
+        success: () => {
+          setLoading(false);
+          setShow(false);
+          dispatch(userGetMe());
+          return "Change image success";
+        },
+        error: (err) => {
+          return err + "";
+        },
+      });
 
       console.log("setLoading(false);");
     }

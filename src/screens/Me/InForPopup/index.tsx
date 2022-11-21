@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import { AppDispatch, RootState } from "@app/store";
 import { XMark } from "@icons/index";
 import { useDispatch, useSelector } from "react-redux";
+import userApi, { userUpdateProfile } from "@api/userApi";
+import { userGetMe } from "@redux/userSlice";
+import { BeatLoader } from "react-spinners";
+import toast from "react-hot-toast";
 interface iInForPopups {
   show: boolean;
   setShow: (show: boolean) => void;
@@ -9,11 +13,11 @@ interface iInForPopups {
 const gender: string[] = ["Male", "Female", "LGBT", "Unknown"];
 const InForPopup: React.FC<iInForPopups> = (props) => {
   const { show, setShow } = props;
+  const [loading, setLoading] = useState(false);
   const [userNameInput, setUserNameInput] = useState("");
   const [shortInfoInput, setShortInfoInput] = useState("");
   const [genderInput, setGenderInput] = useState("");
   const [userNameInputZ, setUserNameInputZ] = useState("");
-  const [shortInfoInputZ, setShortInfoInputZ] = useState("");
   const [genderInputZ, setGenderInputZ] = useState("");
   const [hasChanged, setHasChanged] = useState(false);
 
@@ -31,21 +35,51 @@ const InForPopup: React.FC<iInForPopups> = (props) => {
       setHasChanged(false);
     else setHasChanged(true);
   }, [userNameInput, genderInput]);
+  const handleUpdateProfile = async () => {
+    if (userInfo) {
+      let userUpdate: userUpdateProfile = {
+        email: userInfo.email,
+        username: userNameInput,
+        shortInfo: shortInfoInput,
+        gender: genderInput,
+      };
+      setLoading(true);
 
+      toast.promise(userApi.updateProFile(userUpdate), {
+        loading: "Saving...",
+        success: () => {
+          setLoading(false);
+          setShow(false);
+          dispatch(userGetMe());
+          return "Update profile success!";
+        },
+        error: (err) => {
+          return err + "";
+        },
+      });
+    } else {
+      alert("screens/Me/InForPopup error! check");
+    }
+  };
   return (
     <div
       className="fixed w-screen  h-screen top-0 left-0  z-[10000] flex items-center justify-center"
       // ref={divPopUpRef}
       onClick={() => setShow(false)}
     >
-      <div className="w-screen  h-screen bg-bg opacity-70"></div>
+      <div className="fixed w-screen  h-screen bg-bg opacity-70"></div>
       {/* Form */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className={"fixed bg-bg2 w-[50vw] rounded-lg flex flex-col "}
+        className={" relative bg-bg2 w-[50vw] rounded-lg flex flex-col "}
       >
+        {loading ? (
+          <div className=" absolute  z-[10000] w-full h-full bg-white opacity-75  flex justify-center items-center">
+            <BeatLoader />
+          </div>
+        ) : null}
         {/* Start Header  */}
-        <div className="flex  relative items-center   border-b-[1px] border-smokeHover">
+        <div className="flex  relative items-center  border-b-[1px] border-smokeHover">
           <h3 className="w-full text-center my-2">Cập nhật thông tin</h3>
           <button
             className="absolute top-0 right-0  rounded-full  text-white p-2"
@@ -76,7 +110,7 @@ const InForPopup: React.FC<iInForPopups> = (props) => {
               onChange={(e) => setGenderInput(e.target.value)}
             >
               {gender.map((item, index) => (
-                <option selected={item === genderInput} value={item}>
+                <option key={item} selected={item === genderInput} value={item}>
                   {item}
                 </option>
               ))}
@@ -101,7 +135,7 @@ const InForPopup: React.FC<iInForPopups> = (props) => {
             }
             disabled={!hasChanged}
             onClick={() => {
-              // handleSummit();
+              handleUpdateProfile();
             }}
           >
             Lưu
