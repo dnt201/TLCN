@@ -1,4 +1,5 @@
 import axiosClient from "@api/axiosClient";
+import { ChangePassWordValues } from "@screens/ChangePassWord";
 import queryString from "query-string";
 
 export interface userApiAuth {
@@ -42,6 +43,18 @@ const userApi = {
     const formData = new FormData();
     formData.append("file", file);
     return axiosClient.post(url, formData);
+  },
+  updatePassword: (data: ChangePassWordValues) => {
+    const url = `/users/update/password`;
+    return axiosClient.post(url, data);
+  },
+  findUserByDisplayName: (name: string) => {
+    const url = `/users/find?name=${name}`;
+    return axiosClient.get(url);
+  },
+  getUserDetail: (id: string) => {
+    const url = `/users/${id}`;
+    return axiosClient.get(url);
   },
 };
 export default userApi;

@@ -8,7 +8,15 @@ import {
 import React from "react";
 import ReactTooltip from "react-tooltip";
 
-interface iNavLeftProps extends React.HTMLProps<HTMLDivElement> {}
+interface iNavLeftProps extends React.HTMLProps<HTMLDivElement> {
+  owner: {
+    avatarLink: string | null;
+    id: string;
+    username: string;
+  };
+  like: number;
+  isFollow: boolean;
+}
 
 const NavLeft: React.FC<iNavLeftProps> = (props) => {
   const { className } = props;

@@ -78,14 +78,16 @@ md:flex-col-reverse
             <div className=" flex flex-col flex-1">
               <input
                 placeholder="Enter your token"
-                className=" flex-1 mr-2 ml-6 text-bg p-2 text-sm border-bg border-[1px]"
+                className=" flex-1 mr-2 ml-6 text-bg p-2 text-sm border-bg2  focus:outline-none
+                border-b-[1px] focus:border-bg focus:border-b-2
+                "
                 value={tokenValidate}
                 onChange={(e) => setTokenValidate(e.target.value.toString())}
               />
             </div>
             <button
               className={
-                "text-primary p-2 text-sm flex items-center border-primary border-[1px] hover:text-white hover:bg-primary  transition-colors duration-700 " +
+                "text-primary rounded-sm p-2 text-sm flex items-center border-primary border-[1px] hover:text-white hover:bg-primary  transition-colors duration-700 " +
                 (pause && " cursor-not-allowed")
               }
               disabled={pause}

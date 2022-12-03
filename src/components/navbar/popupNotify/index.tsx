@@ -35,14 +35,14 @@ const PopUpNotify: React.FC<iPopUpNotifyProps> = (props) => {
     <div
       ref={popupNotify}
       className={
-        "flex fixed  overflow-y-auto z-20 right-4 top-[54px] h-[calc(100vh-48px-20px)] w-[360px] bg-bg2 rounded-md " +
+        "flex absolute  overflow-y-auto z-20 right-4 top-full mt-1 max-h-[calc(100vh-48px-20px)] w-[360px] bg-bg2 rounded-md " +
         className
       }
     >
-      <div className="w-full pt-4 ml-3 px-2">
+      <div className="w-full pt-2 ml-3 px-2">
         {/* Header  */}
         <div className="flex items-center  ">
-          <h1 className="flex-1 font-bold text-lg">Notifications</h1>
+          <h1 className="flex-1 font-bold text-2xl">Notifications</h1>
 
           <i className="p-2 hover:cursor-pointer rounded-lg hover:bg-hover  relative inline-block ">
             <More />

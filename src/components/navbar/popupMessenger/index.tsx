@@ -34,13 +34,13 @@ const PopUpMessenger: React.FC<iPopUpMessageProps> = (props) => {
     <div
       ref={popUpMessengerRef}
       className={
-        "group/item flex absolute  z-20 right-4 top-[54px] h-[calc(100vh-48px-20px)] w-[360px] bg-bg2 rounded-md x " +
+        "group/item flex absolute  z-20 right-4 top-full mt-1  max-h-[calc(100vh-48px-20px)] w-[360px] bg-bg2 rounded-md " +
         " " +
         className
       }
     >
       <div className="flex flex-col flex-1   ">
-        <div className="overflow-y-auto pt-2">
+        <div className="overflow-y-auto pt-2 ">
           {/* Header  */}
           <div className="flex items-center  px-4">
             <h1 className="flex-1 font-bold text-2xl">Chats</h1>
@@ -89,9 +89,8 @@ const PopUpMessenger: React.FC<iPopUpMessageProps> = (props) => {
             </div>
           </div>
           {/* List */}
-          <div className="h-3/4 mt-4  px-2 ">
-            <MessengerTag />
-            <MessengerTag />
+          <div className=" mt-4  mb-2 px-2 ">
+            <MessengerTag /> <MessengerTag />
             <MessengerTag />
             <MessengerTag />
             <MessengerTag />

@@ -39,6 +39,12 @@ module.exports = {
     backgroundImage: {
       404: "url('https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif')",
     },
+    keyframes: {
+      appear: {
+        "0%": { opacity: 0, scale: 0 },
+        "100%": { opacity: 1, scale: 1 },
+      },
+    },
   },
   plugins: [require("@tailwindcss/line-clamp")],
 };

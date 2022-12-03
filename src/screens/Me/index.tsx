@@ -12,22 +12,6 @@ import MainContent from "./MainContent";
 import ImageSection from "./ImageSection";
 import Skeleton from "react-loading-skeleton";
 
-const user = {
-  id: "5e75cd2e-7b55-4c36-9b5b-9466c5ef4aff",
-  email: "duynhatran201@gmail.com",
-  username: "Duy Nha Tran",
-  shortInfo: "12414124141",
-  phoneNumber: "0368689201",
-  gender: "Female",
-  role: {
-    id: "c5e6a595-7efa-4e30-8d76-04fd94d85266",
-    role: "User",
-    displayName: "User",
-  },
-  follower: 0,
-  following: 0,
-  avatarLink: null,
-};
 const Me = () => {
   const { userInfo, loading } = useSelector((state: RootState) => state.users);
   const [showInForPopup, setShowInForPopup] = useState(false);
@@ -93,17 +77,17 @@ const Me = () => {
               <>
                 <h4 className="w-full text-left">Giới thiệu</h4>
                 <BioChange />
-                {user.phoneNumber ? (
+                {userInfo?.phoneNumber ? (
                   <div className="mt-2">
                     <h4>Liên hệ</h4>
                     <span className="flex items-center mt-1 text-sm">
                       <PhoneFill className="w-5 h-5" />
                       <a
-                        href={`tel:${user.phoneNumber}`}
+                        href={`tel:${userInfo?.phoneNumber}`}
                         className="ml-3 flex items-end"
                       >
                         <span className="font-bold text-sm">
-                          {user.phoneNumber}
+                          {userInfo?.phoneNumber}
                         </span>
                       </a>
                     </span>

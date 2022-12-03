@@ -47,8 +47,21 @@ import UpImage from "./UpImage";
 import ChangePassWord from "./ChangePassWord";
 import SeenFill from "./SeenFill";
 import Gender from "./Gender";
-
+import Tag from "./Tag";
+import TagFill from "./TagFill";
+import Category from "./Category";
+import CategoryFill from "./CategoryFill";
+import ChevronRight from "./ChevronRight";
+import Test from "./Test";
+import ArrowUpTray from "./ArrowUpTray";
 export {
+  ArrowUpTray,
+  Test,
+  ChevronRight,
+  Category,
+  CategoryFill,
+  Tag,
+  TagFill,
   Gender,
   SeenFill,
   ChangePassWord,

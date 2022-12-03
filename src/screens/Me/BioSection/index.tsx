@@ -87,6 +87,7 @@ const BioSection: React.FC<iBioProps> = (props) => {
                 className="px-2 py-1 border-white hover:bg-hover border-[1px] text-s rounded-md"
                 onClick={() => {
                   setChangeBio(false);
+                  setBioInput(bioInDatabase);
                 }}
               >
                 Hủy

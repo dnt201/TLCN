@@ -34,17 +34,19 @@ axiosClient.interceptors.response.use(
   },
   async (error) => {
     // Handle errors
-    console.log("error", error);
     const prevRequest = error.config;
 
     const refreshToken = await localStorage.getItem("refreshToken");
     console.log(error);
-    if (!error.status) {
+    if (error.message === "Network Error") {
+      console.log("!error.status");
       return error.message;
     } else if (
       error.response.status === 401 &&
       error.response.data.message === "Unauthorized"
     ) {
+      console.log("refresh");
+
       prevRequest.sent = true;
       console.log("refreshToken: ", refreshToken);
 
@@ -80,16 +82,7 @@ axiosClient.interceptors.response.use(
 
         return await lazyAxios(prevRequest);
       }
-      // console.log("axiosClient(prevRequest)", axiosClient(prevRequest));
-      // await console.log(axios.get("/api/v1/login"));
-    }
-    // else if (
-    //   error.response.status === 400 &&
-    //   error.response.data.message === "Unauthorized"
-    // ) {
-    //   console.log("chưa confirm");
-    // }
-    else if (error.response) {
+    } else if (error.response) {
       console.log("error.response", error.response);
       return error.response;
     } else throw error;

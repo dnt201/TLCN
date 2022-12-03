@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import BlogTag, { iBlogTag } from "@components/blogTag";
 import img1 from "@images/1.png";
 import img2 from "@images/2.png";
@@ -9,15 +9,67 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "@app/store";
 import { useSelector } from "react-redux";
 import { Write } from "@icons/index";
+import postApi from "@api/postApi";
+import Skeleton from "react-loading-skeleton";
+import ListInfinity from "./ListInfinity";
+import ListSkeleton from "./ListSkeleton";
+import { iPage } from "@DTO/Pagination";
+import ListInfinityNewest from "./ListInfinityNewest";
+import ListInfinityFollowing from "./ListInfinityFollowing";
 interface iProps extends React.HTMLProps<HTMLDivElement> {
   a?: string;
 }
 
 const CenterContent: React.FC<iProps> = (props) => {
   const location = useLocation();
+  const [loading, setLoading] = useState(false);
+  const [paging, setPaging] = useState<iPage | null>(null);
+  // const [errorKeyKiLaLamLun, setErrorKeyKiLaLamLun] = useState(true);
+  const divListBlog = useRef<HTMLDivElement>(null);
+
   const navigate = useNavigate();
-  const { accessToken } = useSelector((state: RootState) => state.users);
-  console.log(location);
+  const curPath = window.location.pathname;
+  const { accessToken, userInfo } = useSelector(
+    (state: RootState) => state.users
+  );
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    if (curPath === "/popular") {
+      // const result = postApi.getAllPost();
+      //call fl
+    } else if (curPath === "/following") {
+      if (accessToken === null || accessToken.length <= 0) {
+        navigate("/login");
+      } else {
+        console.log("Get following");
+        const a = async () => {
+          const result = await postApi.getListPostHaveBeenFollow();
+          console.log("result", result);
+        };
+        a();
+      }
+      // const result = postApi.getListPostHaveBeenFollow();
+    } else {
+      const a = async () => {
+        const result = await postApi.getAllPost();
+        console.log("result", result);
+        if (result.status === 201) {
+        }
+      };
+      a();
+    }
+    setLoading(false);
+    console.log("----------------", paging);
+    // setErrorKeyKiLaLamLun(!errorKeyKiLaLamLun);
+    return () => {
+      console.log("UnMounted");
+    };
+  }, [curPath]);
+
   return (
     <div className={props.className} onClick={() => {}}>
       {accessToken && accessToken !== "" ? (
@@ -28,7 +80,7 @@ const CenterContent: React.FC<iProps> = (props) => {
               e.stopPropagation();
             }}
             className="w-8 h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 rounded-full mr-2 hover:cursor-pointer"
-            src={av1}
+            src={userInfo?.avatarLink || av1}
             alt="user avatar"
           />
           <p
@@ -62,85 +114,15 @@ const CenterContent: React.FC<iProps> = (props) => {
         </div>
       )}
 
-      {listBlogTag.map((blog) => (
-        <BlogTag
-          key={blog.id}
-          id={blog.id}
-          title={blog.title}
-          image={blog.image}
-          listTag={blog.listTag}
-          user={blog.user}
-          isLike={blog.isLike}
-          like={blog.like}
-          view={blog.view}
-          numCom={blog.numCom}
-        />
-      ))}
+      {curPath === "/newest" || curPath === "/" ? (
+        <ListInfinityNewest />
+      ) : curPath === "/following" ? (
+        <ListInfinityFollowing />
+      ) : (
+        <ListSkeleton />
+      )}
     </div>
   );
 };
-
-let listBlogTag: iBlogTag[] = [
-  {
-    id: "p1",
-    title: "Blockchain developer best practices on innovationchain",
-    listTag: ["#javascript", "#red", "#fillRule"],
-    image: img1,
-    user: {
-      id: "us1",
-      name: "Pavel Gvay",
-      image: av1,
-    },
-    view: 1324,
-    like: 365,
-    isLike: false,
-    numCom: 65821,
-  },
-  {
-    id: "p2",
-    title: "Blockchain developer best practices on innovationchain",
-    listTag: ["#vertical", "#allRight", "#good"],
-    image: img2,
-    user: {
-      id: "us1",
-      name: "Pavel Gvay",
-      image: av1,
-    },
-    view: 1212,
-    like: 645,
-    isLike: true,
-    numCom: 3321,
-  },
-  {
-    id: "p3",
-    title: "Blockchain developer best practices on innovationchain",
-    listTag: ["#leeSin", "#endRegion", "#React"],
-    image: img3,
-    user: {
-      id: "us1",
-      name: "Pavel Gvay",
-      image: av1,
-    },
-    view: 32,
-    like: 3615,
-    isLike: false,
-    numCom: 93215,
-  },
-  {
-    id: "p4",
-    title: "Blockchain developer best practices on innovationchain",
-    listTag: ["#1", "#2", "#3"],
-    image: img4,
-    user: {
-      id: "us1",
-      name: "Pavel Gvay",
-      image: av1,
-    },
-    view: 651324,
-    like: 36645,
-    isLike: true,
-    numCom: 31,
-  },
-];
 
 export default CenterContent;

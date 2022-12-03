@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { convertToRaw, EditorState, ContentState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import htmlToDraft from "html-to-draftjs";
 import draftToHtml from "draftjs-to-html";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "./editor.css";
+import fileApi from "@api/fileApi";
 interface iEditorProps extends React.HTMLProps<HTMLDivElement> {
   setValue: (a: string) => void;
   valueHTML: string;
@@ -12,12 +13,27 @@ interface iEditorProps extends React.HTMLProps<HTMLDivElement> {
 
 const EditorText: React.FC<iEditorProps> = (props) => {
   const { setValue, valueHTML } = props;
-  const [uploadImage, setUploadImage] = useState();
+  const [uploadImage, setUploadImage] = useState<File | null>(null);
   const [editorState, setEditorState] = useState<EditorState>(
     EditorState.createWithContent(
-      ContentState.createFromBlockArray(htmlToDraft(valueHTML).contentBlocks)
+      ContentState.createFromBlockArray(htmlToDraft(valueHTML).contentBlocks) ||
+        EditorState.createEmpty()
     )
   );
+  // useEffect(() => {
+  //   let temp = document.createElement("div");
+  //   temp.innerHTML = valueHTML;
+  //   temp.querySelectorAll("img").forEach((item) => {
+  //     item.style.display = "flex";
+  //     item.style.alignSelf = "center";
+  //     if (item.offsetHeight > 620) item.style.width = "50%";
+  //     console.log(item);
+  //   });
+  //   temp.querySelectorAll("h1").forEach((item) => {
+  //     item.id = item.innerText.toString().formatH1().toString();
+  //   });
+  //   setValue(temp.innerHTML);
+  // }, [valueHTML]);
   return (
     <Editor
       toolbarClassName="toolbar-class"
@@ -32,12 +48,32 @@ const EditorText: React.FC<iEditorProps> = (props) => {
           var currentContent = newState.getCurrentContent();
 
           let a = draftToHtml(convertToRaw(newState.getCurrentContent()));
-          const temp = document.createElement("div");
+
+          let temp = document.createElement("div");
           temp.innerHTML = a;
-          temp
-            .querySelectorAll("h1")
-            .forEach((item) => (item.id = item.innerText));
-          setValue(draftToHtml(convertToRaw(newState.getCurrentContent())));
+          temp.querySelectorAll("img").forEach((item) => {
+            item.style.marginLeft = "auto";
+            item.style.marginRight = "auto";
+            item.style.alignSelf = "center";
+            console.log("-----------------------------");
+            console.log(item.height);
+            console.log(item.width);
+            console.log(item.offsetHeight);
+            console.log(item.offsetTop);
+            console.log(item.offsetWidth);
+
+            if (item.height > 620) {
+              item.style.width = "50%";
+              console.log(item);
+            }
+            console.log("-----------------------------");
+          });
+          temp.querySelectorAll("h1").forEach((item, key) => {
+            item.id = key + item.innerText.toString().formatH1().toString();
+          });
+          console.log(temp.innerHTML);
+
+          setValue(temp.innerHTML);
         }
       }}
       toolbar={{
@@ -72,23 +108,31 @@ const EditorText: React.FC<iEditorProps> = (props) => {
         image: {
           urlEnabled: true,
           uploadEnabled: true,
-          alignmentEnabled: true,
-          previewImage: true,
-          inputAccept: "image/gif,image/jpeg,image/jpg,image/png,image/svg",
-          uploadCallback: (file: File) => {
-            console.log(file);
-            console.log(typeof file);
+          alignmentEnabled: false,
 
+          previewImage: true,
+          inputAccept: "image/jpeg,image/jpg,image/png",
+          uploadCallback: async (file: File) => {
+            // console.log(file);
+            // console.log(typeof file);
+            const result = await fileApi.updateImage(file);
+            if (result.status === 201) {
+            }
             var reader = new FileReader();
             console.log(reader.readAsDataURL(file));
 
-            const imageObject = {
-              file: file,
-              localSrc: URL.createObjectURL(file),
-            };
+            // const imageObject = {
+            //   file: file,
+            //   localSrc: URL.createObjectURL(file),
+            // };
             // console.log(file);
+
             return new Promise((resolve, reject) => {
-              resolve({ data: { link: "imageObject.localSrc " } });
+              resolve({
+                data: {
+                  link: `${process.env.REACT_APP_API_URL}file/${result.data.id}`,
+                },
+              });
             });
           },
           defaultSize: {
@@ -111,7 +155,7 @@ const EditorText: React.FC<iEditorProps> = (props) => {
             }
           },
           defaultSize: {
-            height: "auto",
+            height: "480px",
             width: "100%",
           },
         },

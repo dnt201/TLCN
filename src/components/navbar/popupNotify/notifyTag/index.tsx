@@ -8,7 +8,7 @@ interface iMessTagProps extends React.HTMLProps<HTMLDivElement> {
 }
 const NotifyTag = () => {
   return (
-    <div className="flex flex-1 items-center  pl-2 rounded-lg   hover:cursor-pointer hover:bg-hover max-h-[84px]">
+    <div className="flex flex-1 items-center  p-2 rounded-lg   hover:cursor-pointer hover:bg-hover max-h-[84px]">
       <img className="rounded-full  w-12 h-12" src={av} />
       <div className="flex-1 ml-2">
         <h1 className="w-full  text-[12px] line-clamp-3 font-normal text-primary">

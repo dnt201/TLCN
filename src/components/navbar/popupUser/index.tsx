@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import ava1 from "@assets/images/av1.png";
+import ava1 from "@assets/images/userDefault.png";
 import { ChangePassWord, LogOut, Setting } from "@icons/index";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,6 +23,7 @@ const PopUpUser: React.FC<iPopUpUserProps> = (props) => {
         toast.remove();
       }, 2000);
       toast.success("Log out successful");
+      setShow(0);
     }
   };
   useEffect(() => {
@@ -55,13 +56,17 @@ const PopUpUser: React.FC<iPopUpUserProps> = (props) => {
       }
     >
       <div className="flex items-center p-2 rounded-md hover:cursor-pointer hover:bg-hover">
-        <img src={ava1} alt="user avatar" className="h-9 w-9 rounded-full" />
+        <img
+          src={userInfo?.avatarLink || ava1}
+          alt="user avatar"
+          className="h-9 w-9 rounded-full"
+        />
         <Link
           to="/me"
           className="font-medium text-[15px] pl-2  overflow-hidden text-ellipsis whitespace-nowrap"
           onClick={() => setShow(0)}
         >
-          {userInfo && userInfo.username}412414124124124124124
+          {userInfo && userInfo.username}
         </Link>
       </div>
       <div className="border-b-[1px] mt-2 w-100% mx-2 border-dark3"></div>
@@ -75,7 +80,10 @@ const PopUpUser: React.FC<iPopUpUserProps> = (props) => {
         </div>
         <div
           className="flex items-center p-2 rounded-md  hover:cursor-pointer hover:bg-hover"
-          onClick={() => navigate("change-password")}
+          onClick={() => {
+            navigate("change-password");
+            setShow(0);
+          }}
         >
           <i className="h-8 w-8 bg-smokeDark flex items-center justify-center rounded-full">
             <ChangePassWord />

@@ -5,9 +5,11 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { CheckCircle, Seen, SeenFill, XCircle } from "@icons/index";
+import userApi from "@api/userApi";
+import toast from "react-hot-toast";
 
 interface iFormChangePassword {}
-interface ChangePassWordValues {
+export interface ChangePassWordValues {
   oldPassword: string;
   newPassword: string;
   confirmPassword: string;
@@ -41,16 +43,26 @@ const ChangePassWord: React.FC<iFormChangePassword> = (props) => {
   });
 
   const handleSubmit = async (values: ChangePassWordValues, props: any) => {
-    console.log(props);
-    const result = await dispatch(userGetMe());
-    // if (result.payload.error === undefined || result.payload.error === null) {
-    //   setStep(2);
-    // }
+    console.log("aaaaa", props);
+    setLoading(true);
+    toast.promise(userApi.updatePassword(values), {
+      loading: "Saving...",
+      success: () => {
+        setLoading(false);
+        props.resetForm();
+        // setShow(false);
+        // dispatch(userGetMe());
+        return "Change password success!";
+      },
+      error: (err) => {
+        return err + "";
+      },
+    });
   };
 
   return (
-    <div className="min-h-screen w-full bg-bg flex flex-col items-center justify-start">
-      <div className="flex justify-center items-center mt-16 mb-6">
+    <div className="h-[calc(100vh-52px)] w-full bg-bg flex flex-col items-center justify-start">
+      <div className="flex justify-center items-center mt-20 mb-6">
         <h2>Change password</h2>
         <i
           className="ml-2 hover:cursor-pointer"
@@ -180,7 +192,7 @@ const ChangePassWord: React.FC<iFormChangePassword> = (props) => {
               type="submit"
             >
               <span className="  font-medium text-sm text-center py-1 text-white mr-2">
-                Register
+                Change passwork
               </span>
             </button>
           </Form>

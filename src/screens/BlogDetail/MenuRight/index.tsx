@@ -7,43 +7,7 @@ const MenuRight: React.FC<iMenuRightProps> = (props) => {
   return (
     <div className={"" + " " + className}>
       <div className="visible flex flex-col items-center ">
-        Menu right
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam fuga
-          harum eum quibusdam aspernatur nostrum adipisci totam ut perferendis
-          eos veritatis nihil dignissimos, nulla magni inventore libero id quam
-          asperiores?
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam fuga
-          harum eum quibusdam aspernatur nostrum adipisci totam ut perferendis
-          eos veritatis nihil dignissimos, nulla magni inventore libero id quam
-          asperiores?
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam fuga
-          harum eum quibusdam aspernatur nostrum adipisci totam ut perferendis
-          eos veritatis nihil dignissimos, nulla magni inventore libero id quam
-          asperiores?
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam fuga
-          harum eum quibusdam aspernatur nostrum adipisci totam ut perferendis
-          eos veritatis nihil dignissimos, nulla magni inventore libero id quam
-          asperiores?
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam fuga
-          harum eum quibusdam aspernatur nostrum adipisci totam ut perferendis
-          eos veritatis nihil dignissimos, nulla magni inventore libero id quam
-          asperiores?
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam fuga
-          harum eum quibusdam aspernatur nostrum adipisci totam ut perferendis
-          eos veritatis nihil dignissimos, nulla magni inventore libero id quam
-          asperiores?
-        </p>
+        Mục lục
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam fuga
           harum eum quibusdam aspernatur nostrum adipisci totam ut perferendis

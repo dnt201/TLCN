@@ -7,6 +7,7 @@
           "~": "./src",
           "@screens": "./src/screens",
           "@app": "./src/app",
+          "@DTO": "src/DTO",
           "@assets": "./src/assets",
           "@images": "./src/assets/images",
           "@redux": "./src/redux",

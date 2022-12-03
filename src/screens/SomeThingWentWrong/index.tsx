@@ -10,7 +10,8 @@ const SomeThingWentWrong = () => {
             <div
               className="bg-[url('https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif')] 
             h-[360px]
-            mx-[5%]
+            max-w-[720px]
+            mx-[auto]
             bg-center
             bg-no-repeat
             "

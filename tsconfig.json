@@ -19,6 +19,7 @@
     "paths": {
       "@assets/*": ["src/assets/*"],
       "@app/*": ["src/app/*"],
+      "@DTO/*": ["src/DTO/*"],
       "@images/*": ["src/assets/images/*"],
       "@redux/*": ["src/redux/*"],
       "@components/*": ["src/components/*"],
