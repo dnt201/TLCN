@@ -1,17 +1,15 @@
 import React from "react";
 
-interface iMidContentProps extends React.HTMLProps<HTMLDivElement> {}
+interface iMidContentProps extends React.HTMLProps<HTMLDivElement> {
+  content: string;
+}
 
 const MidContent: React.FC<iMidContentProps> = (props) => {
   const { className } = props;
   return (
     <div className={"" + " " + className}>
-      MidContent
       <div className="min-h-[calc(75vh-52px)]">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita
-        incidunt odit veniam excepturi, doloribus doloremque nisi, qui provident
-        cumque maxime ut architecto, aperiam earum eius quidem fugit velit
-        perferendis amet?
+        <div />
       </div>
       <div className=" max-w-[1016px] w-full mx-auto">
         Bài viết khác từ <b>{}</b>

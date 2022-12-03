@@ -5,6 +5,9 @@ import avatarDefault from "@images/userDefault.png";
 import userApi from "@api/userApi";
 import toast from "react-hot-toast";
 import { PhoneFill } from "@icons/index";
+import { useSelector } from "react-redux";
+import { RootState } from "@app/store";
+import BlogNotFound from "@screens/BlogDetail/NotFound";
 interface iUserDetail {
   id: string;
   email: string;
@@ -25,15 +28,18 @@ interface iUserDetail {
 
 const UserDetail = () => {
   let params = useParams();
-
+  const { userInfo } = useSelector((state: RootState) => state.users);
   const { userId } = params;
-  const [userInfo, setUserInfo] = useState<iUserDetail>();
+  const [userInfoState, setUserInfoState] = useState<iUserDetail>();
   const [loading, setLoading] = useState(false);
   const [notFound, setNotFound] = useState(false);
+
   const navigate = useNavigate();
   useEffect(() => {
+    if (userInfo !== null && userId === userInfo?.id) {
+      navigate("/me");
+    }
     setLoading(true);
-
     if (userId === undefined || userId === null) {
       toast.error("Something went wrong");
       navigate("/");
@@ -41,7 +47,7 @@ const UserDetail = () => {
       setTimeout(async () => {
         const result = await userApi.getUserDetail(userId);
         if (result.status === 200) {
-          setUserInfo(result.data);
+          setUserInfoState(result.data);
           setNotFound(false);
         } else {
           setNotFound(true);
@@ -51,7 +57,7 @@ const UserDetail = () => {
       }, 1000);
     }
   }, []);
-
+  if (notFound) return <BlogNotFound />; //lười đổi tên thui :v nó là notfound thoi
   return (
     <>
       <div className=" min-h-[calc(100vh-52px)] bg-bg flex flex-col ">
@@ -64,8 +70,8 @@ const UserDetail = () => {
                 className="rounded-full h-[150px] w-[150px]"
                 data-for="upLoadImage"
                 src={
-                  userInfo !== null && userInfo?.avatarLink !== null
-                    ? userInfo?.avatarLink
+                  userInfoState !== null && userInfoState?.avatarLink !== null
+                    ? userInfoState?.avatarLink
                     : avatarDefault
                 }
               />
@@ -75,7 +81,7 @@ const UserDetail = () => {
 
             <div className=" flex-1 ml-2 ">
               <h3 className=" text-lg font-semibold break-words line-clamp-2 flex-1">
-                {!loading ? userInfo?.username : <Skeleton />}
+                {!loading ? userInfoState?.username : <Skeleton />}
               </h3>
 
               {!loading ? (
@@ -83,18 +89,20 @@ const UserDetail = () => {
                   <button
                     className={
                       "flex-1 text-xs py-2  text-center rounded-md  hover:cursor-pointer " +
-                      (!userInfo?.isFollowing ? " bg-primary" : " ")
+                      (!userInfoState?.isFollowing ? " bg-primary" : " ")
                     }
                   >
-                    {userInfo?.isFollowing ? "Đã follow" : " Follow"}
+                    {userInfoState?.isFollowing ? "Đã follow" : " Follow"}
                   </button>
                   <div className="flex-1 text-xs py-2  text-center rounded-md hover:cursor-pointer ">
-                    <span className="font-bold mr-1">{userInfo?.follower}</span>
+                    <span className="font-bold mr-1">
+                      {userInfoState?.follower}
+                    </span>
                     Follower
                   </div>
                   <div className="flex-1 text-xs py-2  text-center rounded-md hover:cursor-pointer ">
                     <span className="font-bold mr-1">
-                      {userInfo?.following}
+                      {userInfoState?.following}
                     </span>
                     Following
                   </div>
@@ -111,21 +119,21 @@ const UserDetail = () => {
               <>
                 <h4 className="w-full text-left">Giới thiệu</h4>
                 <h6 className="text-center w-full break-all font-normal font-sm">
-                  {userInfo?.shortInfo || "Không có tiểu sử"}
+                  {userInfoState?.shortInfo || "Không có tiểu sử"}
                 </h6>
                 {/* <BioChange /> */}
                 <div className="mt-2">
                   <h4>Liên hệ</h4>
                   <span className="flex items-center justify-center mt-1 text-sm">
-                    {userInfo?.phoneNumber ? (
+                    {userInfoState?.phoneNumber ? (
                       <>
                         <PhoneFill className="w-5 h-5" />
                         <a
-                          href={`tel:${userInfo.phoneNumber}`}
+                          href={`tel:${userInfoState.phoneNumber}`}
                           className="ml-3 flex items-end"
                         >
                           <span className="font-bold text-sm">
-                            {userInfo.phoneNumber}
+                            {userInfoState.phoneNumber}
                           </span>
                         </a>
                       </>

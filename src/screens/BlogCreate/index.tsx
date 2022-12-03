@@ -29,14 +29,14 @@ interface iOption {
   label: string;
 }
 const BlogCreate = () => {
-  const [showDialog, setShowDialog] = useState<boolean>(false);
+  // const [showDialog, setShowDialog] = useState<boolean>(false);
 
   const [canNextStep, setCanNextStep] = useState(1);
   const [dropOn, setDropOn] = useState(false);
 
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false);
   // Start Form
   const [title, setTitle] = useState("");
 
@@ -64,8 +64,23 @@ const BlogCreate = () => {
     null
   );
   const createPost = async (postCreate: postCreate) => {
-    const result = await postApi.createPost(postCreate);
-    console.log(result);
+    setLoading(true);
+
+    toast.promise(postApi.createPost(postCreate), {
+      loading: "Saving...",
+
+      success: (result) => {
+        setIsShowPublish(false);
+        navigate(`/blog/${result.data.id}`);
+        return "Public post success!";
+      },
+      error: (err) => {
+        return err + "";
+      },
+    });
+
+    // console.log(result);
+    setLoading(false);
   };
   useEffect(() => {
     console.log(isPublish);
@@ -178,6 +193,7 @@ const BlogCreate = () => {
       >
         {isShowPublish ? (
           <PublishConfirm
+            loading={loading}
             isShow={isShowPublish}
             setShow={setIsShowPublish}
             isConfirm={isPublish}

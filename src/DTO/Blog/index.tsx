@@ -1,4 +1,4 @@
-export interface iBlogDetail {
+export interface iPostDetail {
   id: string;
   title: string;
   dateModified: string;

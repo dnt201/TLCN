@@ -6,7 +6,9 @@ import {
   Twitter,
 } from "@icons/index";
 import React from "react";
+import { Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
+import avatarDefault from "@images/userDefault.png";
 
 interface iNavLeftProps extends React.HTMLProps<HTMLDivElement> {
   owner: {
@@ -19,17 +21,18 @@ interface iNavLeftProps extends React.HTMLProps<HTMLDivElement> {
 }
 
 const NavLeft: React.FC<iNavLeftProps> = (props) => {
-  const { className } = props;
+  const { className, owner, like, isFollow } = props;
+  console.log(isFollow);
   return (
     <div className={" " + " " + className}>
       <div className="visible flex flex-col items-center pl-[50%] ">
-        <img
-          src={
-            "https://scontent.fsgn5-5.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?stp=dst-png_p148x148&_nc_cat=1&ccb=1-7&_nc_sid=dbb9e7&_nc_ohc=5JffEiPApLYAX-pzRtF&_nc_ht=scontent.fsgn5-5.fna&oh=00_AfCSqQ_E_fHxpcZ4rhKiup5u5_kaxI_AutuxKHSu-kFlAA&oe=6393F538"
-          }
-          alt="avatar"
-          className="h-11 w-11 rounded-full"
-        />
+        <Link to={`/user-detail/${owner.id}`}>
+          <img
+            src={owner.avatarLink ? owner.avatarLink : avatarDefault}
+            alt="avatar"
+            className="h-11 w-11 rounded-full"
+          />
+        </Link>
         <div className="flex flex-col items-center my-4">
           <button className="p-1 group" data-tip="Up vote" data-for="upVote">
             <CareUp className="group-hover:fill-primary  transition-colors duration-500 " />
@@ -41,7 +44,9 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
             />
           </button>
 
-          <span className="font-medium CareDown">+42</span>
+          <span className="font-medium CareDown">
+            {like >= 0 ? `+${like}` : like}
+          </span>
 
           <button
             className="p-1 group"
@@ -60,9 +65,11 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
         <button
           data-tip="Bookmark bài viết này"
           data-for="bookmark"
-          className="mb-4 mt-2 w-10 h-10 flex flex-col justify-center  items-center border-[1px] border-white rounded-full
-        hover:bg-primary hover:border-primary transition-colors duration-500
-        "
+          className={
+            "mb-4 mt-2 w-10 h-10 flex flex-col justify-center  items-center border-[1px] border-white rounded-full " +
+            "hover:bg-primary hover:border-primary transition-colors duration-500" +
+            (isFollow && " bg-primary border-primary")
+          }
         >
           <ListFill />
           <ReactTooltip

@@ -2,6 +2,7 @@ import React from "react";
 import { XMark } from "@icons/index";
 
 import SureImage from "@images/sure.gif";
+import { ClipLoader } from "react-spinners";
 interface iProps {
   isShow: boolean;
   setShow: (b: boolean) => void;
@@ -9,10 +10,11 @@ interface iProps {
   setConfirmed: (b: boolean) => void;
   header?: string;
   message?: string;
+  loading: boolean;
 }
 
 const PublishConfirm: React.FC<iProps> = (props) => {
-  const { setShow, setConfirmed, header, message } = props;
+  const { setShow, setConfirmed, header, message, loading } = props;
   return (
     <div className=" fixed flex justify-center items-center  z-[10003] w-screen h-screen">
       <div
@@ -47,13 +49,14 @@ const PublishConfirm: React.FC<iProps> = (props) => {
         {/* Start Bot Button */}
         <div className="px-4 py-2 border-t-[1px] rounded-b-md flex-row-reverse flex border-smokeDark bg-smoke">
           <button
-            className="bg-primary border-[1px] border-primary text-white px-2 py-1 text-sm rounded-sm"
+            className="flex items-center bg-primary border-[1px] border-primary text-white px-2 py-1 text-sm rounded-sm"
             onClick={() => {
               setConfirmed(true);
               console.log("change conffirm");
             }}
           >
-            Yes
+            <span className="mr-1">Yes</span>
+            {loading && <ClipLoader size={16} color={"#fff"} />}
           </button>
           <button
             className="  mr-1 border-smokeDark  border-[1px]  bg-smokeHover  px-2 py-1 text-sm rounded-sm"
