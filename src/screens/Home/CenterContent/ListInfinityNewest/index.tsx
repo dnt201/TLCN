@@ -1,16 +1,15 @@
 import postApi from "@api/postApi";
-import BlogTag, { iBlogTag } from "@components/blogTag";
+import BlogTag from "@components/blogTag";
 import { iPage } from "@DTO/Pagination";
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { BeatLoader } from "react-spinners";
 import ListSkeleton from "../ListSkeleton";
-import noPost from "@images/noPost.gif";
 import ArrowUpTray from "@icons/ArrowUpTray";
+import NoPost from "../NoPost";
+import { iPostDetail } from "@DTO/Blog";
 const ListInfinityNewest = () => {
   const [loading, setLoading] = useState(false);
 
-  const [listBlogTag, setListBlogTag] = useState<iBlogTag[] | null>(null);
+  const [listBlogTag, setListBlogTag] = useState<iPostDetail[] | null>(null);
 
   const [paging, setPaging] = useState<iPage | null>(null);
 
@@ -104,14 +103,7 @@ const ListInfinityNewest = () => {
     };
   }, [paging]);
   if (listBlogTag && listBlogTag.length === 0 && !loading) {
-    return (
-      <div className="flex  items-center justify-center mt-8">
-        <img src={noPost} width={96} height={96} />
-        <i className="text-sm font-medium mb-2">
-          Không có bài viết nào phù hợp
-        </i>
-      </div>
-    );
+    return <NoPost />;
   }
   return (
     <div>

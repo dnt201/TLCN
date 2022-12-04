@@ -26,6 +26,7 @@ import { useSelector } from "react-redux/es/exports";
 import { RootState } from "@app/store";
 import SearchBox from "./searchBox";
 import { time } from "console";
+import toast from "react-hot-toast";
 interface tabItem {
   title: string;
   icon: React.ElementType;
@@ -148,9 +149,14 @@ const Navbar = () => {
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   console.log("navigate with", searchValue);
-                  navigate(`/search?q=${searchValue}`);
-                  setSearchValue("");
-                  setSearchFocus(false);
+                  if (searchValue.length === 0 || searchValue === "") {
+                    toast.error("Empty name search!!!");
+                  } else {
+                    navigate(`/search?q=${searchValue}&type=post`);
+                    // setSearchValue("");
+                    e.currentTarget.blur();
+                    setSearchFocus(false);
+                  }
                 }
               }}
             />

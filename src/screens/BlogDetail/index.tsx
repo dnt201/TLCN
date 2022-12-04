@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@app/store";
 import { getPostDetailById } from "@redux/blogSlice";
 const BlogDetail = () => {
+  console.log("rerender");
   let params = useParams();
   const divRef = React.useRef<HTMLDivElement>(null);
   const [stick, setStick] = useState(false);
@@ -33,7 +34,6 @@ const BlogDetail = () => {
     const currentYOffset = window.pageYOffset;
     if (currentYOffset >= vH) setStick(true);
     else setStick(false);
-    console.log(vH, currentYOffset);
   }
   // const getBlogById = async (id: string) => {
   //   setLoading(true);
@@ -53,7 +53,6 @@ const BlogDetail = () => {
   }, [params]);
   // console.log(blog);
   if (loading) return <SkeletonBlogDetail />;
-  console.log(post);
   return (
     <div ref={divRef} className="bg-bg min-h-[calc[100vh-52px]] flex flex-col">
       {post ? (
@@ -76,6 +75,7 @@ const BlogDetail = () => {
               />
 
               <MidContent
+                title={post.title}
                 content={`<h1 id="01-tran-duy-nha">1. Trần Duy Nhã</h1>
                 <p>abacscascsa</p>
                 <h1 id="12-gi-ki-vay-troi">2. Gì kì vậy trời</h1>
@@ -93,6 +93,18 @@ const BlogDetail = () => {
 
               <div className="w-1/5 mr-2">
                 <MenuRight
+                  content={`<h1 id="01-tran-duy-nha">1. Trần Duy Nhã</h1>
+                 <p>abacscascsa</p>
+                 <h1 id="12-gi-ki-vay-troi">2. Gì kì vậy trời</h1>
+                 <p>124125215215122</p>
+                 <p></p>
+                 <iframe width="100%" height="480px" src="https://www.youtube.com/embed/BMtaUb-E5Uc/SOOBINOfficial" frameborder="0"></iframe>
+                 <p></p>
+                 <h1 id="23-ok-hinh-ne">3. Ok hình nè</h1>
+                 <p></p>
+                 <img src="http://localhost:3000/file/a9414559-0719-40ed-ace3-309059605000" alt="undefined" style="height: auto; width: auto; margin-left: auto; margin-right: auto; align-self: center;">
+                 <p></p>
+                 `}
                   className={
                     " h-[calc(70vh -52px)] flex-1 overflow-auto invisible hover:visible " +
                     (stick && " fixed w-1/5 top-0 mt-[64px]  pb-6 ")

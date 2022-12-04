@@ -1,14 +1,31 @@
+import DOMPurify from "dompurify";
 import React from "react";
 
 interface iMidContentProps extends React.HTMLProps<HTMLDivElement> {
+  title: string;
   content: string;
 }
 
 const MidContent: React.FC<iMidContentProps> = (props) => {
-  const { className } = props;
+  const { className, content, title } = props;
   return (
     <div className={"" + " " + className}>
+      <h1>{title}</h1>
       <div className="min-h-[calc(75vh-52px)]">
+        <div
+          className="min-h-[calc(75vh-52px)]"
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(content, {
+              ADD_TAGS: ["iframe"],
+              ADD_ATTR: [
+                "allow",
+                "allowfullscreen",
+                "frameborder",
+                "scrolling",
+              ],
+            }),
+          }}
+        />
         <div />
       </div>
       <div className=" max-w-[1016px] w-full mx-auto">

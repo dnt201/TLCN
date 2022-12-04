@@ -3,37 +3,9 @@ import { Book, BookFill, Heart, ListFill } from "@icons/index";
 import { Link, useNavigate } from "react-router-dom";
 import defaultPost from "@images/default-placeholder.png";
 import avatarDefault from "@images/userDefault.png";
+import { iPostDetail } from "@DTO/Blog";
 
-export interface iBlogTag {
-  id: string;
-  title: string;
-  dateModified: string;
-  owner: {
-    id: string;
-    username: string;
-    avatarLink: string;
-  };
-  category: {
-    id: string;
-    categoryName: string;
-  };
-  tags: [
-    {
-      id: string;
-      postTagName: string;
-      displayName: string;
-      colorCode: string;
-      thumbnailId: string;
-    }
-  ];
-  like: number;
-  view: number;
-  comment: number;
-  thumbnailLink: string;
-  isFollow: false;
-}
-
-const BlogTag: React.FC<iBlogTag> = (props) => {
+const BlogTag: React.FC<iPostDetail> = (props) => {
   const {
     id,
     title,
@@ -71,15 +43,10 @@ const BlogTag: React.FC<iBlogTag> = (props) => {
             <h2 className="flex-1 font-semibold text-[16px]">{title}</h2>
             <button
               onClick={(e) => {
-                e.stopPropagation();
+                // e.stopPropagation();
               }}
             >
-              <ListFill
-                className={
-                  " hover:fill-primary duration-1000 " +
-                  (isFollow && " fill-primary")
-                }
-              />
+              <ListFill className={isFollow ? " fill-primary" : " "} />
             </button>
           </div>
           <div className=" ">
@@ -103,23 +70,22 @@ const BlogTag: React.FC<iBlogTag> = (props) => {
         {/* third row */}
         <div className="flex items-center">
           {/* ava */}
-          <div className="flex items-center duration-1000 p-1 rounded-lg hover:bg-hover">
-            <Link
-              to={`user-detail/${owner.id}`}
-              className="pr-1"
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            >
-              <img
-                className="w-8 h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 rounded-full"
-                src={
-                  owner.avatarLink !== null && owner.avatarLink.length > 0
-                    ? owner.avatarLink
-                    : avatarDefault
-                }
-              />
-            </Link>
+          <Link
+            to={`user-detail/${owner.id}`}
+            className=" flex items-center duration-1000 p-1 rounded-lg hover:bg-hover"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <img
+              className="w-8 h-8 mr-1 md:w-9 md:h-9 lg:w-10 lg:h-10 rounded-full"
+              src={
+                owner.avatarLink !== null && owner.avatarLink.length > 0
+                  ? owner.avatarLink
+                  : avatarDefault
+              }
+            />
+
             {/* Name + time */}
             <div className="flex flex-col">
               <span className="font-semibold text-sm">{owner.username}</span>
@@ -127,7 +93,7 @@ const BlogTag: React.FC<iBlogTag> = (props) => {
                 {dateModified && dateModified.getNumberOfDayFromNow()}
               </span>
             </div>
-          </div>
+          </Link>
           {/* another */}
           <div className="flex-1 text-right">
             <span className="font-normal text-ss px-1">{view} Views</span>

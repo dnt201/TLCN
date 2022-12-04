@@ -18,15 +18,15 @@ const UserTag: React.FC<iUserTag> = (props) => {
   return (
     <Link
       to={userInfo?.id === id ? "/me" : `/user-detail/${id}`}
-      className="flex items-center p-2 rounded-full overflow-hidden "
+      className="flex items-center p-2  overflow-hidden hover:bg-hover"
       onClick={() => {
         setShowSearchBox(false);
-        setInputSearch("");
+        // setInputSearch("");
       }}
     >
       <img src={avatarLink || ava1} className="w-8 h-8 rounded-full" />
       <div className="flex flex-col ml-2">
-        <span className=" line-clamp-1 text-sm">{username}</span>
+        <span className=" line-clamp-1  text-sm font-semibold">{username}</span>
         {userInfo?.id === id ? <span className=" text-ss">Bạn</span> : null}
       </div>
     </Link>

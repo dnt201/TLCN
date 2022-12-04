@@ -54,7 +54,10 @@ import CategoryFill from "./CategoryFill";
 import ChevronRight from "./ChevronRight";
 import Test from "./Test";
 import ArrowUpTray from "./ArrowUpTray";
+import ChatBubbleBottomCenterText from "./ChatBubbleBottomCenterText";
+
 export {
+  ChatBubbleBottomCenterText,
   ArrowUpTray,
   Test,
   ChevronRight,

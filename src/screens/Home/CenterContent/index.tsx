@@ -1,32 +1,27 @@
 import React, { useEffect, useRef, useState } from "react";
-import BlogTag, { iBlogTag } from "@components/blogTag";
-import img1 from "@images/1.png";
-import img2 from "@images/2.png";
-import img3 from "@images/3.png";
-import img4 from "@images/1312.png";
+
 import av1 from "@images/av1.png";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { RootState } from "@app/store";
 import { useSelector } from "react-redux";
 import { Write } from "@icons/index";
 import postApi from "@api/postApi";
-import Skeleton from "react-loading-skeleton";
-import ListInfinity from "./ListInfinity";
+
 import ListSkeleton from "./ListSkeleton";
 import { iPage } from "@DTO/Pagination";
 import ListInfinityNewest from "./ListInfinityNewest";
 import ListInfinityFollowing from "./ListInfinityFollowing";
+import NoPost from "./NoPost";
 interface iProps extends React.HTMLProps<HTMLDivElement> {
   a?: string;
 }
 
 const CenterContent: React.FC<iProps> = (props) => {
-  const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [paging, setPaging] = useState<iPage | null>(null);
   // const [errorKeyKiLaLamLun, setErrorKeyKiLaLamLun] = useState(true);
   const divListBlog = useRef<HTMLDivElement>(null);
-
+  console.log(loading);
   const navigate = useNavigate();
   const curPath = window.location.pathname;
   const { accessToken, userInfo } = useSelector(
@@ -39,6 +34,12 @@ const CenterContent: React.FC<iProps> = (props) => {
   useEffect(() => {
     setLoading(true);
     if (curPath === "/popular") {
+      const fakeLoading = async () => {
+        await setTimeout(() => {
+          setLoading(false);
+        }, 2000);
+      };
+      fakeLoading();
       // const result = postApi.getAllPost();
       //call fl
     } else if (curPath === "/following") {
@@ -46,11 +47,11 @@ const CenterContent: React.FC<iProps> = (props) => {
         navigate("/login");
       } else {
         console.log("Get following");
-        const a = async () => {
+        const getData = async () => {
           const result = await postApi.getListPostHaveBeenFollow();
           console.log("result", result);
         };
-        a();
+        getData();
       }
       // const result = postApi.getListPostHaveBeenFollow();
     } else {
@@ -62,7 +63,7 @@ const CenterContent: React.FC<iProps> = (props) => {
       };
       a();
     }
-    setLoading(false);
+    // setLoading(false);
     console.log("----------------", paging);
     // setErrorKeyKiLaLamLun(!errorKeyKiLaLamLun);
     return () => {
@@ -118,6 +119,8 @@ const CenterContent: React.FC<iProps> = (props) => {
         <ListInfinityNewest />
       ) : curPath === "/following" ? (
         <ListInfinityFollowing />
+      ) : curPath === "/popular" && !loading ? (
+        <NoPost />
       ) : (
         <ListSkeleton />
       )}
