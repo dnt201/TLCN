@@ -6,6 +6,8 @@ import ListSkeleton from "../ListSkeleton";
 import ArrowUpTray from "@icons/ArrowUpTray";
 import NoPost from "../NoPost";
 import { iPostDetail } from "@DTO/Blog";
+import { useSelector } from "react-redux";
+import { RootState } from "@app/store";
 const ListInfinityNewest = () => {
   const [loading, setLoading] = useState(false);
 
@@ -15,11 +17,17 @@ const ListInfinityNewest = () => {
 
   const [page, setPage] = useState(1);
   const [maxRoiLazyQuaTroi, setMaxRoiLazyQuaTroi] = useState(false);
+  const { accessToken } = useSelector((state: RootState) => state.users);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    setListBlogTag(null);
+    setPaging(null);
+    setPage(-1);
+  }, [accessToken]);
   const handlePageChange = async (pageNumber: number) => {
+    console.log("Handle page chag");
+
     if (listBlogTag !== null && listBlogTag.length > 0) {
       let temp = listBlogTag;
       await setTimeout(async () => {
@@ -50,7 +58,7 @@ const ListInfinityNewest = () => {
       setPage(1);
     } else handlePageChange(page);
   }, [page]);
-  console.log(listBlogTag);
+
   useEffect(() => {
     if (
       document.documentElement.scrollHeight -
@@ -102,6 +110,7 @@ const ListInfinityNewest = () => {
       window.removeEventListener("scroll", handleScrollLoad);
     };
   }, [paging]);
+
   if (listBlogTag && listBlogTag.length === 0 && !loading) {
     return <NoPost />;
   }

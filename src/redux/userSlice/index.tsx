@@ -106,8 +106,10 @@ const user = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setMessage: (state, action) => {
-      state.message = action.payload;
+    setUserMessage: (state, action) => {
+      if (action.payload === "ErrorFlowYourself")
+        state.error = "Không thể follow bản thân!";
+      else state.message = action.payload;
     },
     resetUserState: (state) => {
       console.log("resetState");
@@ -212,5 +214,5 @@ const user = createSlice({
   },
 });
 const { reducer, actions } = user;
-export const { setMessage, resetUserState } = actions;
+export const { setUserMessage, resetUserState } = actions;
 export default reducer;

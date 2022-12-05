@@ -18,6 +18,7 @@ import { userLogin } from "@redux/userSlice";
 import { AppDispatch, RootState } from "src/app/store";
 import ClipLoader from "react-spinners/ClipLoader";
 import axios from "axios";
+import { useNavigate, useSearchParams } from "react-router-dom";
 interface LoginFormValues {
   email: string;
   password: string;
@@ -26,12 +27,12 @@ interface iPropsLogin {
   pause: boolean;
   setStep: (step: number) => void;
 }
+
 const FormLogin: React.FC<iPropsLogin> = (props) => {
   const { pause, setStep } = props;
-  console.log(pause);
   const { loading } = useSelector((state: RootState) => state.users);
-
   const dispatch = useDispatch<AppDispatch>();
+
   const initialValues: LoginFormValues = { email: "", password: "" };
 
   const validationSchema = Yup.object().shape({

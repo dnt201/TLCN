@@ -71,7 +71,7 @@ const BlogCreate = () => {
 
       success: (result) => {
         setIsShowPublish(false);
-        navigate(`/blog/${result.data.id}`);
+        navigate(`/me`);
         return "Public post success!";
       },
       error: (err) => {

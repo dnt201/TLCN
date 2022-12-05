@@ -27,7 +27,15 @@ const ChangePassWord: React.FC<iFormChangePassword> = (props) => {
     confirmPassword: "",
   };
   const validationSchema = Yup.object().shape({
-    oldPassword: Yup.string().required("Vui lòng nhập mật khẩu cũ của bạn"),
+    oldPassword: Yup.string()
+      .min(8, "Mật khẩu phải dài hơn 8 ký tự")
+      .required("Vui lòng nhập mật khẩu cũ của bạn")
+      .matches(
+        /^.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?].*$/,
+        "Mật khẩu cần ít nhất 1 ký tự đặc biệt"
+      )
+      .matches(/[A-Z]/, "Mật khẩu cần ít nhất 1 chữ hoa")
+      .matches(/[a-z]/, "Mật khẩu cần ít nhất 1 chữ thường"),
     newPassword: Yup.string()
       .min(8, "Mật khẩu phải dài hơn 8 ký tự")
       .required("Vui lòng nhập mật khẩu")
@@ -45,19 +53,26 @@ const ChangePassWord: React.FC<iFormChangePassword> = (props) => {
   const handleSubmit = async (values: ChangePassWordValues, props: any) => {
     console.log("aaaaa", props);
     setLoading(true);
-    toast.promise(userApi.updatePassword(values), {
-      loading: "Saving...",
-      success: () => {
+    const toastId = toast.loading("Loading...");
+
+    // ...
+    const result = await userApi.updatePassword(values);
+    if (result.status === 201) {
+      toast.success("Change password success", {
+        id: toastId,
+        duration: 2500,
+      });
+      props.resetForm();
+      setLoading(false);
+    } else {
+      toast.error(result.data.message, {
+        id: toastId,
+        duration: 2500,
+      });
+      setTimeout(() => {
         setLoading(false);
-        props.resetForm();
-        // setShow(false);
-        // dispatch(userGetMe());
-        return "Change password success!";
-      },
-      error: (err) => {
-        return err + "";
-      },
-    });
+      }, 2500);
+    }
   };
 
   return (
@@ -179,7 +194,8 @@ const ChangePassWord: React.FC<iFormChangePassword> = (props) => {
                 (!props.isValid ||
                 values.oldPassword.length <= 0 ||
                 values.newPassword.length <= 0 ||
-                values.confirmPassword.length <= 0
+                values.confirmPassword.length <= 0 ||
+                loading
                   ? " cursor-not-allowed bg-smokeDark"
                   : null)
               }
@@ -187,11 +203,12 @@ const ChangePassWord: React.FC<iFormChangePassword> = (props) => {
                 !props.isValid ||
                 values.oldPassword.length <= 0 ||
                 values.newPassword.length <= 0 ||
-                values.confirmPassword.length <= 0
+                values.confirmPassword.length <= 0 ||
+                loading
               }
               type="submit"
             >
-              <span className="  font-medium text-sm text-center py-1 text-white mr-2">
+              <span className="  font-medium text-sm text-center py-2 text-white mr-2">
                 Change passwork
               </span>
             </button>

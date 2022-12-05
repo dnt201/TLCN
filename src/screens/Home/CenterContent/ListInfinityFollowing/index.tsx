@@ -9,6 +9,8 @@ import noPost from "@images/noPost.gif";
 import { ArrowUpTray } from "@icons/index";
 import NoPost from "../NoPost";
 import { iPostDetail } from "@DTO/Blog";
+import { useSelector } from "react-redux";
+import { RootState } from "@app/store";
 const ListInfinityFollowing = () => {
   const [loading, setLoading] = useState(false);
 
@@ -19,9 +21,14 @@ const ListInfinityFollowing = () => {
   const [page, setPage] = useState(1);
   const [maxRoiLazyQuaTroi, setMaxRoiLazyQuaTroi] = useState(false);
 
+  const { accessToken } = useSelector((state: RootState) => state.users);
+
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    setPage(1);
+    setPaging(null);
+    setListBlogTag(null);
+  }, [accessToken]);
   const handlePageChange = async (pageNumber: number) => {
     if (listBlogTag !== null && listBlogTag.length > 0) {
       let temp = listBlogTag;

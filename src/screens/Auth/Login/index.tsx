@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, redirect, useNavigate, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import userApi, { userApiAuth } from "@api/userApi";
 import { AppDispatch, RootState } from "src/app/store";
@@ -16,7 +16,8 @@ import FormLogin from "./FormLogin";
 import { useDispatch, useSelector } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
 import { isFulfilled } from "@reduxjs/toolkit";
-import { resetUserState, setMessage } from "@redux/userSlice";
+import { resetUserState, setUserMessage, userGetMe } from "@redux/userSlice";
+import postApi from "@api/postApi";
 const Login = () => {
   const [pause, setPause] = React.useState(false);
   const [successConfirm, setSuccessConfirm] = React.useState(false);
@@ -25,6 +26,8 @@ const Login = () => {
   const [verifyLoading, setVerifyLoading] = React.useState(false);
   const dispatch = useDispatch<AppDispatch>();
 
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const { accessToken, message, error } = useSelector(
     (state: RootState) => state.users
   );
@@ -50,12 +53,41 @@ const Login = () => {
     }
     dispatch(resetUserState());
   }, [error, message]);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("accessToken", accessToken);
-
-    if (accessToken !== "") navigate("/");
+    // console.log("accessToken", accessToken);
+    if (accessToken !== "") {
+      let actionFromURL = searchParams.get("redirect");
+      let idFromURL = searchParams.get("id");
+      console.log(actionFromURL, idFromURL);
+      if (actionFromURL !== null && idFromURL !== null) {
+        if (actionFromURL === "followPost") {
+          postApi.getPostDetailById(idFromURL).then((result) => {
+            if (result.status === 200) {
+              console.log(result);
+              if (result.data.isFollow === true) {
+                console.log("navigate followed");
+                navigate(`/blog/${searchParams.get("id")}?message=followed`);
+              } else if (result.data.isFollow === false) {
+                console.log("navigate chưa follow và follow");
+                navigate(
+                  `/blog/${searchParams.get("id")}?message=followSuccess`
+                );
+              } else navigate("/");
+            }
+          });
+        } else if (actionFromURL === "followUser") {
+          userApi.getMe().then((result) => {
+            if (result.status === 200) {
+              if (result.data.id === idFromURL) {
+                dispatch(setUserMessage("ErrorFlowYourself"));
+                navigate(`/me`);
+              }
+            }
+          });
+        } else navigate("/");
+      } else navigate("/");
+    }
   }, [accessToken]);
 
   const showToastOnUpdate = () => {

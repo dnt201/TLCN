@@ -6,6 +6,7 @@ import draftToHtml from "draftjs-to-html";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "./editor.css";
 import fileApi from "@api/fileApi";
+import toast from "react-hot-toast";
 interface iEditorProps extends React.HTMLProps<HTMLDivElement> {
   setValue: (a: string) => void;
   valueHTML: string;
@@ -48,8 +49,8 @@ const EditorText: React.FC<iEditorProps> = (props) => {
           var currentContent = newState.getCurrentContent();
 
           let a = draftToHtml(convertToRaw(newState.getCurrentContent()));
-
           let temp = document.createElement("div");
+          var flag = false;
           temp.innerHTML = a;
           temp.querySelectorAll("img").forEach((item) => {
             item.style.marginLeft = "auto";
@@ -71,7 +72,29 @@ const EditorText: React.FC<iEditorProps> = (props) => {
           temp.querySelectorAll("h1").forEach((item, key) => {
             item.id = key + item.innerText.toString().formatH1().toString();
           });
-          console.log(temp.innerHTML);
+          temp.querySelectorAll("iframe").forEach((item, key) => {
+            if (item.src.indexOf("youtube.com" || "youtu.be/") < 0) {
+              item.remove();
+              flag = true;
+            }
+          });
+          temp.querySelectorAll("p").forEach((item, key) => {
+            if (item.innerHTML === null) {
+              item.remove();
+              flag = true;
+            }
+          });
+          console.log("-----------------------", temp.innerHTML);
+          if (flag) {
+            toast.error("Link youtube not valid");
+            let StateAgain = EditorState.createWithContent(
+              ContentState.createFromBlockArray(
+                htmlToDraft(temp.innerHTML).contentBlocks
+              ) || EditorState.createEmpty()
+            );
+
+            setEditorState(StateAgain);
+          }
 
           setValue(temp.innerHTML);
         }
@@ -153,7 +176,10 @@ const EditorText: React.FC<iEditorProps> = (props) => {
 
               return embeddedLink;
             }
+            return "lazy";
+            // return a;
           },
+
           defaultSize: {
             height: "480px",
             width: "100%",

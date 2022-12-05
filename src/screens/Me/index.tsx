@@ -4,20 +4,25 @@ import { Gender, PhoneFill, Setting, Write } from "@icons/index";
 // import userApi from "@api/userApi";
 import { useDispatch, Selector, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@app/store";
-import { userGetMe } from "@redux/userSlice";
+import { resetUserState, userGetMe } from "@redux/userSlice";
 import InforSkeleton from "./MeSkeleton/InforSkeleton";
 import BioChange from "./BioSection";
 import InForPopup from "./InForPopup";
 import MainContent from "./MainContent";
 import ImageSection from "./ImageSection";
 import Skeleton from "react-loading-skeleton";
+import toast from "react-hot-toast";
 
 const Me = () => {
-  const { userInfo, loading } = useSelector((state: RootState) => state.users);
+  const { userInfo, loading, error } = useSelector(
+    (state: RootState) => state.users
+  );
   const [showInForPopup, setShowInForPopup] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     dispatch(userGetMe());
+    if (error && error !== null) toast.error(error);
+    dispatch(resetUserState);
   }, []);
   return (
     <>

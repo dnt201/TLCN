@@ -11,7 +11,7 @@ const Home = () => {
   useEffect(() => {
     console.log("mouteddđ-----------------------");
     window.scrollTo(0, 0);
-  }, []);
+  }, [accessToken]);
   return (
     <div className="flex px-4 min-h-[inherit] bg-bg">
       <div className="w-1/5  rounded-lg ">

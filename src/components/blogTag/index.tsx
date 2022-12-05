@@ -4,6 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import defaultPost from "@images/default-placeholder.png";
 import avatarDefault from "@images/userDefault.png";
 import { iPostDetail } from "@DTO/Blog";
+import ReactTooltip from "react-tooltip";
+import { useSelector } from "react-redux";
+import { RootState } from "@app/store";
 
 const BlogTag: React.FC<iPostDetail> = (props) => {
   const {
@@ -19,6 +22,15 @@ const BlogTag: React.FC<iPostDetail> = (props) => {
     thumbnailLink,
   } = props;
   const navigate = useNavigate();
+  const { userInfo, accessToken } = useSelector(
+    (state: RootState) => state.users
+  );
+  const handleFollowPost = async () => {
+    if (!userInfo || !accessToken) {
+      localStorage.clear();
+      navigate(`/login?redirect=followPost&id=${id}`);
+    }
+  };
   return (
     <div
       key={id}
@@ -42,11 +54,29 @@ const BlogTag: React.FC<iPostDetail> = (props) => {
           <div className="flex items-start">
             <h2 className="flex-1 font-semibold text-[16px]">{title}</h2>
             <button
-              onClick={(e) => {
-                // e.stopPropagation();
+              onClick={async (e) => {
+                e.stopPropagation();
+                await handleFollowPost();
               }}
             >
-              <ListFill className={isFollow ? " fill-primary" : " "} />
+              <ListFill
+                data-tip={
+                  isFollow ? "Unfollow bài viết?" : "Click để follow bài viết"
+                }
+                data-for="follow"
+                className={
+                  isFollow
+                    ? " fill-primary"
+                    : " hover:fill-primary duration-300"
+                }
+              />
+              <ReactTooltip
+                textColor="#FF4401"
+                id="follow"
+                place="bottom"
+                effect="solid"
+                padding={"8px"}
+              />
             </button>
           </div>
           <div className=" ">

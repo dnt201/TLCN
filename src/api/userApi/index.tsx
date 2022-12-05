@@ -56,5 +56,23 @@ const userApi = {
     const url = `/users/${id}`;
     return axiosClient.get(url);
   },
+  followUser: (id: string) => {
+    const url = `/users/follow`;
+    return axiosClient.post(url, {
+      userFollowId: id,
+    });
+  },
+  unFollowUser: (id: string) => {
+    const url = `/users/unfollow`;
+    return axiosClient.post(url, {
+      userFollowId: id,
+    });
+  },
+  followPost: (id: string) => {
+    const url = `/post/${id}/follow`;
+    return axiosClient.post(url, {
+      userFollowId: id,
+    });
+  },
 };
 export default userApi;

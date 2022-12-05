@@ -4,7 +4,7 @@ import imgRegister from "@images/register.gif";
 import FormRegister from "./FormRegister";
 import { AppDispatch, RootState } from "@app/store";
 import { useDispatch, useSelector } from "react-redux";
-import { resetUserState, setMessage } from "@redux/userSlice";
+import { resetUserState, setUserMessage } from "@redux/userSlice";
 import toast from "react-hot-toast";
 import userApi from "@api/userApi";
 import { ClipLoader } from "react-spinners";
@@ -106,7 +106,7 @@ md:flex-col-reverse
                     setSuccessConfirm(true);
                     setTimeout(() => {
                       setSuccessConfirm(false);
-                      dispatch(setMessage("Xác thực thành công!"));
+                      dispatch(setUserMessage("Xác thực thành công!"));
                       navigate("/login");
                     }, 1850);
                   }

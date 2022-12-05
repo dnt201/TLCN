@@ -11,10 +11,11 @@ interface iProps {
   header?: string;
   message?: string;
   loading: boolean;
+  img?: string;
 }
 
 const PublishConfirm: React.FC<iProps> = (props) => {
-  const { setShow, setConfirmed, header, message, loading } = props;
+  const { setShow, setConfirmed, header, message, loading, img } = props;
   return (
     <div className=" fixed flex justify-center items-center  z-[10003] w-screen h-screen">
       <div
@@ -38,10 +39,15 @@ const PublishConfirm: React.FC<iProps> = (props) => {
 
         {/* Start Body */}
         <span className=" bg-white flex items-center justify-center ">
-          <img src={SureImage} className="w-1/3" />
+          <img
+            src={img ? img : SureImage}
+            className={
+              "w-1/3" + (img ? "  w-1/4 rounded-full mx-2 my-4" : null)
+            }
+          />
           <span className=" p-2 ">
             {message && message.length > 0
-              ? header
+              ? message
               : " Nếu không còn chỉnh sửa, bạn muốn xuất bản bài viết?"}
           </span>
         </span>
@@ -55,7 +61,7 @@ const PublishConfirm: React.FC<iProps> = (props) => {
               console.log("change conffirm");
             }}
           >
-            <span className="mr-1">Yes</span>
+            <span>Yes</span>
             {loading && <ClipLoader size={16} color={"#fff"} />}
           </button>
           <button

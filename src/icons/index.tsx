@@ -55,8 +55,12 @@ import ChevronRight from "./ChevronRight";
 import Test from "./Test";
 import ArrowUpTray from "./ArrowUpTray";
 import ChatBubbleBottomCenterText from "./ChatBubbleBottomCenterText";
+import BellFill from "./BellFill";
+import Check from "./Check";
 
 export {
+  Check,
+  BellFill,
   ChatBubbleBottomCenterText,
   ArrowUpTray,
   Test,

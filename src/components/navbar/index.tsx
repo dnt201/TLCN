@@ -17,6 +17,8 @@ import {
   TagFill,
   Category,
   CategoryFill,
+  BellFill,
+  Write,
 } from "@icons/index";
 import ava1 from "@assets/images/userDefault.png";
 import PopUpMessenger from "./popupMessenger";
@@ -27,6 +29,7 @@ import { RootState } from "@app/store";
 import SearchBox from "./searchBox";
 import { time } from "console";
 import toast from "react-hot-toast";
+import ReactTooltip from "react-tooltip";
 interface tabItem {
   title: string;
   icon: React.ElementType;
@@ -280,7 +283,21 @@ const Navbar = () => {
               >
                 <Message />
               </i>
-
+              <i
+                id="showNotify"
+                data-tip="Click để viết bài!"
+                data-for="write"
+                className="p-4  rounded-lg hover:bg-hover hover:cursor-pointer  "
+                onClick={() => navigate("/new-post")}
+              >
+                <Write />
+              </i>
+              <ReactTooltip
+                textColor="#FF4401"
+                id="write"
+                place="bottom"
+                effect="solid"
+              />
               <i
                 id="showNotify"
                 className="p-4  rounded-lg hover:bg-hover hover:cursor-pointer  "
@@ -289,7 +306,7 @@ const Navbar = () => {
                   else setShowRightNav(2);
                 }}
               >
-                {1 ? <BellAlert /> : <Bell />}
+                {showRightNav ? <BellFill /> : 1 ? <BellAlert /> : <Bell />}
               </i>
 
               <i
