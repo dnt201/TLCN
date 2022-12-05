@@ -23,6 +23,6 @@ export interface iPostDetail {
   like: number;
   comment: number;
   view: number;
-  isFollow: false;
+  isFollow: boolean;
   thumbnailLink: string;
 }

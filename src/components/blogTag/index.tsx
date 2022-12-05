@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Book, BookFill, Heart, ListFill } from "@icons/index";
 import { Link, useNavigate } from "react-router-dom";
 import defaultPost from "@images/default-placeholder.png";
@@ -7,6 +7,9 @@ import { iPostDetail } from "@DTO/Blog";
 import ReactTooltip from "react-tooltip";
 import { useSelector } from "react-redux";
 import { RootState } from "@app/store";
+import postApi from "@api/postApi";
+import userApi from "@api/userApi";
+import toast from "react-hot-toast";
 
 const BlogTag: React.FC<iPostDetail> = (props) => {
   const {
@@ -22,6 +25,7 @@ const BlogTag: React.FC<iPostDetail> = (props) => {
     thumbnailLink,
   } = props;
   const navigate = useNavigate();
+  const [isFollowState, setIsFollowState] = useState(isFollow);
   const { userInfo, accessToken } = useSelector(
     (state: RootState) => state.users
   );
@@ -29,6 +33,18 @@ const BlogTag: React.FC<iPostDetail> = (props) => {
     if (!userInfo || !accessToken) {
       localStorage.clear();
       navigate(`/login?redirect=followPost&id=${id}`);
+    } else if (accessToken !== null) {
+      userApi.followPost(id).then((result) => {
+        if (result.status === 201) {
+          if (isFollowState) {
+            toast.error("Đã Unfollow bài viết!");
+            setIsFollowState(!isFollowState);
+          } else {
+            toast.success("Đã follow bài viết!");
+            setIsFollowState(!isFollowState);
+          }
+        }
+      });
     }
   };
   return (
@@ -61,11 +77,13 @@ const BlogTag: React.FC<iPostDetail> = (props) => {
             >
               <ListFill
                 data-tip={
-                  isFollow ? "Unfollow bài viết?" : "Click để follow bài viết"
+                  isFollowState
+                    ? "Unfollow bài viết?"
+                    : "Click để follow bài viết"
                 }
                 data-for="follow"
                 className={
-                  isFollow
+                  isFollowState
                     ? " fill-primary"
                     : " hover:fill-primary duration-300"
                 }
