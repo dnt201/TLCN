@@ -22,7 +22,7 @@ interface iNavLeftProps extends React.HTMLProps<HTMLDivElement> {
 
 const NavLeft: React.FC<iNavLeftProps> = (props) => {
   const { className, owner, like, isFollow } = props;
-  console.log(isFollow);
+  // console.log(isFollow);
   return (
     <div className={" " + " " + className}>
       <div className="visible flex flex-col items-center pl-[50%] ">
@@ -63,12 +63,14 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
           </button>
         </div>
         <button
-          data-tip="Bookmark bài viết này"
+          data-tip={
+            isFollow ? "Bỏ Bookmark bài viết này" : "Bookmark bài viết này"
+          }
           data-for="bookmark"
           className={
             "mb-4 mt-2 w-10 h-10 flex flex-col justify-center  items-center border-[1px] border-white rounded-full " +
-            "hover:bg-primary hover:border-primary transition-colors duration-500" +
-            (isFollow && " bg-primary border-primary")
+            "hover:bg-primary hover:border-primary transition-colors duration-500 " +
+            (isFollow && " bg-primary border-primary ")
           }
         >
           <ListFill />
@@ -79,6 +81,25 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
             effect="solid"
           />
         </button>
+
+        {/* <iframe
+          src={`https://www.facebook.com/plugins/share_button.php?href=https://viblo.asia/p/cau-hinh-aws-credential-zOQJwYPxVMP#_tao-nhieu-profile-credential-2&layout=button&size=large&width=87&height=28&appId`}
+          width="87"
+          height="28"
+          className="border-none overflow-hidden"
+          scrolling="no"
+          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+          data-tip="Share bài viết này lên facebook"
+          data-for="facebookShare"
+        >
+          <ReactTooltip
+            textColor="#FF4401"
+            id="facebookShare"
+            place="right"
+            effect="solid"
+          />
+        </iframe> */}
+
         <button
           className="mt-4 mb-2"
           data-tip="Share bài viết này lên facebook"

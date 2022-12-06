@@ -2,6 +2,7 @@ export interface iPostDetail {
   id: string;
   title: string;
   dateModified: string;
+  content: string;
   owner: {
     id: string;
     username: string;

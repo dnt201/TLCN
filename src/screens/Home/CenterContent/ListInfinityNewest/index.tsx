@@ -123,7 +123,7 @@ const ListInfinityNewest = () => {
                 id={blog.id}
                 title={blog.title}
                 category={blog.category}
-                // image={blog.image}
+                content={blog.content || ""}
                 tags={blog.tags}
                 owner={blog.owner}
                 isFollow={blog.isFollow}

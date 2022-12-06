@@ -123,6 +123,7 @@ const ListInfinityFollowing = () => {
               <BlogTag
                 id={blog.id}
                 title={blog.title}
+                content={blog.content || ""}
                 category={blog.category}
                 tags={blog.tags}
                 owner={blog.owner}

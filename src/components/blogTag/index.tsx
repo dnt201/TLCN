@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Book, BookFill, Heart, ListFill } from "@icons/index";
 import { Link, useNavigate } from "react-router-dom";
 import defaultPost from "@images/default-placeholder.png";
@@ -7,7 +7,7 @@ import { iPostDetail } from "@DTO/Blog";
 import ReactTooltip from "react-tooltip";
 import { useSelector } from "react-redux";
 import { RootState } from "@app/store";
-import postApi from "@api/postApi";
+
 import userApi from "@api/userApi";
 import toast from "react-hot-toast";
 
@@ -26,6 +26,7 @@ const BlogTag: React.FC<iPostDetail> = (props) => {
   } = props;
   const navigate = useNavigate();
   const [isFollowState, setIsFollowState] = useState(isFollow);
+  const divMenuRef = useRef<HTMLDivElement>(null);
   const { userInfo, accessToken } = useSelector(
     (state: RootState) => state.users
   );

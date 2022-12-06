@@ -11,6 +11,13 @@ html {
 body {
   color: white;
 }
+
+button.active > span {
+  font-weight: 600;
+  color: #ff4401;
+  border-left-width: 4px;
+  border-color: #ff4401;
+}
 /* width */
 ::-webkit-scrollbar {
   width: 8px;
