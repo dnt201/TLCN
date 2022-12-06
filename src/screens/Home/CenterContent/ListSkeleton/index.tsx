@@ -13,8 +13,8 @@ const ListSkeleton = () => {
       {Array(3)
         .fill("")
         .map((a, index) => (
-          <div key={index} className="flex  w-full h-[120px] mb-4">
-            <Skeleton height={"100%"} width={140} />
+          <div key={index} className="flex z-1  w-full h-[120px] mb-4">
+            <Skeleton style={{ zIndex: 1 }} height={"100%"} width={140} />
             <div className={`ml-1 flex flex-col flex-1`}>
               <div className="flex-[2]  mb-1">
                 <Skeleton width={"100%"} height={"100%"} />

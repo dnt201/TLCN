@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import qc from "@images/banner-quang-cao-du-khach-hang-hieu-qua-3.jpg";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 
 import MenuRight from "./MenuRight";
 import MidContent from "./MidContent";
@@ -19,12 +19,14 @@ const BlogDetail = () => {
   const { blogId } = params;
   const divRef = useRef<HTMLDivElement>(null);
   const [idCurActive, setIdCurActive] = useState("");
-
+  const navigate = useNavigate();
+  const [notFound, setNotFound] = useState(false);
   // console.log("Blog detail rerender");
   // console.log(idCurActive);
   const { post, error, loading } = useSelector(
     (state: RootState) => state.blog
   );
+  console.log(post);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -45,6 +47,7 @@ const BlogDetail = () => {
     }
   }, [params]);
   if (loading) return <SkeletonBlogDetail />;
+  if (!post?.id) return <BlogNotFound />;
   return (
     <div ref={divRef} className="bg-bg min-h-[calc[100vh-52px]] flex flex-col">
       {post ? (
@@ -57,6 +60,7 @@ const BlogDetail = () => {
           <div className="flex flex-col">
             <div className="flex pt-10 bg-bg  mb-4  min-h-full">
               <NavLeft
+                idPost={post.id}
                 owner={post.owner}
                 isFollow={post.isFollow}
                 like={post.like}
@@ -67,10 +71,8 @@ const BlogDetail = () => {
               />
 
               <MidContent
-                tags={post.tags}
+                {...post}
                 setIdCurActive={setIdCurActive}
-                title={post.title}
-                content={post.content}
                 className="min-h-[calc(75vh-52px)]  flex-[3] max-w-[1016px]  mx-2  rounded-lg overflow-y-hidden overflow-hidden   "
               />
               <MenuRight
@@ -82,112 +84,30 @@ const BlogDetail = () => {
                 }
               />
             </div>
-            <div className=" max-w-[1016px] w-full mx-auto">
-              Bài viết khác từ <b>{}</b>
-            </div>
             <div className=" max-w-[1016px]   w-full mx-auto">
-              Comments<b>{}</b>
-            </div>
-            <div className=" max-w-[1016px]   w-full mx-auto">
-              Comments Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Animi corrupti pariatur in facere, hic aliquam illum et cum
-              aliquid doloribus harum ex nostrum expedita delectus eveniet fuga
-              iusto ducimus perferendis. ducimus perferendis. ducimus
-              perferendis. ducimus perferendis. Comments Lorem ipsum dolor sit
-              amet consectetur adipisicing elit. Animi corrupti pariatur in
-              facere, hic aliquam illum et cum aliquid doloribus harum ex
-              nostrum expedita delectus eveniet fuga iustoComments Lorem ipsum
-              dolor sit amet consectetur adipisicing elit. Animi corrupti
-              pariatur in facere, hic aliquam illum et cum aliquid doloribus
-              harum ex nostrum expedita delectus eveniet fuga iusto ducimus
-              perferendis. ducimus perferendis. ducimus perferendis. ducimus
-              perferendis. Comments Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Animi corrupti pariatur in facere, hic aliquam
-              illum et cum aliquid doloribus harum ex nostrum expedita delectus
-              eveniet fuga iustoComments Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Animi corrupti pariatur in facere, hic aliquam
-              illum et cum aliquid doloribus harum ex nostrum expedita delectus
-              eveniet fuga iusto ducimus perferendis. ducimus perferendis.
-              ducimus perferendis. ducimus perferendis. Comments Lorem ipsum
-              dolor sit amet consectetur adipisicing elit. Animi corrupti
-              pariatur in facere, hic aliquam illum et cum aliquid doloribus
-              harum ex nostrum expedita delectus eveniet fuga iustoComments
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi
-              corrupti pariatur in facere, hic aliquam illum et cum aliquid
-              doloribus harum ex nostrum expedita delectus eveniet fuga iusto
-              ducimus perferendis. ducimus perferendis. ducimus perferendis.
-              ducimus perferendis. Comments Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Animi corrupti pariatur in facere,
-              hic aliquam illum et cum aliquid doloribus harum ex nostrum
-              expedita delectus eveniet fuga iustoComments Lorem ipsum dolor sit
-              amet consectetur adipisicing elit. Animi corrupti pariatur in
-              facere, hic aliquam illum et cum aliquid doloribus harum ex
-              nostrum expedita delectus eveniet fuga iusto ducimus perferendis.
-              ducimus perferendis. ducimus perferendis. ducimus perferendis.
-              Comments Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Animi corrupti pariatur in facere, hic aliquam illum et cum
-              aliquid doloribus harum ex nostrum expedita delectus eveniet fuga
-              iustoComments Lorem ipsum dolor sit amet consectetur adipisicing
-              elit. Animi corrupti pariatur in facere, hic aliquam illum et cum
-              aliquid doloribus harum ex nostrum expedita delectus eveniet fuga
-              iusto ducimus perferendis. ducimus perferendis. ducimus
-              perferendis. ducimus perferendis. Comments Lorem ipsum dolor sit
-              amet consectetur adipisicing elit. Animi corrupti pariatur in
-              facere, hic aliquam illum et cum aliquid doloribus harum ex
-              nostrum expedita delectus eveniet fuga iustoComments Lorem ipsum
-              dolor sit amet consectetur adipisicing elit. Animi corrupti
-              pariatur in facere, hic aliquam illum et cum aliquid doloribus
-              harum ex nostrum expedita delectus eveniet fuga iusto ducimus
-              perferendis. ducimus perferendis. ducimus perferendis. ducimus
-              perferendis. Comments Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Animi corrupti pariatur in facere, hic aliquam
-              illum et cum aliquid doloribus harum ex nostrum expedita delectus
-              eveniet fuga iustoComments Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Animi corrupti pariatur in facere, hic aliquam
-              illum et cum aliquid doloribus harum ex nostrum expedita delectus
-              eveniet fuga iusto ducimus perferendis. ducimus perferendis.
-              ducimus perferendis. ducimus perferendis. Comments Lorem ipsum
-              dolor sit amet consectetur adipisicing elit. Animi corrupti
-              pariatur in facere, hic aliquam illum et cum aliquid doloribus
-              harum ex nostrum expedita delectus eveniet fuga iustoComments
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi
-              corrupti pariatur in facere, hic aliquam illum et cum aliquid
-              doloribus harum ex nostrum expedita delectus eveniet fuga iusto
-              ducimus perferendis. ducimus perferendis. ducimus perferendis.
-              ducimus perferendis. Comments Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Animi corrupti pariatur in facere,
-              hic aliquam illum et cum aliquid doloribus harum ex nostrum
-              expedita delectus eveniet fuga iustoComments Lorem ipsum dolor sit
-              amet consectetur adipisicing elit. Animi corrupti pariatur in
-              facere, hic aliquam illum et cum aliquid doloribus harum ex
-              nostrum expedita delectus eveniet fuga iusto ducimus perferendis.
-              ducimus perferendis. ducimus perferendis. ducimus perferendis.
-              Comments Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Animi corrupti pariatur in facere, hic aliquam illum et cum
-              aliquid doloribus harum ex nostrum expedita delectus eveniet fuga
-              iustoComments Lorem ipsum dolor sit amet consectetur adipisicing
-              elit. Animi corrupti pariatur in facere, hic aliquam illum et cum
-              aliquid doloribus harum ex nostrum expedita delectus eveniet fuga
-              iusto ducimus perferendis. ducimus perferendis. ducimus
-              perferendis. ducimus perferendis. Comments Lorem ipsum dolor sit
-              amet consectetur adipisicing elit. Animi corrupti pariatur in
-              facere, hic aliquam illum et cum aliquid doloribus harum ex
-              nostrum expedita delectus eveniet fuga iustoComments Lorem ipsum
-              dolor sit amet consectetur adipisicing elit. Animi corrupti
-              pariatur in facere, hic aliquam illum et cum aliquid doloribus
-              harum ex nostrum expedita delectus eveniet fuga iusto ducimus
-              perferendis. ducimus perferendis. ducimus perferendis. ducimus
-              perferendis. Comments Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Animi corrupti pariatur in facere, hic aliquam
-              illum et cum aliquid doloribus harum ex nostrum expedita delectus
-              eveniet fuga iustoComments Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Animi corrupti pariatur in facere, hic aliquam
-              illum et cum aliquid doloribus harum ex nostrum expedita delectus
-              eveniet fuga iusto ducimus perferendis. ducimus perferendis.
-              ducimus perferendis. ducimus perferendis. Comments Lorem ipsum
-              dolor sit amet consectetur adipisicing elit. Animi corrupti
-              pariatur in facere, hic aliquam illum et cum aliquid doloribus
-              harum ex nostrum expedita delectus eveniet fuga iusto
+              <div className=" my-8 w-full mx-auto">
+                <h4 className="pb-2">
+                  Bài viết khác từ
+                  <b
+                    className="text-primary hover:cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/user-detail/${post.owner.id}?posted`);
+                    }}
+                  >
+                    {post.owner.username}
+                  </b>
+                </h4>
+                <div className="w-full flex justify-center my-4">
+                  <i className="">
+                    Từ từ, làm tính năng comment đã :v Lười quá
+                  </i>
+                </div>
+              </div>
+
+              <div>
+                <h4 className="pb-2">Bình luận</h4>
+              </div>
             </div>
           </div>
         </>

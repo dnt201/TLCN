@@ -19,6 +19,7 @@ const PopUpUser: React.FC<iPopUpUserProps> = (props) => {
   const logoutHandle = async () => {
     const result = await dispatch(userLogout());
     if (result.payload === 200) {
+      navigate(`/login`);
       setTimeout(() => {
         toast.remove();
       }, 2000);

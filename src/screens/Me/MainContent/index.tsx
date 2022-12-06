@@ -1,5 +1,6 @@
 import React, { ReactComponentElement, useState, memo } from "react";
 import { Post, List, Voted, Seen } from "@icons/index";
+import ListPost from "./ListPost";
 interface iNav {
   id: number;
   title: string;
@@ -49,6 +50,7 @@ const MainContent = memo(function MainContent() {
           </button>
         ))}
       </div>
+      <ListPost selectId={selectId} />
     </div>
   );
 });

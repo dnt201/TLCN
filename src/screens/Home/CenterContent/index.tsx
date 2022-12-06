@@ -40,8 +40,6 @@ const CenterContent: React.FC<iProps> = (props) => {
         }, 2000);
       };
       fakeLoading();
-      // const result = postApi.getAllPost();
-      //call fl
     } else if (curPath === "/following") {
       if (accessToken === null || accessToken.length <= 0) {
         navigate("/login");
@@ -53,7 +51,6 @@ const CenterContent: React.FC<iProps> = (props) => {
         };
         getData();
       }
-      // const result = postApi.getListPostHaveBeenFollow();
     } else {
       const a = async () => {
         const result = await postApi.getAllPost();
@@ -63,9 +60,7 @@ const CenterContent: React.FC<iProps> = (props) => {
       };
       a();
     }
-    // setLoading(false);
-    console.log("----------------", paging);
-    // setErrorKeyKiLaLamLun(!errorKeyKiLaLamLun);
+
     return () => {
       console.log("UnMounted");
     };

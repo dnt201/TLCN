@@ -306,7 +306,13 @@ const Navbar = () => {
                   else setShowRightNav(2);
                 }}
               >
-                {showRightNav ? <BellFill /> : 1 ? <BellAlert /> : <Bell />}
+                {showRightNav === 2 ? (
+                  <BellFill />
+                ) : 1 ? (
+                  <BellAlert />
+                ) : (
+                  <Bell />
+                )}
               </i>
 
               <i

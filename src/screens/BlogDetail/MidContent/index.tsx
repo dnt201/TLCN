@@ -9,6 +9,12 @@ interface iMidContentProps extends React.HTMLProps<HTMLDivElement> {
   content: string;
   setIdCurActive: (id: string) => void;
   tags: iTagLazyDeclareQuaNe[];
+  owner: iOwnerLazy;
+}
+interface iOwnerLazy {
+  id: string;
+  username: string;
+  avatarLink: string;
 }
 
 interface iTagLazyDeclareQuaNe {
@@ -20,24 +26,21 @@ interface iTagLazyDeclareQuaNe {
 }
 
 const MidContent: React.FC<iMidContentProps> = (props) => {
-  const { className, content, title, setIdCurActive, tags } = props;
+  const { className, owner, content, title, setIdCurActive, tags } = props;
   const midContentRef = useRef<HTMLDivElement>(null);
-  console.log("tags", tags);
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   function handleScroll() {
-    console.log(document.documentElement.clientHeight / 3);
     if (midContentRef.current !== null) {
       var children = Array.from(midContentRef.current.children);
       let i = 0;
       children.forEach((e) => {
         if (e.tagName === "H1") {
           let rect = e.getBoundingClientRect();
-          console.log(rect.top);
           // if (rect.top <= document.documentElement.clientHeight / 2) i++;
-          if (rect.top <= 52) i++;
+          if (rect.top <= 54) i++;
         }
       });
       let j = 0;
@@ -45,22 +48,23 @@ const MidContent: React.FC<iMidContentProps> = (props) => {
         if (e.tagName === "H1") {
           // let rect = e.getBoundingClientRect();
           j++;
-          if (j === i) {
-            if (e.textContent)
-              setIdCurActive(`btn-${e.textContent.formatH1().toString()}-${i}`);
-            else {
-            }
-          } else {
-            let rectMid = midContentRef.current?.getBoundingClientRect();
-            if (rectMid !== undefined)
-              if (
-                (rectMid.top <= 0 && rectMid.bottom <= 0) ||
-                window.pageYOffset <
-                  document.documentElement.clientHeight * 0.15 + 52
-              ) {
-                setIdCurActive("");
+
+          let rectMid = midContentRef.current?.getBoundingClientRect();
+          if (rectMid !== undefined)
+            if (
+              (rectMid.top <= 0 && rectMid.bottom <= 0) ||
+              window.pageYOffset <
+                document.documentElement.clientHeight * 0.15 + 52
+            ) {
+              setIdCurActive("");
+            } else {
+              if (j === i) {
+                if (e.textContent)
+                  setIdCurActive(
+                    `btn-${e.textContent.formatH1().toString()}-${i}`
+                  );
               }
-          }
+            }
         }
       });
       console.log(i);
@@ -73,7 +77,7 @@ const MidContent: React.FC<iMidContentProps> = (props) => {
       <div className="min-h-[calc(75vh-52px)] border-b-[1px] border-hover border-solid mb-4">
         <div
           ref={midContentRef}
-          className="min-h-[calc(75vh-52px)]"
+          className="min-h-[calc(75vh-52px)] mb-16"
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(content, {
               ADD_TAGS: ["iframe"],
@@ -88,14 +92,14 @@ const MidContent: React.FC<iMidContentProps> = (props) => {
         />
         <div />
       </div>
-      <div className="flex flex-col  mt-4">
-        <div className="flex items-center p-4">
+      <div className="flex flex-col  my-4">
+        <div className="flex items-center p-4 gap-4">
           {tags ? (
             <>
               {tags
                 ? tags.map((tag) => (
                     <div
-                      className="flex w-fit hover:cursor-pointer rounded-md flex-row items-center p-4 bg-hover"
+                      className="flex w-fit hover:cursor-pointer rounded-md  flex-row items-center p-3 bg-hover"
                       onClick={(e) => {
                         console.log("navigate qua all post of tag");
                         e.preventDefault();
@@ -116,9 +120,8 @@ const MidContent: React.FC<iMidContentProps> = (props) => {
             </span>
           )}
         </div>
-
-        <h6 className="mt-4">All rights reserved</h6>
-        <div className="mt-4 w-full flex-row-reverse flex gap-4 items-center">
+        <h6 className="mt-2">All rights reserved</h6>
+        <div className="mt-2 w-full flex-row-reverse flex gap-4 items-center">
           <button
             className=""
             data-tip="Hiển thị các actions với bài viết"
@@ -136,12 +139,12 @@ const MidContent: React.FC<iMidContentProps> = (props) => {
           <button
             className=""
             data-tip="Share bài viết này lên facebook"
-            data-for="facebookShare"
+            data-for="facebookShareBotNe"
           >
             <FacebookLogo className="w-7 h-7" />
             <ReactTooltip
               textColor="#FF4401"
-              id="facebookShare"
+              id="facebookShareBotNe"
               place="bottom"
               effect="solid"
             />
@@ -150,12 +153,12 @@ const MidContent: React.FC<iMidContentProps> = (props) => {
           <button
             className=" "
             data-tip="Share bài viết này lên Twitter"
-            data-for="twitterShare"
+            data-for="twitterShareBotNe"
           >
             <Twitter className="w-7 h-7" />
             <ReactTooltip
               textColor="#FF4401"
-              id="twitterShare"
+              id="twitterShareBotNe"
               place="bottom"
               effect="solid"
             />

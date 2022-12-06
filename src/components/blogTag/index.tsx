@@ -11,7 +11,13 @@ import { RootState } from "@app/store";
 import userApi from "@api/userApi";
 import toast from "react-hot-toast";
 
-const BlogTag: React.FC<iPostDetail> = (props) => {
+interface iLazy extends iPostDetail {
+  listFromFollowing?: iPostDetail[];
+  setListFromFollowing?: (posts: iPostDetail[]) => void;
+  setPage?: (number: number) => void;
+}
+
+const BlogTag: React.FC<iLazy> = (props) => {
   const {
     id,
     title,
@@ -23,10 +29,13 @@ const BlogTag: React.FC<iPostDetail> = (props) => {
     isFollow,
     comment,
     thumbnailLink,
+    listFromFollowing,
+    setListFromFollowing,
+    setPage,
   } = props;
   const navigate = useNavigate();
   const [isFollowState, setIsFollowState] = useState(isFollow);
-  const divMenuRef = useRef<HTMLDivElement>(null);
+  const divBLogTagRef = useRef<HTMLDivElement>(null);
   const { userInfo, accessToken } = useSelector(
     (state: RootState) => state.users
   );
@@ -39,6 +48,26 @@ const BlogTag: React.FC<iPostDetail> = (props) => {
         if (result.status === 201) {
           if (isFollowState) {
             toast.error("Đã Unfollow bài viết!");
+
+            if (
+              listFromFollowing &&
+              setListFromFollowing &&
+              setPage &&
+              divBLogTagRef &&
+              divBLogTagRef.current
+            ) {
+              let tempList = listFromFollowing;
+              const isCurPost = (element: iPostDetail) => element.id === id;
+              const tempIndex = tempList.findIndex(isCurPost);
+              if (tempIndex > -1) {
+                tempList.splice(tempIndex, 1);
+                if (tempList.length <= 0) {
+                  setPage(-1);
+                } else {
+                  setListFromFollowing(tempList);
+                }
+              }
+            }
             setIsFollowState(!isFollowState);
           } else {
             toast.success("Đã follow bài viết!");
@@ -50,8 +79,12 @@ const BlogTag: React.FC<iPostDetail> = (props) => {
   };
   return (
     <div
+      ref={divBLogTagRef}
       key={id}
-      className="flex  w-full bg-bg2 p-2 mb-4  shadow-md rounded-2xl items-center hover:cursor-pointer "
+      className={
+        (listFromFollowing && isFollowState === false ? " hidden " : " ") +
+        "flex  w-full bg-bg2 p-2 mb-4  shadow-md rounded-2xl items-center hover:cursor-pointer "
+      }
       onClick={() => navigate(`/blog/${id}`)}
     >
       {/* left */}
@@ -120,7 +153,7 @@ const BlogTag: React.FC<iPostDetail> = (props) => {
         <div className="flex items-center">
           {/* ava */}
           <Link
-            to={`user-detail/${owner.id}`}
+            to={`/user-detail/${owner.id}`}
             className=" flex items-center duration-1000 p-1 rounded-lg hover:bg-hover"
             onClick={(e) => {
               e.stopPropagation();

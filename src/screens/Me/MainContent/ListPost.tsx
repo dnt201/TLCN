@@ -1,65 +1,99 @@
-import React from "react";
+import postApi from "@api/postApi";
+import { RootState } from "@app/store";
+import BlogTag from "@components/blogTag";
+import { iPostDetail } from "@DTO/Blog";
+import { iPage } from "@DTO/Pagination";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
 
-const ListPost = () => {
-  return (
-    <div className="flex-1 ml-2 overflow-y-hidden overflow-hidden mt-2">
-      <div className="flex items-center mb-2">
-        <h2 className="flex-1">List post</h2>
-        <select
-          className="bg-bg px-2 py-1 border-white border-[1px] rounded-md"
-          name="sort"
-          id="sort"
-        >
-          <option value="newest">Mới nhất</option>
-          <option value="latest">Cũ nhất</option>
-        </select>
-      </div>
-      <div>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum
-          praesentium ea perspiciatis aliquid. Ipsum fuga, iure, delectus ullam
-          qui quo aspernatur eligendi praesentium similique quisquam repellendus
-          neque exercitationem perferendis. Voluptatibus?
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum
-          praesentium ea perspiciatis aliquid. Ipsum fuga, iure, delectus ullam
-          qui quo aspernatur eligendi praesentium similique quisquam repellendus
-          neque exercitationem perferendis. Voluptatibus?
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum
-          praesentium ea perspiciatis aliquid. Ipsum fuga, iure, delectus ullam
-          qui quo aspernatur eligendi praesentium similique quisquam repellendus
-          neque exercitationem perferendis. Voluptatibus?
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum
-          praesentium ea perspiciatis aliquid. Ipsum fuga, iure, delectus ullam
-          qui quo aspernatur eligendi praesentium similique quisquam repellendus
-          neque exercitationem perferendis. Voluptatibus?
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum
-          praesentium ea perspiciatis aliquid. Ipsum fuga, iure, delectus ullam
-          qui quo aspernatur eligendi praesentium similique quisquam repellendus
-          neque exercitationem perferendis. Voluptatibus?
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum
-          praesentium ea perspiciatis aliquid. Ipsum fuga, iure, delectus ullam
-          qui quo aspernatur eligendi praesentium similique quisquam repellendus
-          neque exercitationem perferendis. Voluptatibus?
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum
-          praesentium ea perspiciatis aliquid. Ipsum fuga, iure, delectus ullam
-          qui quo aspernatur eligendi praesentium similique quisquam repellendus
-          neque exercitationem perferendis. Voluptatibus?
-        </p>
-      </div>
-    </div>
+interface iProps {
+  selectId: number;
+}
+
+const ListPost: React.FC<iProps> = (props) => {
+  const { selectId } = props;
+  const { userInfo } = useSelector((state: RootState) => state.users);
+  const navigate = useNavigate();
+  //1
+  const [listPosted, setListPosted] = useState<iPostDetail[] | null>(null);
+  const [pagingListPosted, setPagingListPosted] = useState<iPage | null>(null);
+  //2
+  const [listPostVote, setListPostVoted] = useState<iPostDetail[] | null>(null);
+  const [pagingListPostVote, setPagingListPostVoted] = useState<iPage | null>(
+    null
   );
+  //3
+  const [listView, setListView] = useState<iPostDetail[] | null>(null);
+  const [pagingListView, setPagingListView] = useState<iPage | null>(null);
+  //4
+  const [listFollow, setListFollow] = useState<iPostDetail | null>(null);
+  const [pagingListFollow, setPagingListFollow] = useState<iPage | null>(null);
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    } else if (selectId === 1) {
+      postApi.getAllPostByUser(userInfo.id).then((result) => {
+        if (result.status === 201) {
+          console.log(result);
+          setListPosted(result.data.result.data);
+        } else {
+        }
+      });
+    } else if (selectId === 2) {
+      postApi.getListPostHaveBeenFollow(userInfo.id).then((result) => {
+        if (result.status === 201) {
+          console.log(result);
+          setListPosted(result.data.result.data);
+        } else {
+        }
+      });
+    } else if (selectId === 3) {
+      postApi.getListPostHaveBeenVote().then((result) => {
+        if (result.status === 201) {
+          console.log(result);
+          setListPosted(result.data.result.data);
+        } else {
+        }
+      });
+    } else if (selectId === 4) {
+      postApi.getListPostHaveBeenView().then((result) => {
+        if (result.status === 201) {
+          console.log(result);
+          setListPosted(result.data.result.data);
+        } else {
+        }
+      });
+    }
+  }, []);
+  if (selectId === 1) {
+    return (
+      <div className="flex-1 ml-2 overflow-y-hidden overflow-hidden mt-2">
+        <div className="flex flex-col  items-center mb-2">
+          {listPosted?.map((post) => (
+            <BlogTag {...post} />
+          ))}
+        </div>
+      </div>
+    );
+  } else if (selectId === 2) {
+    return (
+      <div className="flex-1 ml-2 overflow-y-hidden overflow-hidden mt-2">
+        <div className="flex flex-col  items-center mb-2">
+          {listPostVote?.map((post) => (
+            <BlogTag {...post} />
+          ))}
+        </div>
+      </div>
+    );
+  } else
+    return (
+      <div className="flex-1 ml-2 overflow-y-hidden overflow-hidden mt-2">
+        <div className="flex flex-col items-center mb-2"></div>
+        <div></div>
+      </div>
+    );
 };
 
 export default ListPost;

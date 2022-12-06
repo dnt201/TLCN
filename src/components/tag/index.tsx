@@ -20,7 +20,7 @@ const Tag: React.FC<iTagProp> = (props) => {
       to={`/tags/${props.href}`}
       className={
         props.className +
-        " flex flex-row h-[52px] rounded-md items-center px-2  py-2 hover:bg-hover " +
+        " flex flex-row  h-[52px] rounded-md items-center px-2  py-2 hover:bg-hover " +
         (filter === props.href && " bg-hover ")
       }
       onClick={() =>
@@ -30,19 +30,23 @@ const Tag: React.FC<iTagProp> = (props) => {
         onChangeFilter(props.href)
       }
     >
-      <div className="flex-1 h-full flex justify-center items-center ">
+      <div className=" h-full flex justify-center items-center ">
         <b className={"rounded-md  bg-dark4 p-2"}>
           {props.icon ? (
             <props.icon />
           ) : props.img !== undefined ? (
             <img
-              src={props.img === null ? defaultIMG : props.img}
+              src={
+                props.img === null || props.img.length <= 0
+                  ? defaultIMG
+                  : props.img
+              }
               className={"w-5 h-5 block mx-auto "}
             />
           ) : null}
         </b>
       </div>
-      <div className="flex-[5] flex flex-col ml-2">
+      <div className="flex-1 flex flex-col ml-2">
         <p className="text-xs text-white  pb-1">{props.title}</p>
         {typeof props.subTitle == "number" ? (
           <p className="text-ss text-dark3">

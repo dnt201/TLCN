@@ -67,9 +67,9 @@ const SearchBox: React.FC<iProps> = (props) => {
   useEffect(() => {
     let timer: NodeJS.Timeout;
     const funcFake = async () => {
+      setLoading(true);
       timer = setTimeout(() => {
         if (inputSearch.length > 0) {
-          setLoading(true);
           handleChange();
         }
       }, 1000);

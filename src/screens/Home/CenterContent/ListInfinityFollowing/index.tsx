@@ -57,6 +57,9 @@ const ListInfinityFollowing = () => {
   useEffect(() => {
     setLoading(true);
     if (page === -1) {
+      setListBlogTag(null);
+      setMaxRoiLazyQuaTroi(false);
+      setPaging(null);
       setPage(1);
     } else handlePageChange(page);
   }, [page]);
@@ -133,6 +136,9 @@ const ListInfinityFollowing = () => {
                 comment={blog.comment}
                 dateModified={blog.dateModified}
                 thumbnailLink={blog.thumbnailLink}
+                listFromFollowing={listBlogTag}
+                setListFromFollowing={setListBlogTag}
+                setPage={setPage}
               />
             </React.Fragment>
           ))
@@ -142,14 +148,12 @@ const ListInfinityFollowing = () => {
           <ListSkeleton />
         </div>
       ) : maxRoiLazyQuaTroi ? (
-        <div>
-          Nothing to load
+        <div className="py-2 pb-6 flex items-center text-sm justify-center">
+          Have no one to load!!!
           <button
+            className="flex items-center p-2 text-primary font-semibold text-base"
             onClick={async () => {
-              setPaging(null);
-              setListBlogTag(null);
               setPage(-1);
-              setMaxRoiLazyQuaTroi(false);
               window.scrollTo(0, 0);
             }}
           >

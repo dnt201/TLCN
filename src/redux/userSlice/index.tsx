@@ -19,7 +19,6 @@ export const userLogout = createAsyncThunk("user/logout", async () => {
   //thunkAPI.dispatch();
   try {
     const result = await userApi.logout();
-    console.log("logout success");
     return result.status;
   } catch (err) {
     console.log(err);
@@ -116,6 +115,9 @@ const user = createSlice({
       state.message = "";
       state.error = "";
     },
+    setUserError: (state, action) => {
+      if (action.payload) state.error = action.payload;
+    },
   },
   extraReducers: (builder) => {
     //login
@@ -174,6 +176,7 @@ const user = createSlice({
     builder.addCase(userLogout.fulfilled, (state, action) => {
       if (action.payload === 200) {
         state.loading = false;
+        state.userInfo = null;
         state.error = "";
         state.accessToken = "";
         state.refreshToken = "";
@@ -214,5 +217,5 @@ const user = createSlice({
   },
 });
 const { reducer, actions } = user;
-export const { setUserMessage, resetUserState } = actions;
+export const { setUserMessage, setUserError, resetUserState } = actions;
 export default reducer;

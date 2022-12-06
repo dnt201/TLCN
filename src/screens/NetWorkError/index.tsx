@@ -8,7 +8,7 @@ const NetWorkError = () => {
       <div className="row">
         <div className="flex items-center justify-center flex-col">
           <img className="w-[360px]" src={NetworkLost} />
-          <h3 className="">Network error! Try again</h3>
+          <h3 className="">Server Error, We trying to fix {`<`}3</h3>
           <Link
             to="/"
             className="py-3 bg-[#39ac31]  px-5  my-4  inline-block rounded-md"

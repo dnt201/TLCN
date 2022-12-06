@@ -54,19 +54,25 @@ const postApi = {
   },
   getAllPostByUser: (userId: string) => {
     const url = `/post/all-by-user/${userId}`;
-    return axiosClient.get(url);
+    return axiosClient.post(url);
   },
   getPostDetailById: (postId: string) => {
     const url = `/post/${postId}`;
     return axiosClient.get(url);
   },
-  getListPostHaveBeenVote: () => {
+  getListPostHaveBeenVote: (pageNumber?: number) => {
     const url = `/post/all-post-vote`;
-    return axiosClient.post(url);
+    return axiosClient.post(url, {
+      size: 3,
+      pageNumber: pageNumber || 1,
+    });
   },
-  getListPostHaveBeenView: () => {
+  getListPostHaveBeenView: (pageNumber?: number) => {
     const url = `/post/all-post-view`;
-    return axiosClient.post(url);
+    return axiosClient.post(url, {
+      size: 3,
+      pageNumber: pageNumber || 1,
+    });
   },
   getListPostHaveBeenFollow: (name?: string, pageNumber?: number) => {
     let url = ``;

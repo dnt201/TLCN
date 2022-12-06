@@ -16,8 +16,14 @@ import FormLogin from "./FormLogin";
 import { useDispatch, useSelector } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
 import { isFulfilled } from "@reduxjs/toolkit";
-import { resetUserState, setUserMessage, userGetMe } from "@redux/userSlice";
+import {
+  resetUserState,
+  setUserError,
+  setUserMessage,
+  userGetMe,
+} from "@redux/userSlice";
 import postApi from "@api/postApi";
+import { setMessagePublicState } from "@redux/publicSlice";
 const Login = () => {
   const [pause, setPause] = React.useState(false);
   const [successConfirm, setSuccessConfirm] = React.useState(false);
@@ -82,8 +88,20 @@ const Login = () => {
               if (result.data.id === idFromURL) {
                 dispatch(setUserMessage("ErrorFlowYourself"));
                 navigate(`/me`);
+              } else {
+                if (idFromURL) {
+                  userApi.followUser(idFromURL).then((result) => {
+                    if (result.status === 201) {
+                      dispatch(setMessagePublicState("Đã follow thành công!"));
+                      navigate(`/user-detail/${idFromURL}`);
+                    } else {
+                      // dispatch(setUserError("Something went wrong"));
+                      navigate(`/user-detail/${idFromURL}?success=false`);
+                    }
+                  });
+                }
               }
-            }
+            } else navigate("/");
           });
         } else navigate("/");
       } else navigate("/");

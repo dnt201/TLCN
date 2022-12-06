@@ -5,10 +5,11 @@ import avatarDefault from "@images/userDefault.png";
 import userApi from "@api/userApi";
 import toast from "react-hot-toast";
 import { PhoneFill } from "@icons/index";
-import { useSelector } from "react-redux";
-import { RootState } from "@app/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@app/store";
 import BlogNotFound from "@screens/BlogDetail/NotFound";
 import PublishConfirm from "@screens/BlogCreate/PublishConfirm";
+import { resetPublicState } from "@redux/publicSlice";
 interface iUserDetail {
   id: string;
   email: string;
@@ -32,10 +33,23 @@ const UserDetail = () => {
   const { userInfo, accessToken } = useSelector(
     (state: RootState) => state.users
   );
+  const { error, message } = useSelector(
+    (state: RootState) => state.publicState
+  );
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    if (error !== null && error.length > 0) toast.error(error);
+    if (message !== null && message.length > 0) toast.success(message);
+    dispatch(resetPublicState());
+  }, []);
   const { userId } = params;
   const [userInfoState, setUserInfoState] = useState<iUserDetail>();
   const [loading, setLoading] = useState(false);
   const [notFound, setNotFound] = useState(false);
+  const [searchParams] = useSearchParams();
+
+  console.log(searchParams.get("success"));
 
   //
   const [isConfirm, setIsConfirm] = useState(false);
@@ -130,7 +144,7 @@ const UserDetail = () => {
           setShow={setIsShowConfirm}
           header="Unfollow?"
           message="Bạn thực sự muốn hủy đăng ký người dùng này?"
-          img={userInfoState?.avatarLink}
+          img={userInfoState?.avatarLink || avatarDefault}
         />
       ) : null}
       <div className=" min-h-[calc(100vh-52px)] bg-bg flex flex-col ">

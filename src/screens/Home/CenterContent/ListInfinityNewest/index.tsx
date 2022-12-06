@@ -142,7 +142,7 @@ const ListInfinityNewest = () => {
         </div>
       ) : maxRoiLazyQuaTroi ? (
         <div className="py-2 pb-6 flex items-center text-sm justify-center">
-          Have no one!!!
+          Have no one to load!!!
           <button
             className="flex items-center p-2 text-primary font-semibold text-base"
             onClick={async () => {
@@ -153,7 +153,6 @@ const ListInfinityNewest = () => {
               window.scrollTo(0, 0);
             }}
           >
-            Click to load
             <ArrowUpTray />
           </button>
         </div>

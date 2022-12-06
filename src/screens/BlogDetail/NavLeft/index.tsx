@@ -5,12 +5,15 @@ import {
   ListFill,
   Twitter,
 } from "@icons/index";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import avatarDefault from "@images/userDefault.png";
+import userApi from "@api/userApi";
+import toast from "react-hot-toast";
 
 interface iNavLeftProps extends React.HTMLProps<HTMLDivElement> {
+  idPost: string;
   owner: {
     avatarLink: string | null;
     id: string;
@@ -21,7 +24,11 @@ interface iNavLeftProps extends React.HTMLProps<HTMLDivElement> {
 }
 
 const NavLeft: React.FC<iNavLeftProps> = (props) => {
-  const { className, owner, like, isFollow } = props;
+  const { className, idPost, owner, like, isFollow } = props;
+  const [isFollowState, setIsFollowState] = useState<boolean>(
+    isFollow || false
+  );
+  const [isDisable, setDisable] = useState<boolean>(false);
   // console.log(isFollow);
   return (
     <div className={" " + " " + className}>
@@ -64,14 +71,34 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
         </div>
         <button
           data-tip={
-            isFollow ? "Bỏ Bookmark bài viết này" : "Bookmark bài viết này"
+            isFollowState ? "Unfollow bài viết này" : "Follow bài viết này"
           }
           data-for="bookmark"
           className={
-            "mb-4 mt-2 w-10 h-10 flex flex-col justify-center  items-center border-[1px] border-white rounded-full " +
-            "hover:bg-primary hover:border-primary transition-colors duration-500 " +
-            (isFollow && " bg-primary border-primary ")
+            "mb-4 mt-2 w-10 h-10 flex flex-col justify-center  items-center border-[1px] border-white rounded-full transition-colors duration-50 " +
+            (!isDisable && "hover:bg-primary hover:border-primary 0 ") +
+            (isFollowState && " bg-primary border-primary ") +
+            (isDisable && " cursor-not-allowed ")
           }
+          disabled={isDisable}
+          onClick={async () => {
+            setDisable(true);
+            var result;
+            if (isFollowState === true) {
+              result = await userApi.followPost(idPost);
+            } else {
+              result = await userApi.followPost(idPost);
+            }
+            if (result.status === 201) {
+              if (isFollowState === true)
+                toast.error("Unfollow bài viết thành công!");
+              else toast.success("Follow bài viết thành công!");
+              setIsFollowState(!isFollowState);
+            }
+            await setTimeout(() => {
+              setDisable(false);
+            }, 1000);
+          }}
         >
           <ListFill />
           <ReactTooltip
