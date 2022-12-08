@@ -1,10 +1,14 @@
 import React, { useEffect, useRef } from "react";
 import Skeleton from "react-loading-skeleton";
 
-const ListSkeleton = () => {
+interface iProps {
+  scroll?: boolean;
+}
+
+const ListSkeleton: React.FC<iProps> = (props) => {
   const refD = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (refD !== null && refD.current) {
+    if (refD !== null && refD.current && props.scroll) {
       refD.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [refD]);

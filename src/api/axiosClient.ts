@@ -46,7 +46,6 @@ axiosClient.interceptors.response.use(
       error.response.data.message === "Unauthorized"
     ) {
       console.log("refresh");
-
       prevRequest.sent = true;
       console.log("refreshToken: ", refreshToken);
 
@@ -79,7 +78,8 @@ axiosClient.interceptors.response.use(
             return await config;
           }
         );
-
+        console.log(prevRequest);
+        console.log((await lazyAxios(prevRequest)).config);
         return await lazyAxios(prevRequest);
       }
     } else if (error.response) {

@@ -3,9 +3,11 @@ import { iPage } from "src/DTO";
 
 import { ChevronRight, ChevronLeft } from "@icons/index";
 import Skeleton from "react-loading-skeleton";
+import toast from "react-hot-toast";
 
 interface iLazy extends iPage {
   loading?: boolean;
+  changePageNumber: (number: number) => void;
 }
 const Pagination: React.FC<iLazy> = (props) => {
   const { order, pageNumber, totalElement, size, changePageNumber, loading } =
@@ -14,9 +16,26 @@ const Pagination: React.FC<iLazy> = (props) => {
   const [curPage, setCurPage] = useState(pageNumber);
   const [maxPage, setMaxPage] = useState(Math.ceil(totalElement / size));
 
+  const [onChangeInput, setOnChangeInput] = useState(false);
+
   useEffect(() => {
-    changePageNumber(curPage);
+    let timer: NodeJS.Timeout;
+    const funcFake = async () => {
+      timer = setTimeout(() => {
+        if (1 <= curPage && curPage <= maxPage) {
+          changePageNumber(curPage);
+        } else {
+          changePageNumber(1);
+          setCurPage(1);
+          toast.error("Số trang không hợp lệ");
+        }
+      }, 1000);
+    };
+    funcFake();
     setMaxPage(Math.ceil(totalElement / size));
+    return () => {
+      clearTimeout(timer);
+    };
   }, [curPage, totalElement]);
 
   console.log(curPage);
@@ -47,11 +66,7 @@ const Pagination: React.FC<iLazy> = (props) => {
             type="number"
             disabled={totalElement === 0}
             onChange={(e) => {
-              if (
-                1 <= parseInt(e.target.value) &&
-                parseInt(e.target.value) <= maxPage
-              )
-                setCurPage(parseInt(e.target.value));
+              setCurPage(parseInt(e.target.value));
             }}
           />
         )}

@@ -23,7 +23,7 @@ function App() {
       </div>
       {isShow ? (
         <div
-          className="fixed z-99999999999999999999 bg-primary p-2 rounded-md  bottom-8 right-8 hover:cursor-pointer"
+          className="fixed z-[10010] bg-primary p-2 rounded-md  bottom-8 right-8 hover:cursor-pointer"
           onClick={async () => {
             document.body.scrollTop = 0; // For Safari
             document.documentElement.scrollTop = 0;

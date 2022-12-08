@@ -30,6 +30,7 @@ import Categories from "@screens/Categories";
 const DeClareRouter = () => {
   const { error, accessToken } = useSelector((state: RootState) => state.users);
   const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
+  console.log(accessTokenFromLocalStorage !== null);
   const [beLogged, setLogged] = useState(accessTokenFromLocalStorage !== null);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ const DeClareRouter = () => {
       dispatch(userGetMe());
     } else setLogged(false);
     if (error && error === "Network Error") {
-      navigate("networkError");
+      navigate("/networkError");
     }
     return () => {
       disconnectSocket();
@@ -97,7 +98,12 @@ const DeClareRouter = () => {
             element={
               <ProtectedRoute isAuthenticated={beLogged} outlet={<Me />} />
             }
-          />
+          >
+            {/* <Route path="posted" element={<div></div>} />
+            <Route path="followed" element={<div></div>} />
+            <Route path="voted" element={<div></div>} />
+            <Route path="seen" element={<div></div>} /> */}
+          </Route>
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

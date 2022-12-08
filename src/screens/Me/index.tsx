@@ -12,6 +12,8 @@ import MainContent from "./MainContent";
 import ImageSection from "./ImageSection";
 import Skeleton from "react-loading-skeleton";
 import toast from "react-hot-toast";
+import { BeatLoader } from "react-spinners";
+import { Outlet } from "react-router-dom";
 
 const Me = () => {
   const { userInfo, loading, error } = useSelector(
@@ -20,10 +22,16 @@ const Me = () => {
   const [showInForPopup, setShowInForPopup] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    dispatch(userGetMe());
-    if (error && error !== null) toast.error(error);
-    dispatch(resetUserState);
+    // dispatch(userGetMe());
+    // if (error && error !== null) toast.error(error);
+    // dispatch(resetUserState);
   }, []);
+  if (!userInfo)
+    return (
+      <div className="h-[calc(100vh-52px)] flex justify-center items-center bg-bg">
+        <BeatLoader color="#fff" />
+      </div>
+    );
   return (
     <>
       <div className=" min-h-[calc(100vh-52px)] bg-bg flex flex-col ">
@@ -106,7 +114,7 @@ const Me = () => {
         </div>
 
         {!loading ? (
-          <MainContent />
+          <MainContent /> //Outlet here
         ) : (
           <>
             <Skeleton height={"40px"} />
@@ -118,4 +126,4 @@ const Me = () => {
   );
 };
 
-export default React.memo(Me);
+export default Me;

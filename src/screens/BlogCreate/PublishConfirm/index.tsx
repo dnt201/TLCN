@@ -42,7 +42,8 @@ const PublishConfirm: React.FC<iProps> = (props) => {
           <img
             src={img ? img : SureImage}
             className={
-              "w-1/3 " + (img ? "  w-1/4 rounded-full mx-2 my-4" : null)
+              "w-1/3 h-1/3 " +
+              (img ? "  w-1/4 h-1/4 rounded-full mx-2 my-4" : null)
             }
           />
           <span className=" p-2 ">

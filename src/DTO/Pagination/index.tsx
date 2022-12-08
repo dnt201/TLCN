@@ -3,5 +3,4 @@ export interface iPage {
   pageNumber: number;
   totalElement: number;
   order: [];
-  changePageNumber: (number: number) => void;
 }

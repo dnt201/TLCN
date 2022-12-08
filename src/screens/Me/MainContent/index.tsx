@@ -1,6 +1,8 @@
-import React, { ReactComponentElement, useState, memo } from "react";
+import React, { ReactComponentElement, useState, memo, useEffect } from "react";
 import { Post, List, Voted, Seen } from "@icons/index";
-import ListPost from "./ListPost";
+import ListPosted from "./ListPosted";
+import { Outlet } from "react-router-dom";
+import ListFollowed from "./ListFollowed";
 interface iNav {
   id: number;
   title: string;
@@ -31,7 +33,10 @@ const listNav: iNav[] = [
 
 const MainContent = memo(function MainContent() {
   const [selectId, setSelectId] = useState(1);
-  console.log(selectId);
+  const [number, setNumber] = useState<number | null>(null);
+  useEffect(() => {
+    setNumber(null);
+  }, [selectId]);
   return (
     <div className="lg:mx-[10%]">
       <div className="flex  justify-center items-center">
@@ -43,14 +48,25 @@ const MainContent = memo(function MainContent() {
                 ? " text-primary border-t-[2px] mb-1px border-primary"
                 : "  text-white ")
             }
-            onClick={() => setSelectId(item.id)}
+            onClick={() => {
+              if (selectId === item.id) {
+              } else {
+                setSelectId(item.id);
+              }
+            }}
             key={item.id}
           >
             <span className="mr-1"> {<item.icon />}</span> {item.title}
+            {selectId === item.id && number !== null && ` (${number})`}
           </button>
         ))}
       </div>
-      <ListPost selectId={selectId} />
+      {selectId === 1 ? (
+        <ListPosted selectId={selectId} setNumber={setNumber} />
+      ) : selectId === 2 ? (
+        <ListFollowed />
+      ) : null}
+      {/* <ListPosted selectId={selectId} /> */}
     </div>
   );
 });

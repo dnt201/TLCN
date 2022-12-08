@@ -27,10 +27,10 @@ const SearchBox: React.FC<iProps> = (props) => {
   // console.log("show ne", listUser);
 
   const handleChange = async () => {
-    const [users, posts, categories] = await Promise.all([
-      userApi.findUserByDisplayName(inputSearch),
-      postApi.getAllPost(inputSearch),
-      categoryApi.getCategoryByName(inputSearch),
+    const [users, posts] = await Promise.all([
+      userApi.findUserByDisplayName(inputSearch.trim()),
+      postApi.getAllPost(inputSearch.trim(), 1, 7),
+      // categoryApi.getCategoryByName(inputSearch),
     ]);
     console.log(
       // "users ",
@@ -55,26 +55,30 @@ const SearchBox: React.FC<iProps> = (props) => {
           setListPost(temp);
         } else setListPost(posts.data.result.data);
       }
-      if (categories.status === 200) {
-        if (categories.data.data.length >= 5) {
-          let temp = categories.data.data.slice(0, 5);
-          setListCategory(temp);
-        } else setListCategory(categories.data.data);
-      }
+      // if (categories.status === 200) {
+      //   if (categories.data.data.length >= 5) {
+      //     let temp = categories.data.data.slice(0, 5);
+      //     setListCategory(temp);
+      //   } else setListCategory(categories.data.data);
+      // }
       setLoading(false);
     }, 1000);
   };
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    const funcFake = async () => {
-      setLoading(true);
-      timer = setTimeout(() => {
-        if (inputSearch.length > 0) {
-          handleChange();
-        }
-      }, 1000);
-    };
-    funcFake();
+    if (inputSearch.trim().length === 0) {
+      setLoading(false);
+    } else {
+      const funcFake = async () => {
+        setLoading(true);
+        timer = setTimeout(() => {
+          if (inputSearch.trim().length > 0) {
+            handleChange();
+          }
+        }, 1000);
+      };
+      funcFake();
+    }
     return () => {
       clearTimeout(timer);
     };

@@ -99,6 +99,7 @@ const MidContent: React.FC<iMidContentProps> = (props) => {
               {tags
                 ? tags.map((tag) => (
                     <div
+                      key={tag.id}
                       className="flex w-fit hover:cursor-pointer rounded-md  flex-row items-center p-3 bg-hover"
                       onClick={(e) => {
                         console.log("navigate qua all post of tag");

@@ -34,12 +34,13 @@ const postApi = {
     formData.append("tags", postData.tags.toString());
     return axiosClient.put(url, formData);
   },
-  getAllPost: (name?: string, pageNumber?: number) => {
+  getAllPost: (name?: string, pageNumber?: number, size?: number) => {
     let url = ``;
+    console.log("get all post", name, pageNumber, size);
     if (name !== undefined && name !== "") url = `/post/all?name=${name}`;
-    else url = `/post/all`;
+    else url = `/post/all?name`;
     return axiosClient.post(url, {
-      size: 3,
+      size: size || 3,
       pageNumber: pageNumber || 1,
     });
   },
@@ -52,9 +53,12 @@ const postApi = {
     const data = { postTags };
     return axiosClient.get(url, { data });
   },
-  getAllPostByUser: (userId: string) => {
+  getAllPostByUser: (userId: string, pageNumber?: number, size?: number) => {
     const url = `/post/all-by-user/${userId}`;
-    return axiosClient.post(url);
+    return axiosClient.post(url, {
+      size: size || 5,
+      pageNumber: pageNumber || 1,
+    });
   },
   getPostDetailById: (postId: string) => {
     const url = `/post/${postId}`;
@@ -63,14 +67,14 @@ const postApi = {
   getListPostHaveBeenVote: (pageNumber?: number) => {
     const url = `/post/all-post-vote`;
     return axiosClient.post(url, {
-      size: 3,
+      size: 5,
       pageNumber: pageNumber || 1,
     });
   },
   getListPostHaveBeenView: (pageNumber?: number) => {
     const url = `/post/all-post-view`;
     return axiosClient.post(url, {
-      size: 3,
+      size: 5,
       pageNumber: pageNumber || 1,
     });
   },
@@ -80,7 +84,7 @@ const postApi = {
       url = `/post/all-post-follow?name=${name}`;
     else url = `/post/all-post-follow`;
     return axiosClient.post(url, {
-      size: 3,
+      size: 5,
       pageNumber: pageNumber || 1,
     });
   },

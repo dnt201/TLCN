@@ -26,12 +26,11 @@ const ListInfinityNewest = () => {
     setPage(-1);
   }, [accessToken]);
   const handlePageChange = async (pageNumber: number) => {
-    console.log("Handle page chag");
-
     if (listBlogTag !== null && listBlogTag.length > 0) {
       let temp = listBlogTag;
       await setTimeout(async () => {
-        const result = await postApi.getAllPost("", pageNumber);
+        const result = await postApi.getAllPost("", pageNumber, 2);
+        console.log(result);
         if (result.status === 201) {
           setListBlogTag(result.data.result.data);
           setPaging(result.data.result.page);
@@ -42,7 +41,9 @@ const ListInfinityNewest = () => {
       }, 1250);
     } else {
       await setTimeout(async () => {
-        const result = await postApi.getAllPost("", pageNumber);
+        const result = await postApi.getAllPost("", pageNumber, 2);
+        console.log(result);
+
         if (result.status === 201) {
           setListBlogTag(result.data.result.data);
           setPaging(result.data.result.page);

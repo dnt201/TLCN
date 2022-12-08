@@ -58,7 +58,7 @@ const BlogSearchTag: React.FC<iProps> = (props) => {
             data-tip={`Đã có ${comment} bình luận`}
             data-for="comment"
           >
-            <ChatBubbleBottomCenterText className="w-3 h-3" /> {view}
+            <ChatBubbleBottomCenterText className="w-3 h-3" /> {comment}
             <ReactTooltip
               textColor="#FF4401"
               id="comment"

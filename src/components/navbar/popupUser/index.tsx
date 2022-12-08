@@ -56,19 +56,21 @@ const PopUpUser: React.FC<iPopUpUserProps> = (props) => {
         className
       }
     >
-      <div className="flex items-center p-2 rounded-md hover:cursor-pointer hover:bg-hover">
+      <div
+        className="flex items-center p-2 rounded-md hover:cursor-pointer hover:bg-hover"
+        onClick={() => {
+          navigate("/me");
+          setShow(0);
+        }}
+      >
         <img
           src={userInfo?.avatarLink || ava1}
           alt="user avatar"
           className="h-9 w-9 rounded-full"
         />
-        <Link
-          to="/me"
-          className="font-medium text-[15px] pl-2  overflow-hidden text-ellipsis whitespace-nowrap"
-          onClick={() => setShow(0)}
-        >
+        <span className="font-medium text-[15px] pl-2  overflow-hidden text-ellipsis whitespace-nowrap">
           {userInfo && userInfo.username}
-        </Link>
+        </span>
       </div>
       <div className="border-b-[1px] mt-2 w-100% mx-2 border-dark3"></div>
 

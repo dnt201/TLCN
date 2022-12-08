@@ -116,7 +116,13 @@ const Navbar = () => {
           }
         >
           {!isSearchFocus ? (
-            <Link to="/" className="flex items-center">
+            <Link
+              to="/"
+              className="flex items-center"
+              onClick={() => {
+                if (window.location.pathname === "/") navigate(0);
+              }}
+            >
               <img
                 src="https://flowbite.com/docs/images/logo.svg"
                 className=" mr-1 h-9  keyframes-appear duration-[5000]"
@@ -142,7 +148,9 @@ const Navbar = () => {
 
             <input
               value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
+              onChange={(e) => {
+                setSearchValue(e.target.value);
+              }}
               placeholder="Tìm kiếm với Teaching Me..."
               className={
                 "px-2 py-1 w-full rounded-full text-sm text-bg  focus:border-0 focus:outline-none "
@@ -151,14 +159,20 @@ const Navbar = () => {
               onFocus={() => setSearchFocus(true)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  console.log("navigate with", searchValue);
-                  if (searchValue.length === 0 || searchValue === "") {
-                    toast.error("Empty name search!!!");
+                  if (searchValue.trim().length <= 0) {
                   } else {
-                    navigate(`/search?q=${searchValue}&type=post`);
-                    // setSearchValue("");
-                    e.currentTarget.blur();
-                    setSearchFocus(false);
+                    console.log("navigate with", searchValue);
+                    if (
+                      searchValue.length === 0 ||
+                      (searchValue === "" && searchValue.trim().length === 0)
+                    ) {
+                      toast.error("Empty name search!!!");
+                    } else {
+                      navigate(`/search?q=${searchValue.trim()}&type=posts`);
+                      // setSearchValue("");
+                      e.currentTarget.blur();
+                      setSearchFocus(false);
+                    }
                   }
                 }
               }}
@@ -210,6 +224,9 @@ const Navbar = () => {
                 <li className="flex">
                   <Link
                     to={item.linkTo}
+                    onClick={() => {
+                      if (window.location.pathname === item.linkTo) navigate(0);
+                    }}
                     className={
                       "relative px-12 py-4 tablet:px-8   phone:py-4 phone:px-4 text-black group transition-all " +
                       " hover:bg-hover " +

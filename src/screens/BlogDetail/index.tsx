@@ -87,7 +87,7 @@ const BlogDetail = () => {
             <div className=" max-w-[1016px]   w-full mx-auto">
               <div className=" my-8 w-full mx-auto">
                 <h4 className="pb-2">
-                  Bài viết khác từ
+                  Bài viết khác từ{" "}
                   <b
                     className="text-primary hover:cursor-pointer"
                     onClick={(e) => {
@@ -99,9 +99,7 @@ const BlogDetail = () => {
                   </b>
                 </h4>
                 <div className="w-full flex justify-center my-4">
-                  <i className="">
-                    Từ từ, làm tính năng comment đã :v Lười quá
-                  </i>
+                  <i className="">Danh sách bài viết của user</i>
                 </div>
               </div>
 
