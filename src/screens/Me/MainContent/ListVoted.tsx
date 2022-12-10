@@ -4,11 +4,13 @@ import BlogTag from "@components/blogTag";
 import Pagination from "@components/pagination";
 import { iPostDetail } from "@DTO/Blog";
 import { iPage } from "@DTO/Pagination";
+import BlogNotFound from "@screens/BlogDetail/NotFound";
 import ListSkeleton from "@screens/Home/CenterContent/ListSkeleton";
 import NoPost from "@screens/Home/CenterContent/NoPost";
+import SkeletonTag from "@screens/Home/LeftContent/SkeletonTag";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 interface iProps {
   selectId: number;
@@ -17,25 +19,25 @@ interface iProps {
   setLoading: (b: boolean) => void;
 }
 
-const ListFollowed: React.FC<iProps> = (props) => {
+const ListVoted: React.FC<iProps> = (props) => {
   const { selectId, setNumber, loading, setLoading } = props;
   const { userInfo } = useSelector((state: RootState) => state.users);
   const navigate = useNavigate();
-  const [listFollow, setListFollow] = useState<iPostDetail[] | null>(null);
-  const [pagingListFollow, setPagingListFollow] = useState<iPage | null>(null);
+  const [listVoted, setListVoted] = useState<iPostDetail[] | null>(null);
+  const [pagingListVoted, setPagingListVoted] = useState<iPage | null>(null);
   const [curPage, setCurPage] = useState(1);
-  const getListFollow = async (page: number) => {
+  const getListVoted = async (page: number) => {
     if (userInfo) {
-      const result = await postApi.getListPostHaveBeenFollow("", page);
-      console.log(result);
+      setLoading(true);
+      const result = await postApi.getListPostHaveBeenVote(page);
       if (result.status === 201) {
-        setListFollow(result.data.result.data);
-        setPagingListFollow(result.data.result.page);
+        setListVoted(result.data.result.data);
+        setPagingListVoted(result.data.result.page);
         setNumber(result.data.result.page.totalElement);
         setLoading(false);
       } else {
-        setListFollow(null);
-        setPagingListFollow(null);
+        setListVoted(null);
+        setPagingListVoted(null);
       }
     }
   };
@@ -44,8 +46,8 @@ const ListFollowed: React.FC<iProps> = (props) => {
     console.log("List rerender");
     if (!userInfo) {
       navigate("/login");
-    } else if (selectId === 2) {
-      getListFollow(curPage || 1);
+    } else if (selectId === 3) {
+      getListVoted(curPage || 1);
     }
   }, [curPage]);
   if (loading) {
@@ -53,28 +55,27 @@ const ListFollowed: React.FC<iProps> = (props) => {
   }
   return (
     <>
-      {listFollow === null ||
-      pagingListFollow === null ||
-      listFollow.length <= 0 ? (
+      {listVoted === null ||
+      pagingListVoted === null ||
+      listVoted.length <= 0 ? (
         <div>
           <NoPost />
         </div>
       ) : (
-        <>
-          <div className="flex-1 ml-2 overflow-y-hidden overflow-hidden mt-2">
-            <div className="flex flex-col  items-center mb-2">
-              {listFollow?.map((post) => (
-                <React.Fragment key={post.id}>
-                  <BlogTag {...post} setPageForce={setCurPage} />
-                </React.Fragment>
-              ))}
-            </div>
+        <div className="flex-1 ml-2 overflow-y-hidden overflow-hidden mt-2">
+          <div className="flex flex-col  items-center mb-2">
+            {listVoted?.map((post) => (
+              <React.Fragment key={post.id}>
+                <BlogTag {...post} />
+              </React.Fragment>
+            ))}
           </div>
-          <Pagination changePageNumber={setCurPage} {...pagingListFollow} />
-        </>
+
+          <Pagination changePageNumber={setCurPage} {...pagingListVoted} />
+        </div>
       )}
     </>
   );
 };
 
-export default ListFollowed;
+export default ListVoted;

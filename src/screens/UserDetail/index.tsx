@@ -44,6 +44,7 @@ const UserDetail = () => {
     dispatch(resetPublicState());
   }, []);
   const { userId } = params;
+
   const [userInfoState, setUserInfoState] = useState<iUserDetail>();
   const [loading, setLoading] = useState(false);
   const [notFound, setNotFound] = useState(false);

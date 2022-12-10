@@ -186,7 +186,9 @@ const Login = () => {
             <div className=" flex flex-col flex-1">
               <input
                 placeholder="Enter your token"
-                className=" flex-1 mr-2 ml-6 text-bg p-2 text-sm border-bg border-[1px]"
+                className=" flex-1 mr-2 ml-6 text-bg p-2 text-sm border-bg2  focus:outline-none
+                border-b-[1px] focus:border-bg focus:border-b-2
+                "
                 value={tokenValidate}
                 onChange={(e) => setTokenValidate(e.target.value.toString())}
               />

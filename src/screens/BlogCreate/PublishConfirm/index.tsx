@@ -59,6 +59,7 @@ const PublishConfirm: React.FC<iProps> = (props) => {
             className="flex items-center bg-primary border-[1px] border-primary text-white px-2 py-1 text-sm rounded-sm"
             onClick={() => {
               setConfirmed(true);
+              setShow(false);
               console.log("change conffirm");
             }}
           >
@@ -67,7 +68,10 @@ const PublishConfirm: React.FC<iProps> = (props) => {
           </button>
           <button
             className="  mr-1 border-smokeDark  border-[1px]  bg-smokeHover  px-2 py-1 text-sm rounded-sm"
-            onClick={() => setShow(false)}
+            onClick={() => {
+              setConfirmed(false);
+              setShow(false);
+            }}
           >
             Cancel
           </button>

@@ -19,6 +19,7 @@ const ListInfinityNewest = () => {
   const [maxRoiLazyQuaTroi, setMaxRoiLazyQuaTroi] = useState(false);
   const { accessToken } = useSelector((state: RootState) => state.users);
 
+  console.log(maxRoiLazyQuaTroi);
   useEffect(() => {
     window.scrollTo(0, 0);
     setListBlogTag(null);
@@ -34,6 +35,8 @@ const ListInfinityNewest = () => {
         if (result.status === 201) {
           setListBlogTag(result.data.result.data);
           setPaging(result.data.result.page);
+          if (result.data.result.page.totalElement <= 3)
+            setMaxRoiLazyQuaTroi(true);
           temp = [...temp, ...result.data.result.data];
           setListBlogTag(temp);
         }
@@ -43,8 +46,9 @@ const ListInfinityNewest = () => {
       await setTimeout(async () => {
         const result = await postApi.getAllPost("", pageNumber, 2);
         console.log(result);
-
         if (result.status === 201) {
+          if (result.data.result.page.totalElement <= 3)
+            setMaxRoiLazyQuaTroi(true);
           setListBlogTag(result.data.result.data);
           setPaging(result.data.result.page);
           // setPage(result.data.result.page);
@@ -107,7 +111,7 @@ const ListInfinityNewest = () => {
     };
     if (paging !== null) window.addEventListener("scroll", handleScrollLoad);
     return () => {
-      setMaxRoiLazyQuaTroi(false);
+      // setMaxRoiLazyQuaTroi(false);
       window.removeEventListener("scroll", handleScrollLoad);
     };
   }, [paging]);
@@ -130,6 +134,7 @@ const ListInfinityNewest = () => {
                 isFollow={blog.isFollow}
                 like={blog.like}
                 view={blog.view}
+                status={blog.status || "Waiting"}
                 comment={blog.comment}
                 dateModified={blog.dateModified}
                 thumbnailLink={blog.thumbnailLink}

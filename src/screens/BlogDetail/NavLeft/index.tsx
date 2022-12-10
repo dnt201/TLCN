@@ -3,14 +3,20 @@ import {
   CareUp,
   FacebookLogo,
   ListFill,
+  More,
   Twitter,
+  Write,
 } from "@icons/index";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import avatarDefault from "@images/userDefault.png";
 import userApi from "@api/userApi";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { RootState } from "@app/store";
+import ActionModal from "./ActionModal";
+import postApi from "@api/postApi";
 
 interface iNavLeftProps extends React.HTMLProps<HTMLDivElement> {
   idPost: string;
@@ -21,18 +27,83 @@ interface iNavLeftProps extends React.HTMLProps<HTMLDivElement> {
   };
   like: number;
   isFollow: boolean;
+  status: "Approve" | "Waiting";
+  voteData?: "Upvote" | "DownVote";
 }
 
 const NavLeft: React.FC<iNavLeftProps> = (props) => {
-  const { className, idPost, owner, like, isFollow } = props;
+  const { className, idPost, owner, like, isFollow, status, voteData } = props;
   const [isFollowState, setIsFollowState] = useState<boolean>(
     isFollow || false
   );
+  const [disabledNotSpam, setDisableNotSpam] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
+  const [voteDataState, setVoteDataState] = useState<
+    "Upvote" | "DownVote" | null
+  >(null);
+  const [likeState, setLikeState] = useState(like);
+  useEffect(() => {
+    if (voteData === undefined) setVoteDataState(null);
+    else setVoteDataState(voteData);
+    setLikeState(like);
+  }, [voteData, like]);
   const [isDisable, setDisable] = useState<boolean>(false);
+  const [showActionModal, setShowActionModal] = useState(false);
+  const refDivActionModal = useRef<HTMLDivElement>(null);
+
   // console.log(isFollow);
+  const accessToken = localStorage.getItem("accessToken");
+  const getMe = async () => {
+    const data = await userApi.getMe();
+    if (data.status === 200) {
+      if (data.data.id === owner.id) setIsOwner(true);
+    }
+  };
+  console.log(voteDataState, "votedata");
+  useEffect(() => {
+    const handleClickOutActionModal = (event: any) => {
+      // const buttonShowUser = document.getElementById("showUser");
+      // console.log(buttonShowUser);
+
+      if (
+        refDivActionModal.current &&
+        !refDivActionModal.current.contains(event.target)
+      ) {
+        setShowActionModal(false);
+      } else {
+      }
+    };
+    document.addEventListener("click", handleClickOutActionModal, true);
+    return () => {
+      document.removeEventListener("click", handleClickOutActionModal, true);
+    };
+  }, [refDivActionModal]);
+
+  useEffect(() => {
+    getMe();
+  }, [accessToken]);
+  const { userInfo } = useSelector((state: RootState) => state.users);
   return (
     <div className={" " + " " + className}>
-      <div className="visible flex flex-col items-center pl-[50%] ">
+      <div className="visible flex flex-col  items-center pl-[50%] ">
+        {isOwner ? (
+          <div className="p-1 mb-4 relative " ref={refDivActionModal}>
+            <More
+              className="w-6 h-6 hover:cursor-pointer"
+              data-tip="Chỉnh sửa bài viết"
+              data-for="acctionOfPostNavLeft"
+              onClick={() => setShowActionModal(!showActionModal)}
+            />
+            <ReactTooltip
+              textColor="#FF4401"
+              id="acctionOfPostNavLeft"
+              place="top"
+              effect="solid"
+            />
+            {showActionModal ? <ActionModal idPost={idPost} /> : null}
+          </div>
+        ) : null}
+
         <Link to={`/user-detail/${owner.id}`}>
           <img
             src={owner.avatarLink ? owner.avatarLink : avatarDefault}
@@ -41,8 +112,52 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
           />
         </Link>
         <div className="flex flex-col items-center my-4">
-          <button className="p-1 group" data-tip="Up vote" data-for="upVote">
-            <CareUp className="group-hover:fill-primary  transition-colors duration-500 " />
+          <button
+            className={"p-1 group   disabled:cursor-not-allowed"}
+            data-tip={
+              voteDataState !== null && voteDataState === "Upvote"
+                ? "Un vote"
+                : "Up vote"
+            }
+            disabled={disabledNotSpam}
+            data-for="upVote"
+            onClick={async () => {
+              if (status === undefined || status !== "Approve") {
+                toast.error("Bài viết chưa được phê duyệt");
+              } else {
+                setDisableNotSpam(true);
+                const result = await postApi.voteUp(idPost);
+                if (result.status === 201) {
+                  if (voteDataState === null) {
+                    toast.success(`Vote success`);
+                    setVoteDataState("Upvote");
+                    setLikeState(likeState + 1);
+                  } else if (voteDataState === "DownVote") {
+                    toast.success(`Vote success`);
+                    setVoteDataState("Upvote");
+                    setLikeState(likeState + 2);
+                  } else {
+                    toast.error(`UnVote success`);
+                    setVoteDataState(null);
+                    setLikeState(likeState - 1);
+                  }
+                } else {
+                  toast.error(
+                    `Something went wrong ${result.data.message} vote up`
+                  );
+                }
+                setTimeout(() => setDisableNotSpam(false), 2500);
+              }
+            }}
+          >
+            <CareUp
+              className={
+                " transition-colors duration-500 " +
+                (voteDataState !== null && voteDataState === "Upvote"
+                  ? " fill-primary  "
+                  : !disabledNotSpam && "  group-hover:fill-primary ")
+              }
+            />
             <ReactTooltip
               textColor="#FF4401"
               id="upVote"
@@ -51,16 +166,61 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
             />
           </button>
 
-          <span className="font-medium CareDown">
-            {like >= 0 ? `+${like}` : like}
+          <span
+            className={
+              "font-medium CareDown" +
+              (voteDataState !== null && " font-semibold text-primary")
+            }
+          >
+            {likeState >= 0 ? `+${likeState}` : likeState}
           </span>
 
           <button
-            className="p-1 group"
-            data-tip="Down vote"
+            className={"p-1 group disabled:cursor-not-allowed"}
+            data-tip={
+              voteDataState !== null && voteDataState === "DownVote"
+                ? "Un vote"
+                : "Down vote"
+            }
+            disabled={disabledNotSpam}
             data-for="downVote"
+            onClick={async () => {
+              if (status === undefined || status !== "Approve") {
+                toast.error("Bài viết chưa được phê duyệt");
+              } else {
+                setDisableNotSpam(true);
+                const result = await postApi.voteDown(idPost);
+                if (result.status === 201) {
+                  if (voteDataState === null) {
+                    toast.success(`Down vote success`);
+                    setVoteDataState("DownVote");
+                    setLikeState(likeState - 1);
+                  } else if (voteDataState === "Upvote") {
+                    toast.success(`Down vote success`);
+                    setVoteDataState("DownVote");
+                    setLikeState(likeState - 2);
+                  } else {
+                    toast.error(`UnVote success`);
+                    setVoteDataState(null);
+                    setLikeState(likeState + 1);
+                  }
+                } else {
+                  toast.error(
+                    `Something went wrong ${result.data.message} vote up`
+                  );
+                }
+                setTimeout(() => setDisableNotSpam(false), 2500);
+              }
+            }}
           >
-            <CareDown className="group-hover:fill-primary transition-colors duration-500 " />
+            <CareDown
+              className={
+                " transition-colors duration-500 " +
+                (voteDataState !== null && voteDataState === "DownVote"
+                  ? " fill-primary  "
+                  : !disabledNotSpam && "  group-hover:fill-primary ")
+              }
+            />
             <ReactTooltip
               textColor="#FF4401"
               id="downVote"
@@ -75,9 +235,9 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
           }
           data-for="bookmark"
           className={
-            "mb-4 mt-2 w-10 h-10 flex flex-col justify-center  items-center border-[1px] border-white rounded-full transition-colors duration-50 " +
-            (!isDisable && "hover:bg-primary hover:border-primary 0 ") +
-            (isFollowState && " bg-primary border-primary ") +
+            "mb-4 mt-2 w-10 h-10 flex flex-col duration-75 justify-center  items-center border-[1px] rounded-full transition-colors   group " +
+            (!isDisable && " hover:border-primary 0 ") +
+            (isFollowState ? " bg-primary border-primary  " : " border-bg ") +
             (isDisable && " cursor-not-allowed ")
           }
           disabled={isDisable}
@@ -94,13 +254,23 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
                 toast.error("Unfollow bài viết thành công!");
               else toast.success("Follow bài viết thành công!");
               setIsFollowState(!isFollowState);
+            } else {
+              if (result.status === 404)
+                toast.error("Bài viết chưa được phê duyệt");
             }
             await setTimeout(() => {
               setDisable(false);
             }, 1000);
           }}
         >
-          <ListFill />
+          <ListFill
+            className={
+              " duration-75 " +
+              (isFollowState
+                ? " fill-white "
+                : !isDisable && "  group-hover:fill-primary  ")
+            }
+          />
           <ReactTooltip
             textColor="#FF4401"
             id="bookmark"
@@ -108,24 +278,6 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
             effect="solid"
           />
         </button>
-
-        {/* <iframe
-          src={`https://www.facebook.com/plugins/share_button.php?href=https://viblo.asia/p/cau-hinh-aws-credential-zOQJwYPxVMP#_tao-nhieu-profile-credential-2&layout=button&size=large&width=87&height=28&appId`}
-          width="87"
-          height="28"
-          className="border-none overflow-hidden"
-          scrolling="no"
-          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-          data-tip="Share bài viết này lên facebook"
-          data-for="facebookShare"
-        >
-          <ReactTooltip
-            textColor="#FF4401"
-            id="facebookShare"
-            place="right"
-            effect="solid"
-          />
-        </iframe> */}
 
         <button
           className="mt-4 mb-2"

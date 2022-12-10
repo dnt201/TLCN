@@ -7,6 +7,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "./editor.css";
 import fileApi from "@api/fileApi";
 import toast from "react-hot-toast";
+import { BellFill } from "@icons/index";
 interface iEditorProps extends React.HTMLProps<HTMLDivElement> {
   setValue: (a: string) => void;
   valueHTML: string;
@@ -50,8 +51,35 @@ const EditorText: React.FC<iEditorProps> = (props) => {
 
           let a = draftToHtml(convertToRaw(newState.getCurrentContent()));
           let temp = document.createElement("div");
+
           var flag = false;
+
           temp.innerHTML = a;
+          // temp.querySelectorAll("h1").forEach((item) => {
+          //   item.style.backgroundColor = "transparent";
+          // });
+          // temp.querySelectorAll("h2").forEach((item) => {
+          //   item.style.backgroundColor = "transparent";
+          //   console.log(item.style.color);
+          // });
+          // temp.querySelectorAll("h3").forEach((item) => {
+          //   item.style.backgroundColor = "transparent";
+          // });
+          // temp.querySelectorAll("h4").forEach((item) => {
+          //   item.style.backgroundColor = "transparent";
+          // });
+          // temp.querySelectorAll("h5").forEach((item) => {
+          //   item.style.backgroundColor = "transparent";
+          // });
+          // temp.querySelectorAll("h6").forEach((item) => {
+          //   item.style.backgroundColor = "transparent";
+          // });
+          // temp.querySelectorAll("div").forEach((item) => {
+          //   item.style.backgroundColor = "transparent";
+          // });
+          // temp.querySelectorAll("a").forEach((item) => {
+          //   item.style.backgroundColor = "transparent";
+          // });
           temp.querySelectorAll("img").forEach((item) => {
             item.style.marginLeft = "auto";
             item.style.marginRight = "auto";
@@ -107,11 +135,15 @@ const EditorText: React.FC<iEditorProps> = (props) => {
           "list",
           "textAlign",
           "embedded",
+          "colorPicker",
           "link",
           "emoji",
           "image",
           "history",
         ],
+        colorPicker: {
+          inDropdown: true,
+        },
         inline: {
           inDropdown: true,
           options: [

@@ -11,13 +11,18 @@ export interface iTagProp extends React.HTMLAttributes<HTMLDivElement> {
   bgColor?: string;
   onChangeFilter?: (filter: string) => void;
   filter?: string;
+  isCategory?: boolean;
 }
 
 const Tag: React.FC<iTagProp> = (props) => {
-  const { filter, onChangeFilter } = props;
+  const { filter, onChangeFilter, isCategory } = props;
   return (
     <Link
-      to={`/tags/${props.href}`}
+      to={
+        isCategory !== undefined && isCategory === true
+          ? `/categories/${props.href}`
+          : `/tags/${props.href}`
+      }
       className={
         props.className +
         " flex flex-row  h-[52px] rounded-md items-center px-2  py-2 hover:bg-hover " +

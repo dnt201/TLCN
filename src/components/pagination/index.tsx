@@ -16,9 +16,11 @@ const Pagination: React.FC<iLazy> = (props) => {
   const [curPage, setCurPage] = useState(pageNumber);
   const [maxPage, setMaxPage] = useState(Math.ceil(totalElement / size));
 
-  const [onChangeInput, setOnChangeInput] = useState(false);
+  const [onClickNe, setOnClickNe] = useState(false);
 
   useEffect(() => {
+    console.log(curPage, maxPage);
+
     let timer: NodeJS.Timeout;
     const funcFake = async () => {
       timer = setTimeout(() => {
@@ -27,18 +29,29 @@ const Pagination: React.FC<iLazy> = (props) => {
         } else {
           changePageNumber(1);
           setCurPage(1);
-          toast.error("Số trang không hợp lệ");
+          if (maxPage !== 0) toast.error("Số trang không hợp lệ");
         }
       }, 1000);
     };
-    funcFake();
+    if (onClickNe) {
+      setOnClickNe(false);
+      if (1 <= curPage && curPage <= maxPage) {
+        changePageNumber(curPage);
+      } else {
+        changePageNumber(1);
+        setCurPage(1);
+        toast.error("Số trang không hợp lệ");
+      }
+    } else {
+      funcFake();
+    }
+
     setMaxPage(Math.ceil(totalElement / size));
     return () => {
       clearTimeout(timer);
     };
   }, [curPage, totalElement]);
 
-  console.log(curPage);
   return (
     <div className="flex flex-col items-center">
       <div className="flex w-full justify-center items-center p-2 text-primary">
@@ -50,6 +63,7 @@ const Pagination: React.FC<iLazy> = (props) => {
           disabled={curPage === 1 || maxPage === 1 || loading}
           onClick={() => {
             if (curPage - 1 >= 1) {
+              setOnClickNe(true);
               setCurPage(curPage - 1);
             }
           }}
@@ -81,6 +95,7 @@ const Pagination: React.FC<iLazy> = (props) => {
           }
           onClick={() => {
             if (curPage + 1 <= maxPage) {
+              setOnClickNe(true);
               setCurPage(curPage + 1);
             }
           }}

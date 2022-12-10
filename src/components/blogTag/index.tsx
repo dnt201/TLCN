@@ -15,6 +15,7 @@ interface iLazy extends iPostDetail {
   listFromFollowing?: iPostDetail[];
   setListFromFollowing?: (posts: iPostDetail[]) => void;
   setPage?: (number: number) => void;
+  setPageForce?: (number: number) => void;
 }
 
 const BlogTag: React.FC<iLazy> = (props) => {
@@ -32,6 +33,7 @@ const BlogTag: React.FC<iLazy> = (props) => {
     listFromFollowing,
     setListFromFollowing,
     setPage,
+    setPageForce,
   } = props;
   const navigate = useNavigate();
   const [isFollowState, setIsFollowState] = useState(isFollow);
@@ -48,7 +50,7 @@ const BlogTag: React.FC<iLazy> = (props) => {
         if (result.status === 201) {
           if (isFollowState) {
             toast.error("Đã Unfollow bài viết!");
-
+            if (setPageForce) setPageForce(-1);
             if (
               listFromFollowing &&
               setListFromFollowing &&
@@ -70,6 +72,7 @@ const BlogTag: React.FC<iLazy> = (props) => {
             }
             setIsFollowState(!isFollowState);
           } else {
+            if (setPageForce) setPageForce(-1);
             toast.success("Đã follow bài viết!");
             setIsFollowState(!isFollowState);
           }

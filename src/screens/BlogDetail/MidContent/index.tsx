@@ -4,12 +4,17 @@ import React, { useEffect, useRef, useState } from "react";
 import reactSelect from "react-select";
 import ReactTooltip from "react-tooltip";
 import { FacebookLogo, More, Twitter } from "@icons/index";
+import { useNavigate } from "react-router-dom";
+import { idText } from "typescript";
+import defaultIMG from "@images/default.jpg";
+
 interface iMidContentProps extends React.HTMLProps<HTMLDivElement> {
   title: string;
   content: string;
   setIdCurActive: (id: string) => void;
   tags: iTagLazyDeclareQuaNe[];
   owner: iOwnerLazy;
+  status: "Approve" | "Waiting";
 }
 interface iOwnerLazy {
   id: string;
@@ -26,8 +31,10 @@ interface iTagLazyDeclareQuaNe {
 }
 
 const MidContent: React.FC<iMidContentProps> = (props) => {
-  const { className, owner, content, title, setIdCurActive, tags } = props;
+  const { className, owner, content, title, setIdCurActive, tags, status } =
+    props;
   const midContentRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -73,6 +80,14 @@ const MidContent: React.FC<iMidContentProps> = (props) => {
   }
   return (
     <div className={"pb-[20vh] " + " " + className}>
+      {status !== undefined && status !== "Approve" && (
+        <h6 className=" text-center">
+          <i className="text-no text-xs">
+            Đang kiểm duyệt, bài viết sẽ được công khai khi quản trị viên xác
+            nhận!
+          </i>
+        </h6>
+      )}
       <h1 className="mb-4">{title}</h1>
       <div className="min-h-[calc(75vh-52px)] border-b-[1px] border-hover border-solid mb-4">
         <div
@@ -100,15 +115,22 @@ const MidContent: React.FC<iMidContentProps> = (props) => {
                 ? tags.map((tag) => (
                     <div
                       key={tag.id}
-                      className="flex w-fit hover:cursor-pointer rounded-md  flex-row items-center p-3 bg-hover"
+                      className="flex w-fit hover:cursor-pointer rounded-md  flex-row items-center p-3 bg-[#f1f1f1]"
                       onClick={(e) => {
+                        navigate(`/tags/${tag.id}`);
                         console.log("navigate qua all post of tag");
                         e.preventDefault();
                       }}
                     >
                       <img
                         className="w-6 h-6 mr-2"
-                        src={`${process.env.REACT_APP_API_URL}file/${tag.thumbnailId}`}
+                        src={
+                          tag.thumbnailId === undefined ||
+                          tag.thumbnailId === null ||
+                          tag.thumbnailId.length < 0
+                            ? defaultIMG
+                            : `${process.env.REACT_APP_API_URL}file/${tag.thumbnailId}`
+                        }
                       />
                       <h6>{tag.postTagName}</h6>
                     </div>

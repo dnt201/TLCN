@@ -40,6 +40,7 @@ const BlogDetail = () => {
     if (currentYOffset >= vH) setStick(true);
     else setStick(false);
   }
+  console.log(post?.tags);
 
   useEffect(() => {
     if (blogId) {
@@ -49,7 +50,10 @@ const BlogDetail = () => {
   if (loading) return <SkeletonBlogDetail />;
   if (!post?.id) return <BlogNotFound />;
   return (
-    <div ref={divRef} className="bg-bg min-h-[calc[100vh-52px]] flex flex-col">
+    <div
+      ref={divRef}
+      className="bg-white min-h-[calc[100vh-52px]] flex flex-col text-bg"
+    >
       {post ? (
         <>
           <img
@@ -58,15 +62,18 @@ const BlogDetail = () => {
             alt="banner"
           />
           <div className="flex flex-col">
-            <div className="flex pt-10 bg-bg  mb-4  min-h-full">
+            <div className="flex pt-10 bg-white  mb-4  min-h-full">
               <NavLeft
+                status={post.status}
+                voteData={post.voteData}
                 idPost={post.id}
                 owner={post.owner}
                 isFollow={post.isFollow}
                 like={post.like}
                 className={
-                  " h-[calc(70vh-52px)] flex-1 overflow-auto invisible hover:visible  " +
-                  (stick && " sticky w-[15%]  h-[calc(100vh-52px)] top-[72px] ")
+                  " h-[calc(70vh-52px)] flex-1   invisible hover:visible  " +
+                  (stick &&
+                    " sticky w-[15%]  h-[calc(100vh-52px)] top-[72px]  ")
                 }
               />
 
@@ -80,14 +87,15 @@ const BlogDetail = () => {
                 content={post.content}
                 className={
                   " h-[calc(70vh -52px)] flex-1 overflow-auto invisible hover:visible " +
-                  (stick && " sticky w-1/5 h-[calc(100vh-52px)] top-[72px]")
+                  (stick &&
+                    " sticky w-1/5 h-[calc(100vh-52px)] top-[52px] pb-4")
                 }
               />
             </div>
             <div className=" max-w-[1016px]   w-full mx-auto">
               <div className=" my-8 w-full mx-auto">
                 <h4 className="pb-2">
-                  Bài viết khác từ{" "}
+                  Bài viết khác từ
                   <b
                     className="text-primary hover:cursor-pointer"
                     onClick={(e) => {

@@ -86,6 +86,7 @@ const LeftContent: React.FC<iProps> = (props) => {
                 href={category.id}
                 title={`#${category.categoryName}`}
                 subTitle={category.PostCount}
+                isCategory={true}
               />
             ))
           ) : loading ? (

@@ -1,8 +1,10 @@
 import React, { ReactComponentElement, useState, memo, useEffect } from "react";
-import { Post, List, Voted, Seen } from "@icons/index";
+import { Post, List, Voted, Seen, CloudArrowUp } from "@icons/index";
 import ListPosted from "./ListPosted";
-import { Outlet } from "react-router-dom";
 import ListFollowed from "./ListFollowed";
+import ListVoted from "./ListVoted";
+import ListNotApprove from "./ListNotApprove";
+import ListSeen from "./ListSeen";
 interface iNav {
   id: number;
   title: string;
@@ -29,11 +31,18 @@ const listNav: iNav[] = [
     title: "Đã xem",
     icon: Seen,
   },
+  {
+    id: 5,
+    title: "Pending",
+    icon: CloudArrowUp,
+  },
 ];
 
 const MainContent = memo(function MainContent() {
   const [selectId, setSelectId] = useState(1);
   const [number, setNumber] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     setNumber(null);
   }, [selectId]);
@@ -52,6 +61,7 @@ const MainContent = memo(function MainContent() {
               if (selectId === item.id) {
               } else {
                 setSelectId(item.id);
+                setNumber(1);
               }
             }}
             key={item.id}
@@ -62,9 +72,40 @@ const MainContent = memo(function MainContent() {
         ))}
       </div>
       {selectId === 1 ? (
-        <ListPosted selectId={selectId} setNumber={setNumber} />
+        <ListPosted
+          selectId={selectId}
+          setNumber={setNumber}
+          loading={loading}
+          setLoading={setLoading}
+        />
       ) : selectId === 2 ? (
-        <ListFollowed />
+        <ListFollowed
+          selectId={selectId}
+          setNumber={setNumber}
+          loading={loading}
+          setLoading={setLoading}
+        />
+      ) : selectId === 3 ? (
+        <ListVoted
+          selectId={selectId}
+          setNumber={setNumber}
+          loading={loading}
+          setLoading={setLoading}
+        />
+      ) : selectId === 4 ? (
+        <ListSeen
+          selectId={selectId}
+          setNumber={setNumber}
+          loading={loading}
+          setLoading={setLoading}
+        />
+      ) : selectId === 5 ? (
+        <ListNotApprove
+          selectId={selectId}
+          setNumber={setNumber}
+          loading={loading}
+          setLoading={setLoading}
+        />
       ) : null}
       {/* <ListPosted selectId={selectId} /> */}
     </div>

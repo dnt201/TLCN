@@ -6,7 +6,7 @@ const CategoryItem: React.FC<iCategory> = (props) => {
   const { id, categoryName, PostCount } = props;
   return (
     <Link
-      to={`/category/${props.id}`}
+      to={`${props.id}`}
       className="w-[calc(33.3333333%-16px)] py-4 rounded-md mx-2 min-w-[200px] h-fit flex items-center px-4 mb-8 hover:bg-hover group transition-colors duration-300"
     >
       <div className=" bg-hover rounded-md p-2 mr-2 group-hover:bg-bg  transition-colors duration-300"></div>

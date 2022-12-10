@@ -231,8 +231,8 @@ const Navbar = () => {
                       "relative px-12 py-4 tablet:px-8   phone:py-4 phone:px-4 text-black group transition-all " +
                       " hover:bg-hover " +
                       " phone:w-screen" +
-                      " after:content-[''] after:border-b-2 after:absolute after:w-full after:bottom-0 after:left-0 after:border-primary " +
-                      (item.linkTo === window.location.pathname ||
+                      " after:content-[''] after:border-b-2 after:absolute after:translate-y-[2px] after:w-full after:bottom-0 after:left-0 after:border-primary " +
+                      (window.location.pathname.includes(item.linkTo) ||
                       (item.linkTo === "/newest" &&
                         (window.location.pathname === "/newest" ||
                           window.location.pathname === "/" ||
@@ -253,7 +253,7 @@ const Navbar = () => {
                       {item.title}
                     </span>
                     <i className=" w-full">
-                      {item.linkTo === window.location.pathname ||
+                      {window.location.pathname.includes(item.linkTo) ||
                       (item.linkTo === "/newest" &&
                         (window.location.pathname === "/newest" ||
                           window.location.pathname === "/" ||

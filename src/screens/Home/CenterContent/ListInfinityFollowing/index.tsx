@@ -35,6 +35,8 @@ const ListInfinityFollowing = () => {
       await setTimeout(async () => {
         const result = await postApi.getListPostHaveBeenFollow("", pageNumber);
         if (result.status === 201) {
+          if (result.data.result.page.totalElement <= 3)
+            setMaxRoiLazyQuaTroi(true);
           setListBlogTag(result.data.result.data);
           setPaging(result.data.result.page);
           temp = [...temp, ...result.data.result.data];
@@ -46,6 +48,8 @@ const ListInfinityFollowing = () => {
       await setTimeout(async () => {
         const result = await postApi.getListPostHaveBeenFollow("", pageNumber);
         if (result.status === 201) {
+          if (result.data.result.page.totalElement <= 3)
+            setMaxRoiLazyQuaTroi(true);
           setListBlogTag(result.data.result.data);
           setPaging(result.data.result.page);
           // setPage(result.data.result.page);
@@ -111,7 +115,7 @@ const ListInfinityFollowing = () => {
     };
     if (paging !== null) window.addEventListener("scroll", handleScrollLoad);
     return () => {
-      setMaxRoiLazyQuaTroi(false);
+      // setMaxRoiLazyQuaTroi(false);
       window.removeEventListener("scroll", handleScrollLoad);
     };
   }, [paging]);
@@ -132,6 +136,7 @@ const ListInfinityFollowing = () => {
                 owner={blog.owner}
                 isFollow={blog.isFollow}
                 like={blog.like}
+                status={blog.status || "Waiting"}
                 view={blog.view}
                 comment={blog.comment}
                 dateModified={blog.dateModified}

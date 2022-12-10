@@ -1,17 +1,25 @@
-import DialogBox from "@components/DialogBox";
+import categoryApi from "@api/categoryApi";
+import postApi, { postCreate } from "@api/postApi";
+import postTagApi from "@api/postTagApi";
+import userApi from "@api/userApi";
+import { RootState } from "@app/store";
 import EditorText from "@components/EditorText";
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import PublishConfirm from "@screens/BlogCreate/PublishConfirm";
+import BlogNotFound from "@screens/BlogDetail/NotFound";
 import DOMPurify from "dompurify";
-import Dropzone from "react-dropzone";
-import toast from "react-hot-toast";
 import { UpImage, XMark } from "@icons/index";
 import Select from "react-select";
-import postTagApi from "@api/postTagApi";
-import categoryApi from "@api/categoryApi";
+
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
-import PublishConfirm from "./PublishConfirm";
-import postApi, { postCreate } from "@api/postApi";
+import Dropzone from "react-dropzone";
+import { iPostDetail } from "@DTO/Blog";
+import Skeleton from "react-loading-skeleton";
+import EditPostSkeleton from "./EditPostSkeleton";
+
 interface iTag {
   id: string;
   postTagName: string;
@@ -28,15 +36,100 @@ interface iOption {
   value: string;
   label: string;
 }
-const BlogCreate = () => {
-  // const [showDialog, setShowDialog] = useState<boolean>(false);
+const EditPost = () => {
+  let params = useParams();
+  const { postId } = params;
+  const [postIdCur, setPostIdCur] = useState("");
+  const { userInfo } = useSelector((state: RootState) => state.users);
+
+  const getPostDetailById = async () => {
+    let accessToken = localStorage.getItem("accessToken");
+
+    if (accessToken !== null && postId !== undefined) {
+      const user = await userApi.getMe();
+      if (user.status === 200) {
+        const result = await postApi.getPostDetailById(postId);
+        if (result.status === 200 && user.data.id === result.data.owner.id) {
+          setPostIdCur(postId);
+          console.log(result.data);
+          const curPost: iPostDetail = result.data;
+          setTitle(curPost.title);
+          if (curPost.thumbnailLink !== null) {
+            let tempBlob = await fetch(result.data.thumbnailLink);
+            if (tempBlob) {
+              let blob = await tempBlob.blob();
+              const file = new File([blob], "image.jpg", { type: blob.type });
+              setThumbnail(file);
+            } else setThumbnail(null);
+          } else setThumbnail(null);
+          setValue(curPost.content);
+
+          const [tags, categories] = await Promise.all([
+            postTagApi.getAllPostTag10000(),
+            categoryApi.getAllCategory(),
+          ]);
+          if (tags.status === 201) {
+            console.log(tags);
+            // setListTag(tags.data.result.data);
+            let tempListTagSelected: iOption[] = [];
+            let tempListTag: iOption[] = [];
+            let tempTagsForm: string[] = [];
+            tags.data.result.data.forEach((element: iTag) => {
+              // console.log(curPost.tags.findIndex((e) => e.id === element.id));
+              let temp = {
+                value: element.id,
+                label: element.displayName,
+              };
+              if (curPost.tags.findIndex((e) => e.id === element.id) >= 0) {
+                tempListTagSelected.push(temp);
+                tempTagsForm.push(temp.value);
+                console.log(temp);
+              }
+              tempListTag.push(temp);
+            });
+            setTagsOption(tempListTag);
+            setSaveTag(tempListTagSelected);
+            setTags(tempTagsForm);
+          }
+          if (categories.status === 201) {
+            let tempListCategory: iOption[] = [];
+            console.log(categories.data);
+            categories.data.result.data.forEach((element: iCategory) => {
+              // console.log(curPost.tags.findIndex((e) => e.id === element.id));
+              let temp = {
+                value: element.id,
+                label: element.categoryName,
+              };
+              if (curPost.category.id === element.id) {
+                setSaveCate([temp]);
+                setCategory(temp.value);
+              }
+              tempListCategory.push(temp);
+              // tempTagsForm.push(temp.value);
+              console.log(temp);
+            });
+            setCategoriesOption(tempListCategory);
+            // tempListTag.push(temp);
+          }
+          // console.log(categories.data.result.data);
+          // setListCategory(categories.data.result.data);
+
+          setCanNextStep(3);
+          setLoading(false);
+        } else return <BlogNotFound />;
+      } else {
+        localStorage.removeItem("accessToken");
+        navigate("/login");
+      }
+    } else return <BlogNotFound />;
+  };
 
   const [canNextStep, setCanNextStep] = useState(1);
   const [dropOn, setDropOn] = useState(false);
 
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   // Start Form
   const [title, setTitle] = useState("");
 
@@ -52,68 +145,45 @@ const BlogCreate = () => {
   // End Form
 
   // Handle popup
-  const [isPublish, setIsPublish] = useState(false);
+  const [isChange, setIsChange] = useState(false);
   const [isShowPublish, setIsShowPublish] = useState(false);
-  //
 
-  const [listTag, setListTag] = useState<iTag[] | null>();
+  //To choose
   const [tagsOption, setTagsOption] = useState<iOption[] | null>(null);
-
-  const [listCategory, setListCategory] = useState<iCategory[] | null>();
   const [categoriesOption, setCategoriesOption] = useState<iOption[] | null>(
     null
   );
-  const createPost = async (postCreate: postCreate) => {
+  console.log(loading, "--------editipost");
+
+  const editPost = async (postCreate: postCreate) => {
     setLoading(true);
-    setIsShowPublish(false);
 
     const toastId = toast.loading("Loading...");
     // ...
-    const result = await postApi.createPost(postCreate);
+    const result = await postApi.editPost(postIdCur, postCreate);
     await setTimeout(() => {
-      if (result.status === 201) {
-        toast.success("Xuất bản bài viết thành công", {
+      if (result.status === 201 || result.status === 200) {
+        toast.success("Change post success", {
           id: toastId,
           duration: 2500,
         });
-        setLoading(false);
         navigate(`/blog/${result.data.id}`);
       } else {
+        console.log(result);
         toast.error(result.data.message || "Something went wrong", {
           id: toastId,
           duration: 2500,
         });
+
         setTimeout(() => {
-          setIsPublish(false);
-          setLoading(false);
+          setIsChange(false);
         }, 2500);
       }
     }, 2000);
-
-    // toast.promise(postApi.createPost(postCreate), {
-    //   loading: "Saving...",
-
-    //   success: (result) => {
-    //     console.log(result);
-    //     if (result.status === 201) {
-    //       setIsShowPublish(false);
-    //       navigate(`/me`);
-    //       return "Public post success!";
-    //     } else return "111";
-    //   },
-    //   error: (err) => {
-    //     setIsPublish(false);
-    //     return err + "";
-    //   },
-    // });
-
-    // console.log(result);
-    setLoading(false);
   };
   useEffect(() => {
-    console.log(isPublish);
     let temp: postCreate;
-    if (isPublish) {
+    if (isChange) {
       console.log("call api create");
       if (tags !== null) {
         temp = {
@@ -130,11 +200,12 @@ const BlogCreate = () => {
             category: category || "",
             file: thumbnail,
           };
-        createPost(temp);
+        editPost(temp);
+        setIsShowPublish(false);
       }
     }
     // createPost();
-  }, [isPublish]);
+  }, [isChange]);
 
   useEffect(() => {
     console.log("change ne tagsOption: ", tagsOption);
@@ -154,62 +225,10 @@ const BlogCreate = () => {
     }
   }, [title, tags, category, value]);
 
-  //Start Axios get list option
   useEffect(() => {
-    getData();
+    getPostDetailById();
   }, []);
-
-  useEffect(() => {
-    matchValueTag();
-  }, [listTag]);
-  const matchValueTag = () => {
-    if (listTag) {
-      let tempListOption: iOption[] = [];
-      listTag.map((e) => {
-        let temp = {
-          value: e.id,
-          label: e.displayName,
-        };
-        tempListOption.push(temp);
-      });
-      setTagsOption(tempListOption);
-    }
-  };
-  useEffect(() => {
-    matchValueCategory();
-  }, [listCategory]);
-  const matchValueCategory = () => {
-    if (listCategory) {
-      let tempListOption: iOption[] = [];
-      listCategory.map((e) => {
-        let temp = {
-          value: e.id,
-          label: e.categoryName,
-        };
-        tempListOption.push(temp);
-      });
-      setCategoriesOption(tempListOption);
-    }
-  };
-
-  const getData = async () => {
-    console.log("get data");
-    const [tags, categories] = await Promise.all([
-      postTagApi.getAllPostTag10000(),
-      categoryApi.getAllCategory(),
-    ]);
-    if (tags.status === 201) {
-      console.log(tags);
-
-      setListTag(tags.data.result.data);
-    }
-    if (categories.status === 201) {
-      console.log(categories.data.result.data);
-
-      setListCategory(categories.data.result.data);
-    }
-  };
-  //End Axios get list option
+  if (loading) return <EditPostSkeleton />;
 
   return (
     <>
@@ -224,8 +243,8 @@ const BlogCreate = () => {
             loading={loading}
             isShow={isShowPublish}
             setShow={setIsShowPublish}
-            isConfirm={isPublish}
-            setConfirmed={setIsPublish}
+            isConfirm={isChange}
+            setConfirmed={setIsChange}
           />
         ) : null}
         {/* Start bar */}
@@ -308,13 +327,37 @@ const BlogCreate = () => {
                 ? "bg-primary text-white"
                 : " bg-smokeDark hover:cursor-not-allowed")
             }
-            onClick={() => {
+            onClick={async () => {
+              console.log(canNextStep);
               if (canNextStep === 3) {
+                // console.log(isChange);
+                // let temp: postCreate;
+                // if (isChange) {
+                //   console.log("call api create");
+                //   if (tags !== null) {
+                //     temp = {
+                //       title: title,
+                //       content: value,
+                //       tags: tags,
+                //       category: category || "",
+                //     };
+                //     if (thumbnail !== null)
+                //       temp = {
+                //         title: title,
+                //         content: value,
+                //         tags: tags,
+                //         category: category || "",
+                //         file: thumbnail,
+                //       };
+                //     createPost(temp);
+                //   }
+                // }
+                // await createPost(temp);
                 setIsShowPublish(true);
               }
             }}
           >
-            Xuất bản
+            Chỉnh sửa
           </button>
         </div>
         {/* End bar */}
@@ -327,8 +370,8 @@ const BlogCreate = () => {
                   rows={2}
                   placeholder="Tiêu đề bài viết......."
                   className="bg-transparent focus:outline-none text-xl mb-2 border-bg2 resize-none w-full
-            border-b-[1px] focus:border-white
-            "
+        border-b-[1px] focus:border-white
+        "
                   value={title}
                   onChange={(e) => {
                     if (e.target.value.trim().length === 0) setTitle("");
@@ -447,18 +490,6 @@ const BlogCreate = () => {
                 )}
               </div>
             </div>
-
-            {/* <input
-            type="file"
-            name="file"
-            onChange={(event) => {
-              if (event.target.files !== null) {
-                console.log(event.target.files[0]);
-
-                setThumbnail(event.target.files[0]);
-              }
-            }}
-          /> */}
           </div>
         ) : step === 2 ? (
           <EditorText valueHTML={value} setValue={setValue} />
@@ -489,4 +520,4 @@ const BlogCreate = () => {
   );
 };
 
-export default BlogCreate;
+export default EditPost;

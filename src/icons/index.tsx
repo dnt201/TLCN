@@ -57,9 +57,12 @@ import ArrowUpTray from "./ArrowUpTray";
 import ChatBubbleBottomCenterText from "./ChatBubbleBottomCenterText";
 import BellFill from "./BellFill";
 import Check from "./Check";
+import CloudArrowUp from "./CloudArrowUp";
+import Trash from "./Trash";
 
 export {
   Check,
+  Trash,
   BellFill,
   ChatBubbleBottomCenterText,
   ArrowUpTray,
@@ -118,4 +121,5 @@ export {
   Seen,
   Voted,
   XMark,
+  CloudArrowUp,
 };

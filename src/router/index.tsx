@@ -27,6 +27,8 @@ import {
 import Tags from "@screens/Tags";
 import { listChose } from "@screens/Home/LeftContent";
 import Categories from "@screens/Categories";
+import EditPost from "@screens/EditPost";
+import ListPostByCategory from "@screens/ListPostByCategory";
 const DeClareRouter = () => {
   const { error, accessToken } = useSelector((state: RootState) => state.users);
   const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
@@ -83,6 +85,10 @@ const DeClareRouter = () => {
           <Route path="tags" element={<Tags />} />
           <Route path="categories" element={<Categories />} />
           <Route
+            path="/categories/:categoryId"
+            element={<ListPostByCategory />}
+          />
+          <Route
             path="change-password"
             element={
               <ProtectedRoute
@@ -107,6 +113,13 @@ const DeClareRouter = () => {
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+
+        <Route
+          path="/edit-post/:postId"
+          element={
+            <ProtectedRoute isAuthenticated={beLogged} outlet={<EditPost />} />
+          }
+        />
 
         <Route
           path="/new-post"

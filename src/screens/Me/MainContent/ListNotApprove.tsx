@@ -19,25 +19,29 @@ interface iProps {
   setLoading: (b: boolean) => void;
 }
 
-const ListPost: React.FC<iProps> = (props) => {
+const ListNotApprove: React.FC<iProps> = (props) => {
   const { selectId, setNumber, loading, setLoading } = props;
   const { userInfo } = useSelector((state: RootState) => state.users);
   const navigate = useNavigate();
-  const [listPosted, setListPosted] = useState<iPostDetail[] | null>(null);
-  const [pagingListPosted, setPagingListPosted] = useState<iPage | null>(null);
+  const [listNotApproved, setListNotApproved] = useState<iPostDetail[] | null>(
+    null
+  );
+  const [pagingListNotApproved, setPagingListNotApproved] =
+    useState<iPage | null>(null);
   const [curPage, setCurPage] = useState(1);
-  const getListPosted = async (page: number) => {
+  const getListNotApproved = async (page: number) => {
     if (userInfo) {
       setLoading(true);
-      const result = await postApi.getAllPostByUser(userInfo?.id, page);
+      const result = await postApi.getPostNotApprove(page);
+      console.log(result);
       if (result.status === 201) {
-        setListPosted(result.data.result.data);
-        setPagingListPosted(result.data.result.page);
+        setListNotApproved(result.data.result.data);
+        setPagingListNotApproved(result.data.result.page);
         setNumber(result.data.result.page.totalElement);
         setLoading(false);
       } else {
-        setListPosted(null);
-        setPagingListPosted(null);
+        setListNotApproved(null);
+        setPagingListNotApproved(null);
       }
     }
   };
@@ -46,8 +50,8 @@ const ListPost: React.FC<iProps> = (props) => {
     console.log("List rerender");
     if (!userInfo) {
       navigate("/login");
-    } else if (selectId === 1) {
-      getListPosted(curPage || 1);
+    } else if (selectId === 5) {
+      getListNotApproved(curPage || 1);
     }
   }, [curPage]);
   if (loading) {
@@ -55,27 +59,30 @@ const ListPost: React.FC<iProps> = (props) => {
   }
   return (
     <>
-      {listPosted === null ||
-      pagingListPosted === null ||
-      listPosted.length <= 0 ? (
+      {listNotApproved === null ||
+      pagingListNotApproved === null ||
+      listNotApproved.length <= 0 ? (
         <div>
           <NoPost />
         </div>
       ) : (
         <div className="flex-1 ml-2 overflow-y-hidden overflow-hidden mt-2">
           <div className="flex flex-col  items-center mb-2">
-            {listPosted?.map((post) => (
+            {listNotApproved?.map((post) => (
               <React.Fragment key={post.id}>
                 <BlogTag {...post} />
               </React.Fragment>
             ))}
           </div>
 
-          <Pagination changePageNumber={setCurPage} {...pagingListPosted} />
+          <Pagination
+            changePageNumber={setCurPage}
+            {...pagingListNotApproved}
+          />
         </div>
       )}
     </>
   );
 };
 
-export default ListPost;
+export default ListNotApprove;

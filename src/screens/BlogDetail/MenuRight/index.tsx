@@ -1,4 +1,3 @@
-import DOMPurify from "dompurify";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 
 interface iMenuRightProps extends React.HTMLProps<HTMLDivElement> {
@@ -14,13 +13,17 @@ const MenuRight: React.FC<iMenuRightProps> = (props) => {
   console.log(idCurActive);
 
   useEffect(() => {
-    var collection = divMenuRef.current?.children;
-    if (collection !== undefined) {
-      for (let i = 0; i < collection.length; i++) {
-        if (collection[i].id === idCurActive)
-          // console.log(collection[])
-          collection[i].classList.add("active");
-        else collection[i].classList.remove("active");
+    if (divMenuRef.current !== null) {
+      var collection = divMenuRef.current.children;
+      if (collection !== undefined) {
+        for (let i = 0; i < collection.length; i++) {
+          if (collection[i].id === idCurActive) {
+            // console.log(collection[])
+            collection[i].classList.add("active");
+            divMenuRef.current.scrollTop =
+              collection[i].getBoundingClientRect().top;
+          } else collection[i].classList.remove("active");
+        }
       }
     }
     // console.log(collection);
@@ -51,7 +54,7 @@ const MenuRight: React.FC<iMenuRightProps> = (props) => {
         tempA.id = `btn-${item.innerText.formatH1()}-${key + 1}`;
         let spanTitle = document.createElement("span");
         spanTitle.innerText = item.innerText;
-        spanTitle.className = " pl-8 text-lg my-1  line-clamp-2 text-left ";
+        spanTitle.className = " pl-8 text-sm my-1  line-clamp-2 text-left ";
         tempA.appendChild(spanTitle);
         // tempA.className = " ";
         tempA.onclick = (e) => {
