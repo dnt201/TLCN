@@ -21,6 +21,13 @@ const Register = () => {
   const { accessToken, message, error } = useSelector(
     (state: RootState) => state.users
   );
+  const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
+
+  useEffect(() => {
+    if (accessToken !== null) {
+      navigate("/");
+    }
+  }, [accessToken]);
 
   const dispatch = useDispatch<AppDispatch>();
 
