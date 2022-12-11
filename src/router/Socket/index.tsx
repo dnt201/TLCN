@@ -72,6 +72,11 @@ export const Post_Vote = () => {
     // return cb(null, msg);
   });
 };
+export const clickNotification = (id: string) => {
+  if (!socket) return true;
+  console.log("emit");
+  socket.emit("clickNotification", id);
+};
 
 // // Handle message receive event
 // export const subscribeToMessages = (cb) => {

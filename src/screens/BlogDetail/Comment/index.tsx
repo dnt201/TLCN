@@ -36,7 +36,22 @@ const ReplyComment: React.FC<iProps> = (props) => {
       refFromURL !== null &&
       refFromURL === "postComment"
     ) {
-      commentRef.current.scrollIntoView();
+      let id = searchParams.get("idComment");
+      if (id) {
+        let a = document.getElementById(id);
+        if (a) {
+          a.scrollIntoView();
+          a.style.background = "#f1f1";
+          setTimeout(() => {
+            if (a) a.style.background = "#f1f1f1";
+          }, 2500);
+        } else {
+          commentRef.current.scrollIntoView();
+        }
+      } else {
+        commentRef.current.scrollIntoView();
+      }
+      // if(document.getElementById())
     }
   }, [commentRef.current]);
   //#endregion
@@ -209,6 +224,7 @@ const ReplyComment: React.FC<iProps> = (props) => {
             {listComment.map((comment) => (
               <div key={comment.commentId}>
                 <CommentItem
+                  curUserId={userInfo ? userInfo.id : null}
                   status={status}
                   curUserName={userInfo?.username || null}
                   curUserImg={userInfo?.avatarLink ? userInfo.avatarLink : null}

@@ -17,10 +17,12 @@ import avatarDefault from "@images/userDefault.png";
 import commentApi from "@api/commentApi";
 import { iPage } from "@DTO/Pagination";
 import ReplyComment from "../ReplyComment";
+import { userInfo } from "os";
 
 interface iProps extends iComment {
   isOwner: boolean;
   idPost: string;
+  curUserId: string | null;
   curUserImg: string | null;
   curUserName: string | null;
   status: "Approve" | "Waiting";
@@ -33,6 +35,7 @@ const CommentItem: React.FC<iProps> = (props) => {
     isOwner,
     status,
     commentId,
+    curUserId,
     countReply,
     dateModified,
     content,
@@ -43,6 +46,9 @@ const CommentItem: React.FC<iProps> = (props) => {
   } = props;
   const [showActionModal, setShowActionModal] = useState(false);
   const [showReply, setShowReply] = useState(false);
+  const [countReplyState, setCountReplyState] = useState(
+    parseInt(countReply) || 0
+  );
   const [pagingListReply, setPagingListReply] = useState<iPage>();
   const [curPage, setCurPage] = useState(1);
   const [valueComment, setValueComment] = useState(content);
@@ -104,7 +110,10 @@ const CommentItem: React.FC<iProps> = (props) => {
   }, [refDivActionModal]);
 
   return (
-    <div className="p-4 bg-[#f1f1f1] rounded-md mb-4 border-gray">
+    <div
+      className="p-4 bg-[#f1f1f1] rounded-md mb-4 border-gray"
+      id={commentId}
+    >
       {/* Start header */}
       <div className="flex  items-center">
         <img
@@ -254,7 +263,7 @@ const CommentItem: React.FC<iProps> = (props) => {
                 effect="solid"
               />
             </button>
-            <span className="px-[2px] text-sm">{countReply}</span>
+            <span className="px-[2px] text-sm">0</span>
             <button
               className="p-[2px]"
               data-tip="Vote Down"
@@ -278,7 +287,7 @@ const CommentItem: React.FC<iProps> = (props) => {
                 setValueReply("");
               }}
             >
-              Trả lời
+              Trả lời ({countReplyState})
               <ReactTooltip
                 textColor="#FF4401"
                 id="replyComment"
@@ -434,6 +443,7 @@ const CommentItem: React.FC<iProps> = (props) => {
                       if (result.status === 201) {
                         toast.success("Reply thành công!");
                         setValueReply("");
+                        setCountReplyState(countReplyState + 1);
                         setShowReply(false);
                         setCurPage(-1);
                         setListReply(null);
@@ -462,8 +472,10 @@ const CommentItem: React.FC<iProps> = (props) => {
                 curUserImg={curUserImg}
                 setListReply={setListReply}
                 setCurPage={setCurPage}
+                setCountReplyState={setCountReplyState}
+                countReplyState={countReplyState}
                 {...reply}
-                isOwner={isOwner}
+                curUserId={curUserId}
                 idComment={commentId}
                 idPost={idPost}
               />

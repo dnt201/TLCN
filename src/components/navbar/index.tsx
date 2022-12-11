@@ -104,11 +104,11 @@ const Navbar = () => {
   return (
     <nav
       className={
-        "bg-bg2 fixed top-0 w-full shadow-sm phone:py-2  dark:bg-black dark:border-white z-[9999]   " +
+        "bg-bg2 fixed top-0 w-full z-[11111] shadow-sm phone:py-2  dark:bg-black dark:border-white  " +
         (visible ? "  " : " ")
       }
     >
-      <div className=" flex relative flex-wrap justify-between items-center">
+      <div className=" flex relative z-[11111] flex-wrap justify-between items-center">
         <div
           className={
             "flex items-center px-4 w-[320px] transition-transform " +
@@ -316,7 +316,7 @@ const Navbar = () => {
                 effect="solid"
               />
               <i
-                id="showNotify"
+                id="showNotifyA"
                 className="p-4  rounded-lg hover:bg-hover hover:cursor-pointer  "
                 onClick={() => {
                   if (showRightNav === 2) setShowRightNav(0);

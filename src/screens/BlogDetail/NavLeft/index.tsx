@@ -295,6 +295,11 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
           className="mt-4 mb-2"
           data-tip="Share bài viết này lên facebook"
           data-for="facebookShare"
+          onClick={() => {
+            toast("Oops, tính năng đang cập nhập", {
+              icon: "⚠️",
+            });
+          }}
         >
           <FacebookLogo className="w-5 h-5" />
           <ReactTooltip
@@ -309,6 +314,11 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
           className="mt-4 "
           data-tip="Share bài viết này lên Twitter"
           data-for="twitterShare"
+          onClick={() => {
+            toast("Oops, tính năng đang cập nhập", {
+              icon: "⚠️",
+            });
+          }}
         >
           <Twitter />
           <ReactTooltip

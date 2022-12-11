@@ -47,15 +47,7 @@ const postApi = {
       pageNumber: pageNumber || 1,
     });
   },
-  postPostByCategory: (categoryId: string) => {
-    const url = `/post/all-by-category/${categoryId}`;
-    return axiosClient.post(url);
-  },
-  getAllPostByPostTag: (postTags: string[]) => {
-    const url = `/post/all-by-posttag`;
-    const data = { postTags };
-    return axiosClient.get(url, { data });
-  },
+
   getAllPostByUser: (userId: string, pageNumber?: number, size?: number) => {
     const url = `/post/all-by-user/${userId}`;
     return axiosClient.post(url, {
@@ -106,6 +98,22 @@ const postApi = {
       pageNumber: pageNumber || 1,
     });
   },
+  getAllPostByPostTag: (
+    postTags: string[],
+    pageNumber?: number,
+    size?: number
+  ) => {
+    const url = `/post/all-by-posttag`;
+
+    return axiosClient.post(url, {
+      postTags,
+      page: {
+        pageNumber: pageNumber || 1,
+        size: size || 2,
+      },
+    });
+  },
+
   deletePost: (id: string) => {
     const url = `/post/${id}`;
     return axiosClient.delete(url);

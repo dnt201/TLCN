@@ -1,24 +1,67 @@
-import React from "react";
+import React, { useState } from "react";
 import av from "@images/av1.png";
-interface iMessTagProps extends React.HTMLProps<HTMLDivElement> {
-  name: string;
-  nearMess: string;
-  time: number;
-  haveSeen: boolean;
+import { iNotify } from "@DTO/Notify";
+import { useNavigate } from "react-router-dom";
+import { clickNotification } from "src/router/Socket";
+interface iProps extends iNotify {
+  // name: string;
+  // nearMess: string;
+  // time: number;
+  // haveSeen: boolean;
 }
-const NotifyTag = () => {
+const NotifyTag: React.FC<iProps> = (props) => {
+  const {
+    id,
+    body,
+    type,
+    refId,
+    extendData,
+    userSend,
+    isClicked,
+    dateCreated,
+  } = props;
+
+  const [isClickedState, setIsClickedState] = useState(isClicked);
+  const navigate = useNavigate();
+
+  const handleClickNavigate = () => {
+    if (type === "Post_Vote") {
+      clickNotification(id);
+      setIsClickedState(true);
+      navigate(`/blog/${refId}`);
+    } else if (type === "Post_Comment") {
+      clickNotification(id);
+      setIsClickedState(true);
+      navigate(`/blog/${refId}?ref=postComment`);
+    } else if (type === "Post_Vote") {
+      clickNotification(id);
+      setIsClickedState(true);
+      navigate(
+        `/blog/${refId}?ref=postComment&idComment=${extendData?.comment}`
+      );
+    }
+  };
+
   return (
-    <div className="flex flex-1 items-center  p-2 rounded-lg   hover:cursor-pointer hover:bg-hover max-h-[84px]">
-      <img className="rounded-full  w-12 h-12" src={av} />
-      <div className="flex-1 ml-2">
-        <h1 className="w-full  text-[12px] line-clamp-3 font-normal text-primary">
-          Note: Avatar component returns an tag with a random image. All other
-          props like "className, width, height, alt" etc. will directly passed
-          to element.
-        </h1>
+    <div
+      className="flex flex-1 items-center   p-2 rounded-lg my-2   hover:cursor-pointer hover:bg-hover max-h-[84px] "
+      onClick={() => {
+        handleClickNavigate();
+      }}
+    >
+      <img
+        className="rounded-full   w-12 h-12"
+        src={userSend && userSend.imageLink ? userSend.imageLink : av}
+      />
+      <div className="flex-1 flex-col  flex justify-between ml-2">
+        <span className="w-full  text-s line-clamp-3 font-normal text-white">
+          {body}
+        </span>
         <h1 className="w-full text-[11px]  text-primary">Time</h1>
       </div>
-      <div>Status</div>
+      {!isClickedState && (
+        <div className="p-1 rounded-full bg-primaryLow"></div>
+      )}
     </div>
   );
 };

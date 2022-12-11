@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { MagnifyingGlass, More, Expand, ArrowLeft } from "@icons/index";
 import NotifyTag from "./notifyTag";
+import { iNotify } from "@DTO/Notify";
+import { iPage } from "@DTO/Pagination";
+import notifyApi from "@api/notifyApi";
+import toast from "react-hot-toast";
+import { ClipLoader } from "react-spinners";
 interface iPopUpNotifyProps extends React.HTMLProps<HTMLDivElement> {
   setShow: (number: number) => void;
 }
@@ -8,11 +13,45 @@ interface iPopUpNotifyProps extends React.HTMLProps<HTMLDivElement> {
 const PopUpNotify: React.FC<iPopUpNotifyProps> = (props) => {
   const { className, setShow } = props;
   const [optionSelect, setOptionSelect] = useState(0);
+  const [listNotify, setListNotify] = useState<iNotify[] | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [paging, setPaging] = useState<iPage | null>(null);
+  const [curPage, setCurPage] = useState(1);
   const popupNotify = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (curPage === -1) setCurPage(1);
+    else {
+      //lần đầu get
+      setLoading(true);
+      if (paging === null && curPage === 1) {
+        notifyApi.getAllNotify().then((result) => {
+          setLoading(false);
+          console.log(result);
+          if (result.status === 201) {
+            setListNotify(result.data.data);
+            setPaging(result.data.page);
+          } else toast.error("Fetch list notify error!");
+        });
+      } else {
+        notifyApi.getAllNotify().then((result) => {
+          setLoading(false);
+          console.log(result);
+          if (result.status === 201 && listNotify) {
+            setListNotify([...listNotify, ...result.data.data]);
+            setPaging(result.data.page);
+          } else if (result.status === 201 && !listNotify) {
+            setListNotify(result.data.data);
+            setPaging(result.data.page);
+          } else toast.error("Fetch list notify error!");
+        });
+      }
+    }
+  }, [curPage]);
+
+  useEffect(() => {
     const handleClickOutNotify = (event: any) => {
-      const buttonShowNotify = document.getElementById("showNotify");
+      const buttonShowNotify = document.getElementById("showNotifyA");
       console.log(buttonShowNotify);
 
       if (
@@ -35,7 +74,7 @@ const PopUpNotify: React.FC<iPopUpNotifyProps> = (props) => {
     <div
       ref={popupNotify}
       className={
-        "flex absolute  overflow-y-auto z-20 right-4 top-full mt-1 max-h-[calc(100vh-48px-20px)] w-[360px] bg-bg2 rounded-md " +
+        "flex absolute  h-fit  overflow-y-auto z-[11111] right-4 top-full mt-1 max-h-[calc(100vh-48px-20px)] w-[360px] bg-bg2 rounded-md shadow-sm shadow-hover " +
         className
       }
     >
@@ -75,7 +114,7 @@ const PopUpNotify: React.FC<iPopUpNotifyProps> = (props) => {
         </div>
 
         {/* List */}
-        <div className="h-3/4 mt-4 ">
+        <div className=" mt-4 ">
           {/* header */}
           <div className=" flex w-full items-center ">
             <p className="flex-1 text-base">Earlier</p>
@@ -89,15 +128,30 @@ const PopUpNotify: React.FC<iPopUpNotifyProps> = (props) => {
             </div>
           ) : (
             <div>
-              <NotifyTag />
-              <NotifyTag />
-              <NotifyTag />
-              <NotifyTag />
-              <NotifyTag />
-              <NotifyTag />
-              <NotifyTag />
-              <NotifyTag />
-              <NotifyTag />
+              {listNotify && listNotify.length > 0 && paging ? (
+                <div>
+                  {listNotify.map((result) => (
+                    <NotifyTag key={result.id} {...result} />
+                  ))}
+                  {curPage < Math.ceil(paging.totalElement / paging.size) ? (
+                    <button
+                      className="flex items-center text-s border-t-[1px] border-white justify-center w-full py-2 mb-2 gap-1 hover:text-primary hover:underline duration-200"
+                      onClick={() => setCurPage(curPage + 1)}
+                    >
+                      Load more...
+                      <ClipLoader loading={loading} size={20} color={"#fff"} />
+                    </button>
+                  ) : (
+                    <div className="w-full text-center  text-s border-t-[1px] border-white  py-2">
+                      <i>Nothing to load</i>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <i className=" flex justify-center pt-4 pb-8">
+                  Nothing to show
+                </i>
+              )}
             </div>
           )}
         </div>

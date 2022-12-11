@@ -9,6 +9,7 @@ interface iProps extends React.HTMLProps<HTMLDivElement> {
   idComment: string;
   isOwner: boolean;
   idPost: string;
+  setCountReplyState: () => void;
   setIsEditReplyComment: (b: boolean) => void;
   setShowModal: (b: boolean) => void;
 }
@@ -20,6 +21,7 @@ const ModalActionReplyComment: React.FC<iProps> = (props) => {
     isOwner,
     setIsEditReplyComment,
     setShowModal,
+    setCountReplyState,
   } = props;
   const navigate = useNavigate();
 
@@ -47,12 +49,16 @@ const ModalActionReplyComment: React.FC<iProps> = (props) => {
               const toastId = toast.loading("Loading...");
 
               const result = await commentApi.deleteReply(idReply);
+              console.log(result);
               if (result.status === 200 || result.status === 202) {
                 toast.success("Xóa bình luận thành công", {
                   id: toastId,
                   duration: 2500,
                 });
-                navigate(`/blog/${idPost}?ref=postComment`);
+                setCountReplyState();
+                navigate(
+                  `/blog/${idPost}?ref=postComment&idComment=${idComment}`
+                );
               } else {
                 toast.error(`Some thing went wrong ${result.status}`, {
                   id: toastId,

@@ -22,11 +22,13 @@ interface iReply {
 }
 
 interface iPropsReply extends iReply {
-  isOwner: boolean;
   idPost: string;
   idComment: string;
+  curUserId: string | null;
   curUserImg: string | null;
   status: "Approve" | "Waiting";
+  setCountReplyState: (n: number) => void;
+  countReplyState: number;
 
   setListReply: (a: iReply[] | null) => void;
   setCurPage: (n: number) => void;
@@ -39,12 +41,14 @@ const ReplyComment: React.FC<iPropsReply> = (props) => {
     dateModified,
     idComment,
     idPost,
-    isOwner,
+    curUserId,
     replyId,
     replyTag,
     curUserImg,
     status,
     sender,
+    setCountReplyState,
+    countReplyState,
     setListReply,
     setCurPage,
   } = props;
@@ -57,6 +61,7 @@ const ReplyComment: React.FC<iPropsReply> = (props) => {
 
   const [valueReply, setValueReply] = useState("");
 
+  console.log(replyId);
   const [loading, setLoading] = useState(false);
   const refDivActionModal = useRef<HTMLDivElement>(null);
   const [isEditComment, setIsEditComment] = useState(false);
@@ -90,7 +95,14 @@ const ReplyComment: React.FC<iPropsReply> = (props) => {
           src={sender.avatarLink || UserDefault}
         />
         <div className="flex flex-col ">
-          <Link className="" to={isOwner ? "/me" : `/user-detail/${sender.id}`}>
+          <Link
+            className=""
+            to={
+              curUserId !== null && curUserId === sender.id
+                ? "/me"
+                : `/user-detail/${sender.id}`
+            }
+          >
             <span className="text-primaryLow   font-semibold   hover:underline  hover:text-primary">
               {sender.username}
             </span>
@@ -257,12 +269,19 @@ const ReplyComment: React.FC<iPropsReply> = (props) => {
               />
               {showActionModalReply ? (
                 <ModalActionReplyComment
+                  // setCurPage={setCurPage}
+                  setCountReplyState={() =>
+                    setCountReplyState(countReplyState - 1)
+                  }
                   setShowModal={setShowActionModalReply}
                   setIsEditReplyComment={setIsEditComment}
                   idComment={idComment}
                   idPost={idPost}
                   idReply={replyId}
-                  isOwner={isOwner}
+                  // curUserId={curUserId}
+                  isOwner={
+                    curUserId !== null && curUserId === sender.id ? true : false
+                  }
                 />
               ) : null}
             </div>

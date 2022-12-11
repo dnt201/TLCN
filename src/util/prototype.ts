@@ -1,5 +1,3 @@
-import { string } from "yup";
-
 String.prototype.prettyNumber = function () {
   return this.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };

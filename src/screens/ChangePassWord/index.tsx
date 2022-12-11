@@ -209,7 +209,7 @@ const ChangePassWord: React.FC<iFormChangePassword> = (props) => {
               type="submit"
             >
               <span className="  font-medium text-sm text-center py-2 text-white mr-2">
-                Change passwork
+                Change password
               </span>
             </button>
           </Form>

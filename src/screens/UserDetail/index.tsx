@@ -4,7 +4,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import avatarDefault from "@images/userDefault.png";
 import userApi from "@api/userApi";
 import toast from "react-hot-toast";
-import { PhoneFill } from "@icons/index";
+import { Check, PhoneFill } from "@icons/index";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@app/store";
 import BlogNotFound from "@screens/BlogDetail/NotFound";
@@ -213,10 +213,21 @@ const UserDetail = () => {
                     onClick={() => handleFollow()}
                     className={
                       "flex-1 text-xs py-2  text-center rounded-md  hover:cursor-pointer " +
-                      (!userInfoState?.isFollowing ? " bg-primary" : " ")
+                      (!userInfoState?.isFollowing
+                        ? " bg-primary"
+                        : " border-[1px] border-white")
                     }
                   >
-                    {userInfoState?.isFollowing ? "Đang follow" : " Follow"}
+                    {userInfoState?.isFollowing ? (
+                      <div className="flex items-center justify-center gap-[2px] overflow-hidden px-2">
+                        <Check className="w-5 h-5" />
+                        <span className=" line-clamp-1">
+                          Đang follow w w wwwww
+                        </span>
+                      </div>
+                    ) : (
+                      " Follow"
+                    )}
                   </button>
                   <div className="flex-1 text-xs py-2  text-center rounded-md hover:cursor-pointer ">
                     <span className="font-bold mr-1">
@@ -273,28 +284,30 @@ const UserDetail = () => {
           </div>
         </div>
 
-        {!loading && pagingList ? (
+        {!loading &&
+        pagingList &&
+        listPostOfUser &&
+        listPostOfUser.length > 0 ? (
           <div className="max-w-[1028px] w-[85%] mx-auto flex justify-center flex-col items-center">
             <span className="text-right w-full text-sm py-2 ">
               Posted ({pagingList.totalElement})
             </span>
             <div className="w-full flex-1">
-              {listPostOfUser && listPostOfUser.length > 0 ? (
-                listPostOfUser.map((post) => <BlogTag {...post} />)
-              ) : (
-                <span className="text-right w-full text-sm py-2 ">
-                  Không có bài viết
-                </span>
-              )}
+              {listPostOfUser.map((post) => (
+                <BlogTag {...post} />
+              ))}
             </div>
-
             <Pagination changePageNumber={setCurPage} {...pagingList} />
           </div>
-        ) : (
+        ) : loading ? (
           <>
             <Skeleton height={"40px"} />
             <Skeleton height={"25vh"} />
           </>
+        ) : (
+          <i className="text-center w-full text-sm mt-[10vh] py-2 ">
+            Không có bài viết
+          </i>
         )}
       </div>
     </>

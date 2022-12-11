@@ -29,6 +29,7 @@ import { listChose } from "@screens/Home/LeftContent";
 import Categories from "@screens/Categories";
 import EditPost from "@screens/EditPost";
 import ListPostByCategory from "@screens/ListPostByCategory";
+import ListPostByTag from "@screens/ListPostByTag";
 const DeClareRouter = () => {
   const { error, accessToken } = useSelector((state: RootState) => state.users);
   const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
@@ -88,6 +89,7 @@ const DeClareRouter = () => {
             path="/categories/:categoryId"
             element={<ListPostByCategory />}
           />
+          <Route path="/tags/:tagId" element={<ListPostByTag />} />
           <Route
             path="change-password"
             element={
