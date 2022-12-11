@@ -74,5 +74,14 @@ const userApi = {
       userFollowId: id,
     });
   },
+
+  getAllUser: (q: string, pageNumber?: number, size?: number) => {
+    const url = `/users/all?name=${q}`;
+    return axiosClient.post(url, {
+      size: size || 9,
+      pageNumber: pageNumber || 1,
+      order: [],
+    });
+  },
 };
 export default userApi;

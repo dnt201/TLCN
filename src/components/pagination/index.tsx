@@ -72,7 +72,7 @@ const Pagination: React.FC<iLazy> = (props) => {
         </button>
         {totalElement >= 0 && !loading && (
           <input
-            className=" border-[1px]  border-white  text-primary w-12 text-center  mx-2
+            className=" border-[1px]  border-bg2  text-primary w-12 text-center  mx-2 focus:outline-none 
             "
             value={curPage}
             min={1}

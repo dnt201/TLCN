@@ -30,7 +30,7 @@ const ListInfinityNewest = () => {
     if (listBlogTag !== null && listBlogTag.length > 0) {
       let temp = listBlogTag;
       await setTimeout(async () => {
-        const result = await postApi.getAllPost("", pageNumber, 2);
+        const result = await postApi.getAllPost("", pageNumber, 3);
         console.log(result);
         if (result.status === 201) {
           setListBlogTag(result.data.result.data);
@@ -44,7 +44,7 @@ const ListInfinityNewest = () => {
       }, 1250);
     } else {
       await setTimeout(async () => {
-        const result = await postApi.getAllPost("", pageNumber, 2);
+        const result = await postApi.getAllPost("", pageNumber, 3);
         console.log(result);
         if (result.status === 201) {
           if (result.data.result.page.totalElement <= 3)

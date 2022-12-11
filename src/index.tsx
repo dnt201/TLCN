@@ -17,7 +17,7 @@ ReactDOM.render(
     <Provider store={store}>
       <BrowserRouter>
         <SkeletonTheme baseColor="#262D34" highlightColor="#444">
-          <Toaster position="bottom-right" containerStyle={{ zIndex: 10003 }} />
+          <Toaster position="bottom-right" containerStyle={{ zIndex: 10100 }} />
           <DeclareRouter />
         </SkeletonTheme>
       </BrowserRouter>

@@ -52,6 +52,7 @@ const FormRegister: React.FC<iFormRegisterProps> = (props) => {
     };
     console.log(props);
     const result = await dispatch(userRegister(user));
+    // console.log(result, "---------------");
     if (result.payload.error === undefined || result.payload.error === null) {
       setStep(2);
     }
@@ -154,7 +155,7 @@ const FormRegister: React.FC<iFormRegisterProps> = (props) => {
 
           <button
             className={
-              "flex  bg-primary rounded-md  justify-center items-center " +
+              "flex  bg-primary rounded-md  justify-center items-center p-2 " +
               (pause ||
               !props.isValid ||
               values.email.length <= 0 ||

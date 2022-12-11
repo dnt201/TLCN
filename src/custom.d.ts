@@ -4,6 +4,7 @@ declare interface String {
   formatHTML: () => string;
   formatH1: () => String;
   getNumberOfDayFromNow: () => string;
+  convertToDay: () => string;
 }
 declare module "*.png";
 declare interface Array<T> {

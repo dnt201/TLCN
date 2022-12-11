@@ -59,8 +59,22 @@ import BellFill from "./BellFill";
 import Check from "./Check";
 import CloudArrowUp from "./CloudArrowUp";
 import Trash from "./Trash";
+import ChatBubbleLeft from "./ChatBubbleLeft";
+import FaceSmile from "./FaceSmile";
+import Photo from "./Photo";
+import ChevronDown from "./ChevronDown";
+import ChevronUp from "./ChevronUp";
+import Flag from "./Flag";
+import ArrowPath from "./ArrowPath";
 
 export {
+  ArrowPath,
+  Flag,
+  ChevronDown,
+  ChevronUp,
+  Photo,
+  FaceSmile,
+  ChatBubbleLeft,
   Check,
   Trash,
   BellFill,

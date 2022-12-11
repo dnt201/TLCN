@@ -31,10 +31,11 @@ export const userRegister = createAsyncThunk(
     //thunkAPI.dispatch();
     try {
       const result = await userApi.register(user);
+      console.log(result, "result regis");
       return result.data;
     } catch (err) {
       // custom error
-      console.log(err);
+      console.log(err, "err regis");
     }
   }
 );
@@ -84,7 +85,7 @@ interface userSlice {
     };
     follower: number;
     following: number;
-    avatarLink: null;
+    avatarLink: string | null;
   } | null;
   loading: boolean;
   error: string;

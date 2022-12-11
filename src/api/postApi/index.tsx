@@ -1,4 +1,5 @@
 import axiosClient from "@api/axiosClient";
+import { iCommentCreate } from "@DTO/Blog";
 import { ChangePassWordValues } from "@screens/ChangePassWord";
 import queryString from "query-string";
 
@@ -86,7 +87,7 @@ const postApi = {
       url = `/post/all-post-follow?name=${name}`;
     else url = `/post/all-post-follow`;
     return axiosClient.post(url, {
-      size: 5,
+      size: 3,
       pageNumber: pageNumber || 1,
     });
   },

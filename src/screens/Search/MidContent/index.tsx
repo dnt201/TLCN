@@ -1,9 +1,11 @@
 import postApi from "@api/postApi";
+import userApi from "@api/userApi";
 import BlogTag from "@components/blogTag";
-import { iUserTag } from "@components/navbar/searchBox/userTag";
+import UserTag from "@components/navbar/searchBox/userTag";
 import Pagination from "@components/pagination";
 import { iPostDetail } from "@DTO/Blog";
 import { iPage } from "@DTO/Pagination";
+import { iUserTag } from "@DTO/User";
 import BlogNotFound from "@screens/BlogDetail/NotFound";
 import SkeletonBlogDetail from "@screens/BlogDetail/SkeletonBlogDetail";
 import ListSkeleton from "@screens/Home/CenterContent/ListSkeleton";
@@ -12,6 +14,8 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import { useSearchParams } from "react-router-dom";
+import { BeatLoader, CircleLoader, ClipLoader } from "react-spinners";
+import UserTagItem from "./UserTagItem";
 
 interface iProps extends React.HTMLProps<HTMLDivElement> {}
 
@@ -31,94 +35,117 @@ const MidContent: React.FC<iProps> = (props) => {
 
   const getAllPost = async () => {
     let q = searchParams.get("q");
-    const result = await postApi.getAllPost(q || searchValue, curPage, 1);
+    const result = await postApi.getAllPost(q || searchValue, curPage, 3);
     if (result.status === 201) {
       if (result.data.result.data.length > 0) {
         setListPost(result.data.result.data);
         setPaging(result.data.result.page);
-      }
-      // let i:iPage = { size: 1,
-      //   pageNumber: 1,
-      //   totalElement: 1,
-      //   order: []}
-      // setPaging(i);
-      else setListPost(null);
+      } else setListPost(null);
+      console.log(result);
+    } else {
+    }
+    setLoading(false);
+  };
+  const getAllUser = async () => {
+    let q = searchParams.get("q");
+    const result = await userApi.getAllUser(q || searchValue, curPage, 6);
+    if (result.status === 201) {
+      if (result.data.result.data.length > 0) {
+        console.log(result);
+        setListUser(result.data.result.data);
+        setPaging(result.data.result.page);
+      } else setListUser(null);
       console.log(result);
     } else {
     }
     setLoading(false);
   };
   useEffect(() => {
+    setCurPage(-1);
+  }, [searchParams]);
+  useEffect(() => {
     setLoading(true);
 
-    let typeFromSearch = searchParams.get("type");
-    let q = searchParams.get("q");
-    if (typeFromSearch === "posts") {
-      setSelect("posts");
-      console.log("call api post by name");
-      getAllPost();
-    } else if (typeFromSearch === "users") {
-      setSelect("users");
-      //call api user by name
-      // userApi.findUserByDisplayName(inputSearch),
-      console.log("call api user by name");
-      const width = (window.screen.width * 70) / 100 / 3;
-    }
+    if (curPage === -1) setCurPage(1);
+    else {
+      let typeFromSearch = searchParams.get("type");
+      let q = searchParams.get("q");
+      if (typeFromSearch === "posts") {
+        setSelect("posts");
+        console.log("call api post by name");
+        getAllPost();
+      } else if (typeFromSearch === "users") {
+        setSelect("users");
+        getAllUser();
+        //call api user by name
+        // userApi.findUserByDisplayName(inputSearch),
+        console.log("call api user by name");
+        const width = (window.screen.width * 70) / 100 / 3;
+      }
 
-    let nameFromSearch = searchParams.get("q");
-    if (nameFromSearch !== null) setSearchValue(nameFromSearch);
-  }, [searchParams, curPage]);
+      let nameFromSearch = searchParams.get("q");
+      if (nameFromSearch !== null) setSearchValue(nameFromSearch);
+    }
+  }, [curPage]);
 
   if (searchValue.length <= 0)
     return (
-      <div className={className + " flex justify-center mt-[10vh]"}>
-        <i> Vui lòng nhập tên bài viết hay người dùng bạn muốn tìm kiếm.</i>
+      <div className={className + " flex-1 flex justify-center mt-[10vh]"}>
+        <i className="text-center">
+          Vui lòng nhập tên bài viết hay người dùng bạn muốn tìm kiếm.
+        </i>
       </div>
     );
 
   if (loading) {
-    if (select === "posts")
-      return (
-        <div className={className}>
-          <ListSkeleton scroll={false} />
-        </div>
-      );
-    else if (select === "users")
-      return (
-        <div className={className + " flex flex-wrap z-0"}>
-          {Array(9)
-            .fill("")
-            .map(() => (
-              <div className="flex items-center w-1/3 mb-8 ">
-                <Skeleton width={80} height={80} className={"z-0"} />
-                <div className={`ml-1 min-w-[200px] w-[${width - 80 - 4}]`}>
-                  <Skeleton width={"100%"} />
-                  <Skeleton width={"100%"} />
-                </div>
-              </div>
-            ))}
-        </div>
-      );
+    return (
+      <div className={className + " flex-1"}>
+        {/* <ListSkeleton scroll={false} />
+         */}
+        <span className="flex gap-1 justify-center items-center">
+          Đang tìm kiếm{" "}
+          <span className="translate-y-[2px]">
+            <ClipLoader size={20} color="#fff" />
+          </span>
+        </span>
+      </div>
+    );
   }
   return (
     <div className={className}>
       {select === "posts" && listPost !== null ? (
-        <div className="w-full">
-          <span className="flex gap-1 justify-end   pb-2">
+        <div className="w-full flex-1 flex-col flex ">
+          <span className="flex gap-1 justify-end pb-2">
             <b> {paging?.totalElement}</b> <span>kết quả</span>
           </span>
-          {listPost.map((post) => (
-            <BlogTag {...post} />
-          ))}
+          <div className="  flex-1 flex-col flex ">
+            {listPost.map((post) => (
+              <BlogTag {...post} />
+            ))}
+          </div>
           {paging !== null && (
             <Pagination changePageNumber={setCurPage} {...paging} />
           )}
         </div>
       ) : select === "users" && listUser !== null ? (
-        <div></div>
+        <div className="w-full flex-1 flex-col flex ">
+          <span className="flex gap-1 justify-end   pb-2">
+            <b> {paging?.totalElement}</b> <span>kết quả</span>
+          </span>
+          <div className="  flex-1 flex-wrap flex w-full">
+            {listUser.map((user) => (
+              <div className="w-1/3 my-4 px-4 flex justify-start ">
+                <UserTagItem {...user} />
+              </div>
+            ))}
+          </div>
+          {paging !== null && (
+            <Pagination changePageNumber={setCurPage} {...paging} />
+          )}
+        </div>
       ) : (
-        <div className="flex justify-center">
-          <i> Không có kết quả phù hợp!</i>
+        <div className="flex justify-center mt-[10vh]">
+          <i className="text-center"> Không có kết quả phù hợp!</i>
         </div>
       )}
     </div>

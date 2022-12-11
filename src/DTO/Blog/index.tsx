@@ -30,33 +30,32 @@ export interface iPostDetail {
   voteData?: "Upvote" | "DownVote";
 }
 
-interface lazy {
-  id: string;
-  title: string;
+export interface iComment {
+  commentId: string;
   content: string;
-  status: string;
+  countReply: string;
   dateModified: string;
-  owner: {
+  sender: {
     id: string;
     username: string;
-    avatarLink: null;
+    avatarLink: string;
   };
-  category: {
+  commentTag: string[];
+}
+export interface iCommentCreate {
+  file?: File;
+  commentContent: string;
+  userTag: string[];
+}
+
+export interface iReply {
+  replyId: string;
+  content: string;
+  dateModified: string;
+  sender: {
     id: string;
-    categoryName: string;
+    username: string;
+    avatarLink: string;
   };
-  tags: [
-    {
-      id: string;
-      postTagName: string;
-      displayName: string;
-      colorCode: string;
-      thumbnailId: string;
-    }
-  ];
-  like: 0;
-  view: 1;
-  comment: 0;
-  isFollow: true;
-  thumbnailLink: string;
+  replyTag: string[];
 }

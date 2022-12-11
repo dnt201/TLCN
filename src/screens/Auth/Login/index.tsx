@@ -103,6 +103,8 @@ const Login = () => {
               }
             } else navigate("/");
           });
+        } else if (actionFromURL === "commentPost") {
+          navigate(`/blog/${idFromURL}?ref=postComment`);
         } else navigate("/");
       } else navigate("/");
     }

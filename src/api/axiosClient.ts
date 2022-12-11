@@ -3,9 +3,6 @@ import { configureStore } from "@reduxjs/toolkit";
 import axios, { AxiosRequestConfig } from "axios";
 import { log } from "console";
 import queryString from "query-string";
-import { useSelector } from "react-redux";
-import { RootState } from "src/app/store";
-import userApi from "./userApi";
 // Set up default config for http requests here
 
 // Please have a look at here `https://github.com/axios/axios#request -
@@ -81,6 +78,8 @@ axiosClient.interceptors.response.use(
         console.log(prevRequest);
         console.log((await lazyAxios(prevRequest)).config);
         return await lazyAxios(prevRequest);
+      } else {
+        console.log("log out");
       }
     } else if (error.response) {
       console.log("error.response", error.response);

@@ -60,6 +60,14 @@ String.prototype.getNumberOfDayFromNow = function () {
   }
   return result;
 };
+
+String.prototype.convertToDay = function () {
+  let tempStr = this + "";
+
+  const tempDateCreate = new Date(tempStr).toLocaleString();
+  return tempDateCreate;
+};
+
 // Array.prototype.contains = function (obj) {
 //   var i = 0;
 //   for (; i < this.length; i++) {

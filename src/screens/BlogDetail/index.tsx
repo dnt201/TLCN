@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import qc from "@images/banner-quang-cao-du-khach-hang-hieu-qua-3.jpg";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import {
+  Navigate,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 
 import MenuRight from "./MenuRight";
 import MidContent from "./MidContent";
@@ -12,6 +17,8 @@ import BlogNotFound from "./NotFound";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@app/store";
 import { getPostDetailById } from "@redux/blogSlice";
+import Comment from "./Comment";
+import userApi from "@api/userApi";
 
 const BlogDetail = () => {
   let params = useParams();
@@ -20,13 +27,28 @@ const BlogDetail = () => {
   const divRef = useRef<HTMLDivElement>(null);
   const [idCurActive, setIdCurActive] = useState("");
   const navigate = useNavigate();
-  const [notFound, setNotFound] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
+  const accessToken = localStorage.getItem("accessToken");
+
   // console.log("Blog detail rerender");
   // console.log(idCurActive);
   const { post, error, loading } = useSelector(
     (state: RootState) => state.blog
   );
-  console.log(post);
+
+  const checkOwner = async () => {
+    if (post !== null) {
+      const data = await userApi.getMe();
+      if (data.status === 200) {
+        if (data.data.id === post.owner.id) setIsOwner(true);
+        else setIsOwner(false);
+      } else setIsOwner(false);
+    }
+  };
+  useEffect(() => {
+    checkOwner();
+  }, [accessToken, post]);
+
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -64,6 +86,7 @@ const BlogDetail = () => {
           <div className="flex flex-col">
             <div className="flex pt-10 bg-white  mb-4  min-h-full">
               <NavLeft
+                isOwner={isOwner}
                 status={post.status}
                 voteData={post.voteData}
                 idPost={post.id}
@@ -111,8 +134,12 @@ const BlogDetail = () => {
                 </div>
               </div>
 
-              <div>
-                <h4 className="pb-2">Bình luận</h4>
+              <div id="comment-post-section">
+                <Comment
+                  idPost={post.id}
+                  isOwner={isOwner}
+                  status={post.status}
+                />
               </div>
             </div>
           </div>

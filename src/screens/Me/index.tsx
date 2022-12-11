@@ -4,16 +4,12 @@ import { Gender, PhoneFill, Setting, Write } from "@icons/index";
 // import userApi from "@api/userApi";
 import { useDispatch, Selector, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@app/store";
-import { resetUserState, userGetMe } from "@redux/userSlice";
-import InforSkeleton from "./MeSkeleton/InforSkeleton";
 import BioChange from "./BioSection";
 import InForPopup from "./InForPopup";
 import MainContent from "./MainContent";
 import ImageSection from "./ImageSection";
 import Skeleton from "react-loading-skeleton";
-import toast from "react-hot-toast";
 import { BeatLoader } from "react-spinners";
-import { Outlet } from "react-router-dom";
 
 const Me = () => {
   const { userInfo, loading, error } = useSelector(

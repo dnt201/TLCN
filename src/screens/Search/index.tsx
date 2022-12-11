@@ -26,7 +26,7 @@ const Search: React.FC<iProps> = (props) => {
         className="p-4 pb-2 mt-12 w-[75%] mx-auto  "
       />
       <MidContent
-        className="p-4 pt-0 w-[75%] mx-auto overflow-hidden "
+        className="flex-1 flex flex-col  p-4 pt-0 w-[75%] mx-auto overflow-hidden "
         color="#FF4401"
       />
     </div>

@@ -10,17 +10,23 @@ import { AppDispatch, RootState } from "@app/store";
 import BlogNotFound from "@screens/BlogDetail/NotFound";
 import PublishConfirm from "@screens/BlogCreate/PublishConfirm";
 import { resetPublicState } from "@redux/publicSlice";
+import { access } from "fs";
+import { iPostDetail } from "@DTO/Blog";
+import postApi from "@api/postApi";
+import { iPage } from "@DTO/Pagination";
+import BlogTag from "@components/blogTag";
+import Pagination from "@components/pagination";
 interface iUserDetail {
   id: string;
   email: string;
   username: string;
   shortInfo: string;
   phoneNumber: null;
-  gender: "Unknown";
+  gender: string;
   role: {
-    id: "c5e6a595-7efa-4e30-8d76-04fd94d85266";
-    role: "User";
-    displayName: "User";
+    id: string;
+    role: string;
+    displayName: string;
   };
   isFollowing: boolean;
   follower: number;
@@ -30,33 +36,42 @@ interface iUserDetail {
 
 const UserDetail = () => {
   let params = useParams();
-  const { userInfo, accessToken } = useSelector(
-    (state: RootState) => state.users
-  );
+  const accessToken = localStorage.getItem("accessToken");
+  const { userInfo } = useSelector((state: RootState) => state.users);
   const { error, message } = useSelector(
     (state: RootState) => state.publicState
   );
   const dispatch = useDispatch<AppDispatch>();
+  const { userId } = params;
 
+  //#region handle navigate me
   useEffect(() => {
+    if (accessToken !== null) {
+      userApi.getMe().then((r) => {
+        if (r.status === 200) {
+          if (userId === r.data.id) navigate("/me");
+        }
+      });
+    }
     if (error !== null && error.length > 0) toast.error(error);
     if (message !== null && message.length > 0) toast.success(message);
     dispatch(resetPublicState());
   }, []);
-  const { userId } = params;
-
+  //#endregion
   const [userInfoState, setUserInfoState] = useState<iUserDetail>();
+  const [listPostOfUser, setListOfPost] = useState<iPostDetail[]>();
+  const [pagingList, setPagingList] = useState<iPage>();
+  const [curPage, setCurPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [notFound, setNotFound] = useState(false);
   const [searchParams] = useSearchParams();
-
-  console.log(searchParams.get("success"));
 
   //
   const [isConfirm, setIsConfirm] = useState(false);
   const [isShowConfirm, setIsShowConfirm] = useState(false);
   const [loadingConfirm, setLoadingConfirm] = useState(false);
   //
+  //#region handle follow and unfollow
   useEffect(() => {
     const unFollowConfirmHandle = async () => {
       if (userInfoState === null || userInfoState === undefined) {
@@ -83,6 +98,7 @@ const UserDetail = () => {
   const handleFollow = async () => {
     if (
       userInfo === null ||
+      accessToken === null ||
       accessToken.length <= 0 ||
       accessToken === undefined ||
       accessToken === null
@@ -109,7 +125,7 @@ const UserDetail = () => {
       }
     }
   };
-
+  //#endregion
   const navigate = useNavigate();
   useEffect(() => {
     if (userInfo !== null && userId === userInfo?.id) {
@@ -125,6 +141,7 @@ const UserDetail = () => {
         if (result.status === 200) {
           setUserInfoState(result.data);
           setNotFound(false);
+          await getData(userId);
         } else {
           setNotFound(true);
         }
@@ -133,6 +150,24 @@ const UserDetail = () => {
       }, 1000);
     }
   }, []);
+  const getData = async (userId: string) => {
+    const listPostTemp = await postApi.getAllPostByUser(userId, curPage, 1);
+    if (listPostTemp.status === 200 || listPostTemp.status === 201) {
+      console.log(listPostTemp, "--------------------");
+      setListOfPost(listPostTemp.data.result.data);
+      setPagingList(listPostTemp.data.result.page);
+    }
+  };
+  useEffect(() => {
+    console.log(curPage);
+    if (userInfo !== null && userId !== undefined) {
+      if (notFound === false) {
+        console.log(curPage, "----------");
+
+        getData(userId);
+      }
+    }
+  }, [curPage]);
   if (notFound) return <BlogNotFound />; //lười đổi tên thui :v nó là notfound thoi
   return (
     <>
@@ -238,8 +273,23 @@ const UserDetail = () => {
           </div>
         </div>
 
-        {!loading ? (
-          <div>MainContent</div>
+        {!loading && pagingList ? (
+          <div className="max-w-[1028px] w-[85%] mx-auto flex justify-center flex-col items-center">
+            <span className="text-right w-full text-sm py-2 ">
+              Posted ({pagingList.totalElement})
+            </span>
+            <div className="w-full flex-1">
+              {listPostOfUser && listPostOfUser.length > 0 ? (
+                listPostOfUser.map((post) => <BlogTag {...post} />)
+              ) : (
+                <span className="text-right w-full text-sm py-2 ">
+                  Không có bài viết
+                </span>
+              )}
+            </div>
+
+            <Pagination changePageNumber={setCurPage} {...pagingList} />
+          </div>
         ) : (
           <>
             <Skeleton height={"40px"} />

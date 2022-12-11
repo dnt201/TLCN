@@ -29,15 +29,25 @@ interface iNavLeftProps extends React.HTMLProps<HTMLDivElement> {
   isFollow: boolean;
   status: "Approve" | "Waiting";
   voteData?: "Upvote" | "DownVote";
+  isOwner: boolean;
 }
 
 const NavLeft: React.FC<iNavLeftProps> = (props) => {
-  const { className, idPost, owner, like, isFollow, status, voteData } = props;
+  const {
+    className,
+    idPost,
+    owner,
+    like,
+    isFollow,
+    status,
+    voteData,
+    isOwner,
+  } = props;
   const [isFollowState, setIsFollowState] = useState<boolean>(
     isFollow || false
   );
   const [disabledNotSpam, setDisableNotSpam] = useState(false);
-  const [isOwner, setIsOwner] = useState(false);
+
   const [voteDataState, setVoteDataState] = useState<
     "Upvote" | "DownVote" | null
   >(null);
@@ -52,14 +62,7 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
   const refDivActionModal = useRef<HTMLDivElement>(null);
 
   // console.log(isFollow);
-  const accessToken = localStorage.getItem("accessToken");
-  const getMe = async () => {
-    const data = await userApi.getMe();
-    if (data.status === 200) {
-      if (data.data.id === owner.id) setIsOwner(true);
-    }
-  };
-  console.log(voteDataState, "votedata");
+
   useEffect(() => {
     const handleClickOutActionModal = (event: any) => {
       // const buttonShowUser = document.getElementById("showUser");
@@ -79,9 +82,6 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
     };
   }, [refDivActionModal]);
 
-  useEffect(() => {
-    getMe();
-  }, [accessToken]);
   const { userInfo } = useSelector((state: RootState) => state.users);
   return (
     <div className={" " + " " + className}>
@@ -104,7 +104,7 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
           </div>
         ) : null}
 
-        <Link to={`/user-detail/${owner.id}`}>
+        <Link to={isOwner ? `/me` : `/user-detail/${owner.id}`}>
           <img
             src={owner.avatarLink ? owner.avatarLink : avatarDefault}
             alt="avatar"
@@ -114,37 +114,43 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
         <div className="flex flex-col items-center my-4">
           <button
             className={"p-1 group   disabled:cursor-not-allowed"}
+            data-for="upVote"
             data-tip={
               voteDataState !== null && voteDataState === "Upvote"
                 ? "Un vote"
                 : "Up vote"
             }
             disabled={disabledNotSpam}
-            data-for="upVote"
             onClick={async () => {
               if (status === undefined || status !== "Approve") {
                 toast.error("Bài viết chưa được phê duyệt");
               } else {
                 setDisableNotSpam(true);
-                const result = await postApi.voteUp(idPost);
-                if (result.status === 201) {
-                  if (voteDataState === null) {
-                    toast.success(`Vote success`);
-                    setVoteDataState("Upvote");
-                    setLikeState(likeState + 1);
-                  } else if (voteDataState === "DownVote") {
-                    toast.success(`Vote success`);
-                    setVoteDataState("Upvote");
-                    setLikeState(likeState + 2);
-                  } else {
-                    toast.error(`UnVote success`);
-                    setVoteDataState(null);
-                    setLikeState(likeState - 1);
-                  }
+                if (isOwner) {
+                  toast("Không thể vote bài viết của chính bạn", {
+                    icon: "⚠️",
+                  });
                 } else {
-                  toast.error(
-                    `Something went wrong ${result.data.message} vote up`
-                  );
+                  const result = await postApi.voteUp(idPost);
+                  if (result.status === 201) {
+                    if (voteDataState === null) {
+                      toast.success(`Vote success`);
+                      setVoteDataState("Upvote");
+                      setLikeState(likeState + 1);
+                    } else if (voteDataState === "DownVote") {
+                      toast.success(`Vote success`);
+                      setVoteDataState("Upvote");
+                      setLikeState(likeState + 2);
+                    } else {
+                      toast.error(`UnVote success`);
+                      setVoteDataState(null);
+                      setLikeState(likeState - 1);
+                    }
+                  } else {
+                    toast.error(
+                      `Something went wrong ${result.data.message} vote up`
+                    );
+                  }
                 }
                 setTimeout(() => setDisableNotSpam(false), 2500);
               }
@@ -189,25 +195,31 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
                 toast.error("Bài viết chưa được phê duyệt");
               } else {
                 setDisableNotSpam(true);
-                const result = await postApi.voteDown(idPost);
-                if (result.status === 201) {
-                  if (voteDataState === null) {
-                    toast.success(`Down vote success`);
-                    setVoteDataState("DownVote");
-                    setLikeState(likeState - 1);
-                  } else if (voteDataState === "Upvote") {
-                    toast.success(`Down vote success`);
-                    setVoteDataState("DownVote");
-                    setLikeState(likeState - 2);
-                  } else {
-                    toast.error(`UnVote success`);
-                    setVoteDataState(null);
-                    setLikeState(likeState + 1);
-                  }
+                if (isOwner) {
+                  toast("Không thể vote bài viết của chính bạn", {
+                    icon: "⚠️",
+                  });
                 } else {
-                  toast.error(
-                    `Something went wrong ${result.data.message} vote up`
-                  );
+                  const result = await postApi.voteDown(idPost);
+                  if (result.status === 201) {
+                    if (voteDataState === null) {
+                      toast.success(`Down vote success`);
+                      setVoteDataState("DownVote");
+                      setLikeState(likeState - 1);
+                    } else if (voteDataState === "Upvote") {
+                      toast.success(`Down vote success`);
+                      setVoteDataState("DownVote");
+                      setLikeState(likeState - 2);
+                    } else {
+                      toast.error(`UnVote success`);
+                      setVoteDataState(null);
+                      setLikeState(likeState + 1);
+                    }
+                  } else {
+                    toast.error(
+                      `Something went wrong ${result.data.message} vote up`
+                    );
+                  }
                 }
                 setTimeout(() => setDisableNotSpam(false), 2500);
               }
