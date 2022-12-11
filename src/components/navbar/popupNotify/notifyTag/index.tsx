@@ -4,6 +4,7 @@ import { iNotify } from "@DTO/Notify";
 import { useNavigate } from "react-router-dom";
 import { clickNotification } from "src/router/Socket";
 interface iProps extends iNotify {
+  fbiCloseTheDoor: () => void;
   // name: string;
   // nearMess: string;
   // time: number;
@@ -19,6 +20,7 @@ const NotifyTag: React.FC<iProps> = (props) => {
     userSend,
     isClicked,
     dateCreated,
+    fbiCloseTheDoor,
   } = props;
 
   const [isClickedState, setIsClickedState] = useState(isClicked);
@@ -33,13 +35,14 @@ const NotifyTag: React.FC<iProps> = (props) => {
       clickNotification(id);
       setIsClickedState(true);
       navigate(`/blog/${refId}?ref=postComment`);
-    } else if (type === "Post_Vote") {
+    } else if (type === "Post_Reply") {
       clickNotification(id);
       setIsClickedState(true);
       navigate(
         `/blog/${refId}?ref=postComment&idComment=${extendData?.comment}`
       );
     }
+    fbiCloseTheDoor();
   };
 
   return (
@@ -57,7 +60,9 @@ const NotifyTag: React.FC<iProps> = (props) => {
         <span className="w-full  text-s line-clamp-3 font-normal text-white">
           {body}
         </span>
-        <h1 className="w-full text-[11px]  text-primary">Time</h1>
+        <h1 className="w-full text-[11px]  text-primary">
+          {dateCreated.convertToDay()}
+        </h1>
       </div>
       {!isClickedState && (
         <div className="p-1 rounded-full bg-primaryLow"></div>

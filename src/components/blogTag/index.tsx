@@ -38,6 +38,7 @@ const BlogTag: React.FC<iLazy> = (props) => {
   const navigate = useNavigate();
   const [isFollowState, setIsFollowState] = useState(isFollow);
   const divBLogTagRef = useRef<HTMLDivElement>(null);
+  const [loadingPrevent, setLoadingPrevent] = useState(false);
   const { userInfo, accessToken } = useSelector(
     (state: RootState) => state.users
   );
@@ -46,6 +47,7 @@ const BlogTag: React.FC<iLazy> = (props) => {
       localStorage.clear();
       navigate(`/login?redirect=followPost&id=${id}`);
     } else if (accessToken !== null) {
+      setLoadingPrevent(true);
       userApi.followPost(id).then((result) => {
         if (result.status === 201) {
           if (isFollowState) {
@@ -77,6 +79,9 @@ const BlogTag: React.FC<iLazy> = (props) => {
             setIsFollowState(!isFollowState);
           }
         }
+        setTimeout(() => {
+          setLoadingPrevent(false);
+        }, 2000);
       });
     }
   };
@@ -107,9 +112,12 @@ const BlogTag: React.FC<iLazy> = (props) => {
           <div className="flex items-start">
             <h2 className="flex-1 font-semibold text-[16px]">{title}</h2>
             <button
+              className={loadingPrevent ? "cursor-not-allowed" : " "}
               onClick={async (e) => {
                 e.stopPropagation();
-                await handleFollowPost();
+                if (!loadingPrevent) {
+                  await handleFollowPost();
+                }
               }}
             >
               <ListFill
@@ -120,9 +128,10 @@ const BlogTag: React.FC<iLazy> = (props) => {
                 }
                 data-for="follow"
                 className={
-                  isFollowState
+                  " " +
+                  (isFollowState
                     ? " fill-primary"
-                    : " hover:fill-primary duration-300"
+                    : !loadingPrevent && " hover:fill-primary duration-300")
                 }
               />
               <ReactTooltip

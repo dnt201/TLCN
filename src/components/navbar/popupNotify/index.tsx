@@ -131,7 +131,11 @@ const PopUpNotify: React.FC<iPopUpNotifyProps> = (props) => {
               {listNotify && listNotify.length > 0 && paging ? (
                 <div>
                   {listNotify.map((result) => (
-                    <NotifyTag key={result.id} {...result} />
+                    <NotifyTag
+                      key={result.id}
+                      {...result}
+                      fbiCloseTheDoor={() => setShow(0)}
+                    />
                   ))}
                   {curPage < Math.ceil(paging.totalElement / paging.size) ? (
                     <button
