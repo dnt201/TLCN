@@ -119,6 +119,15 @@ const user = createSlice({
     setUserError: (state, action) => {
       if (action.payload) state.error = action.payload;
     },
+    clearAllUser: (state, action) => {
+      state.loading = false;
+      state.userInfo = null;
+      state.error = "";
+      state.accessToken = "";
+      state.refreshToken = "";
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+    },
   },
   extraReducers: (builder) => {
     //login
@@ -218,5 +227,6 @@ const user = createSlice({
   },
 });
 const { reducer, actions } = user;
-export const { setUserMessage, setUserError, resetUserState } = actions;
+export const { setUserMessage, setUserError, resetUserState, clearAllUser } =
+  actions;
 export default reducer;

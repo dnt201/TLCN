@@ -1,6 +1,7 @@
 import { RootState } from "@app/store";
 import { iUserTag } from "@DTO/User";
 import avatarDefault from "@images/userDefault.png";
+import { Check } from "@icons/index";
 
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
@@ -49,11 +50,20 @@ const UserTagItem: React.FC<iProps> = (props) => {
           <button
             onClick={() => handleFollow()}
             className={
-              " text-xs py-2 mt-1 max-w-[50%] text-center rounded-md  hover:cursor-pointer " +
-              (!isFollowState ? " bg-primary" : " ")
+              " text-xs mt-1 max-w-[50%] py-2 text-center rounded-md  hover:cursor-pointer " +
+              (!isFollowState
+                ? "  bg-primary  "
+                : " border-[1px] border-white ")
             }
           >
-            {isFollowState ? "Đang follow" : " Follow"}
+            {isFollowState ? (
+              <div className="flex items-center justify-center  overflow-hidden ">
+                <Check className="w-3 h-3" />
+                <span className=" ml-1 line-clamp-1">Đã follow</span>
+              </div>
+            ) : (
+              " Follow"
+            )}
           </button>
         )}
 

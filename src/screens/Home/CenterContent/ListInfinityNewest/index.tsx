@@ -18,6 +18,8 @@ const ListInfinityNewest = () => {
   const [page, setPage] = useState(1);
   const [maxRoiLazyQuaTroi, setMaxRoiLazyQuaTroi] = useState(false);
   const { accessToken } = useSelector((state: RootState) => state.users);
+  const divListRef = useRef<HTMLDivElement>(null);
+  console.log(divListRef.current?.getBoundingClientRect());
 
   console.log(maxRoiLazyQuaTroi);
   useEffect(() => {
@@ -99,6 +101,7 @@ const ListInfinityNewest = () => {
               setPage(1);
             }
           } else {
+            console.log(page, paging);
             if (page + 1 <= Math.ceil(paging.totalElement / paging.size)) {
               let pageNumber = page + 1;
               setPage(pageNumber);
@@ -120,7 +123,7 @@ const ListInfinityNewest = () => {
     return <NoPost />;
   }
   return (
-    <div>
+    <div ref={divListRef} id={"12345"}>
       {listBlogTag && listBlogTag.length > 0
         ? listBlogTag.map((blog) => (
             <React.Fragment key={blog.id}>

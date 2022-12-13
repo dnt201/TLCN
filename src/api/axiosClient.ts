@@ -1,8 +1,11 @@
+import { AppDispatch } from "./../app/store";
+import { useDispatch } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 // api/axiosClient.js
 import axios, { AxiosRequestConfig } from "axios";
 import { log } from "console";
 import queryString from "query-string";
+import { clearAllUser } from "@redux/userSlice";
 // Set up default config for http requests here
 
 // Please have a look at here `https://github.com/axios/axios#request -
@@ -42,22 +45,20 @@ axiosClient.interceptors.response.use(
       error.response.status === 401 &&
       error.response.data.message === "Unauthorized"
     ) {
-      console.log("refresh");
-      prevRequest.sent = true;
-      console.log("refreshToken: ", refreshToken);
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${refreshToken}`,
+          },
+        };
+        const newAccessToken = await axios.get(
+          `${process.env.REACT_APP_API_URL}auth/refresh`,
+          config
+        );
 
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${refreshToken}`,
-        },
-      };
-      const newAccessToken = await axios.get(
-        `${process.env.REACT_APP_API_URL}auth/refresh`,
-        config
-      );
-      if (newAccessToken.data.accessToken) {
-        console.log("newAccessToken", newAccessToken);
+        const { accessToken } = newAccessToken.data;
+        localStorage.setItem("accessToken", accessToken);
 
         let lazyAxios = await axios.create({
           baseURL: process.env.REACT_APP_API_URL,
@@ -76,10 +77,11 @@ axiosClient.interceptors.response.use(
           }
         );
         console.log(prevRequest);
+
         console.log((await lazyAxios(prevRequest)).config);
         return await lazyAxios(prevRequest);
-      } else {
-        console.log("log out");
+      } catch (_error) {
+        localStorage.clear();
       }
     } else if (error.response) {
       console.log("error.response", error.response);

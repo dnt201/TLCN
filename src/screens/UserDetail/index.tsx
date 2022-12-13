@@ -221,9 +221,7 @@ const UserDetail = () => {
                     {userInfoState?.isFollowing ? (
                       <div className="flex items-center justify-center gap-[2px] overflow-hidden px-2">
                         <Check className="w-5 h-5" />
-                        <span className=" line-clamp-1">
-                          Đang follow w w wwwww
-                        </span>
+                        <span className=" line-clamp-1">Đang follow</span>
                       </div>
                     ) : (
                       " Follow"

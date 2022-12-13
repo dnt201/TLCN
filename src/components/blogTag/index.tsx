@@ -110,7 +110,9 @@ const BlogTag: React.FC<iLazy> = (props) => {
         {/* first row */}
         <div>
           <div className="flex items-start">
-            <h2 className="flex-1 font-semibold text-[16px]">{title}</h2>
+            <h2 className="flex-1 font-semibold text-[16px] line-clamp-3 ">
+              {title}
+            </h2>
             <button
               className={loadingPrevent ? "cursor-not-allowed" : " "}
               onClick={async (e) => {
