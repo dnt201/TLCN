@@ -8,13 +8,14 @@ import { HashLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
 import { reduceFollowing } from "@redux/userSlice";
 import { AppDispatch } from "@app/store";
+import { useNavigate } from "react-router-dom";
 interface iProps extends iUserFollow {
   select: "Follower" | "Following";
 }
 const TagUser: React.FC<iProps> = (props) => {
   const { select } = props;
   const dispatch = useDispatch<AppDispatch>();
-
+  const navigate = useNavigate();
   const [remove, setRemove] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -39,7 +40,13 @@ const TagUser: React.FC<iProps> = (props) => {
     }
   }, [remove]);
   return (
-    <div className="flex items-center px-3 py-2 ">
+    <div
+      className="flex items-center px-3 py-2 "
+      onClick={(e) => {
+        navigate(`/user-detail/${props.id}`);
+        e.stopPropagation();
+      }}
+    >
       {showConfirm && (
         <PublishConfirm
           header={`Bạn có thực sự muốn unfollow ${props.username}`}
