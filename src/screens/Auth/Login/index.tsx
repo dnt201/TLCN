@@ -269,7 +269,7 @@ const Login = () => {
         {step !== 3 ? (
           <>
             <span className="mt-8 font-normal text-sm text-bg2">
-              Bạn chưa có tài khoản?
+              Bạn chưa có tài khoản?{" "}
               <Link to={"/register"} className="text-primary font-semibold">
                 Đăng ký
               </Link>

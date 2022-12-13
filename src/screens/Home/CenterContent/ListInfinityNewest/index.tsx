@@ -149,7 +149,7 @@ const ListInfinityNewest = () => {
         </div>
       ) : maxRoiLazyQuaTroi ? (
         <div className="py-2 pb-6 flex items-center text-sm justify-center">
-          Have no one to load!!!
+          Nothing to show!
           <button
             className="flex items-center p-2 text-primary font-semibold text-base"
             onClick={async () => {

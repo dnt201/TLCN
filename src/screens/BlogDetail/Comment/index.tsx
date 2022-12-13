@@ -208,7 +208,7 @@ const ReplyComment: React.FC<iProps> = (props) => {
         </div>
       ) : (
         <button
-          className="flex items-center justify-center px-2 py-4 rounded-md border-gray text-gray border-[1px]"
+          className="flex items-center justify-center px-2 py-4 rounded-md border-gray hover:bg-[#ccc] trasition-all text-smokeDark border-[1px]"
           onClick={() => {
             navigate(`/login?redirect=commentPost&id=${idPost}`);
           }}

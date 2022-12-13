@@ -78,7 +78,7 @@ const LeftContent: React.FC<iProps> = (props) => {
           )}
         </div>
         <div className="bg-bg2 rounded-lg p-2 mt-4  ">
-          <h3 className="p-2 font-bold text-white">Popular Category</h3>
+          <h3 className="p-2 font-bold text-white">Popular Categorys</h3>
           {listCategory && listCategory.length > 0 ? (
             listCategory.map((category) => (
               <Tag

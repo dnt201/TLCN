@@ -150,7 +150,7 @@ md:flex-col-reverse
         )}
 
         <span className="mt-8 font-normal text-sm text-bg2">
-          Bạn đã có tài khoản?
+          Bạn đã có tài khoản?{" "}
           <Link className="text-primary font-semibold" to="/login">
             Đăng nhập
           </Link>

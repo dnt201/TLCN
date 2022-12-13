@@ -114,9 +114,13 @@ const ListPostByTag = () => {
       ) : (
         <div className="flex flex-1 h-full mt-4 w-full  max-w-[960px] mx-auto flex-col items-center">
           <div className=" flex flex-col w-full items-center flex-1 overflow-x-visible">
-            {listPost?.map((result) => (
-              <BlogTag {...result} key={result.id} />
-            ))}
+            {listPost?.map((result) =>
+              result.status === "Approve" ? (
+                <BlogTag {...result} key={result.id} />
+              ) : (
+                ""
+              )
+            )}
           </div>
           {paging && !loading ? (
             <Pagination
