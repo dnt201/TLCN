@@ -47,9 +47,14 @@ const DeClareRouter = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   const eventClear = () => {
-    console.log("Eventne");
     dispatch(clearAllUser());
+    navigate("/login");
   };
+  React.useEffect(() => {
+    window.addEventListener("storage", (e) => {
+      eventClear();
+    });
+  }, []);
   React.useEffect(() => {
     const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
     if (
@@ -59,9 +64,6 @@ const DeClareRouter = () => {
       initiateSocketConnection(accessTokenFromLocalStorage);
       Post_Vote();
       setLogged(true);
-      window.addEventListener("storage", (e) => {
-        eventClear();
-      });
 
       if (userInfo === null && accessTokenFromLocalStorage)
         dispatch(userGetMe());

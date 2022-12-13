@@ -59,7 +59,7 @@ const TagUser: React.FC<iProps> = (props) => {
         <span className="text-base font-medium text-primary hover:cursor-pointer">
           {props.username}
         </span>
-        <span className="line-clamp-1"> {props.shortInfo} a</span>
+        <span className="line-clamp-1"> {props.shortInfo}</span>
       </div>
       {select === "Following" ? (
         <button

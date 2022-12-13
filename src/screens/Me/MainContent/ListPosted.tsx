@@ -66,7 +66,7 @@ const ListPost: React.FC<iProps> = (props) => {
           <div className="flex flex-col  items-center mb-2">
             {listPosted?.map((post) => (
               <React.Fragment key={post.id}>
-                <BlogTag {...post} />
+                <BlogTag {...post} myPost={true} />
               </React.Fragment>
             ))}
           </div>

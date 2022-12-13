@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { Book, BookFill, Heart, ListFill } from "@icons/index";
+import React, { useEffect, useRef, useState } from "react";
+import { Book, BookFill, Heart, ListFill, More } from "@icons/index";
 import { Link, useNavigate } from "react-router-dom";
 import defaultPost from "@images/default-placeholder.png";
 import avatarDefault from "@images/userDefault.png";
@@ -10,8 +10,10 @@ import { RootState } from "@app/store";
 
 import userApi from "@api/userApi";
 import toast from "react-hot-toast";
+import ActionModal from "@screens/BlogDetail/NavLeft/ActionModal";
 
 interface iLazy extends iPostDetail {
+  myPost?: boolean;
   listFromFollowing?: iPostDetail[];
   setListFromFollowing?: (posts: iPostDetail[]) => void;
   setPage?: (number: number) => void;
@@ -20,6 +22,7 @@ interface iLazy extends iPostDetail {
 
 const BlogTag: React.FC<iLazy> = (props) => {
   const {
+    myPost,
     id,
     title,
     tags,
@@ -85,6 +88,30 @@ const BlogTag: React.FC<iLazy> = (props) => {
       });
     }
   };
+  const [showActionModal, setShowActionModal] = useState(false);
+  const refDivActionModal = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    console.log(showActionModal);
+  }, [showActionModal]);
+  useEffect(() => {
+    const handleClickOutActionModal = (event: any) => {
+      // const buttonShowUser = document.getElementById("showUser");
+      // console.log(buttonShowUser);
+
+      if (
+        refDivActionModal.current &&
+        !refDivActionModal.current.contains(event.target)
+      ) {
+        setShowActionModal(false);
+      } else {
+      }
+    };
+    document.addEventListener("click", handleClickOutActionModal, true);
+    return () => {
+      document.removeEventListener("click", handleClickOutActionModal, true);
+    };
+  }, [refDivActionModal]);
   return (
     <div
       ref={divBLogTagRef}
@@ -113,37 +140,70 @@ const BlogTag: React.FC<iLazy> = (props) => {
             <h2 className="flex-1 font-semibold text-[16px] line-clamp-3 ">
               {title}
             </h2>
-            <button
-              className={loadingPrevent ? "cursor-not-allowed" : " "}
-              onClick={async (e) => {
-                e.stopPropagation();
-                if (!loadingPrevent) {
-                  await handleFollowPost();
-                }
-              }}
-            >
-              <ListFill
-                data-tip={
-                  isFollowState
-                    ? "Unfollow bài viết?"
-                    : "Click để follow bài viết"
-                }
-                data-for="follow"
-                className={
-                  " " +
-                  (isFollowState
-                    ? " fill-primary"
-                    : !loadingPrevent && " hover:fill-primary duration-300")
-                }
-              />
-              <ReactTooltip
-                textColor="#FF4401"
-                id="follow"
-                place="bottom"
-                effect="solid"
-                padding={"8px"}
-              />
-            </button>
+            {myPost ? (
+              <div
+                className="p-1 mb-4 relative z-[10100] "
+                ref={refDivActionModal}
+              >
+                <button
+                  onClick={(e) => {
+                    setShowActionModal(!showActionModal);
+                    e.stopPropagation();
+                  }}
+                >
+                  <More
+                    className="w-6 h-6 "
+                    data-tip="Chỉnh sửa bài viết"
+                    data-for="acctionOfPostNavLeft"
+                  />
+                  <ReactTooltip
+                    textColor="#FF4401"
+                    id="acctionOfPostNavLeft"
+                    place="top"
+                    effect="solid"
+                  />
+                </button>
+                {showActionModal ? (
+                  <ActionModal
+                    redirect="me"
+                    className=" -translate-x-1/2 bg-white "
+                    idPost={id}
+                  />
+                ) : null}
+              </div>
+            ) : (
+              <button
+                className={loadingPrevent ? "cursor-not-allowed" : " "}
+                onClick={async (e) => {
+                  e.stopPropagation();
+                  if (!loadingPrevent) {
+                    await handleFollowPost();
+                  }
+                }}
+              >
+                <ListFill
+                  data-tip={
+                    isFollowState
+                      ? "Unfollow bài viết?"
+                      : "Click để follow bài viết"
+                  }
+                  data-for="follow"
+                  className={
+                    " " +
+                    (isFollowState
+                      ? " fill-primary"
+                      : !loadingPrevent && " hover:fill-primary duration-300")
+                  }
+                />
+                <ReactTooltip
+                  textColor="#FF4401"
+                  id="follow"
+                  place="bottom"
+                  effect="solid"
+                  padding={"8px"}
+                />
+              </button>
+            )}
           </div>
           <div className=" ">
             {tags &&

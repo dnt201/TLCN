@@ -6,18 +6,20 @@ import postApi from "@api/postApi";
 import toast from "react-hot-toast";
 interface iProps extends React.HTMLProps<HTMLDivElement> {
   idPost: string;
+  redirect?: string;
 }
 const ActionModal: React.FC<iProps> = (props) => {
-  const { idPost, className } = props;
+  const { idPost, className, redirect } = props;
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   return (
     <div
       className={
-        className +
-        "  rounded-md py-2 w-fit flex flex-col gap-2  bg-[#f1f1f1] absolute top-0 -right-4 translate-x-full  z-1000000 text-bg"
+        "  rounded-md py-2 w-fit flex flex-col gap-2  bg-[#f1f1f1] absolute top-0 -right-4 translate-x-full  z-[10100] text-bg" +
+        className
       }
+      onClick={(e) => e.stopPropagation()}
     >
       <Link to={`/edit-post/${idPost}`}>
         <div className="flex items-center gap-1 p-1 px-3 hover:bg-primaryHover hover:text-primary ">
@@ -31,7 +33,7 @@ const ActionModal: React.FC<iProps> = (props) => {
       <button
         className="p-1  flex items-center gap-1  px-3 w-full hover:bg-primaryHover hover:text-primary "
         onClick={async () => {
-          const toastId = toast.loading("Loading...");
+          const toastId = toast.loading("Loading...", { duration: 5000 });
 
           const result = await postApi.deletePost(idPost);
           if (result.status === 200 || result.status === 202) {
@@ -39,7 +41,8 @@ const ActionModal: React.FC<iProps> = (props) => {
               id: toastId,
               duration: 2500,
             });
-            navigate("/");
+            if (redirect) navigate(`/${redirect}`);
+            else navigate("/");
           } else {
             toast.error(`Some thing went wrong ${result.status}`, {
               id: toastId,

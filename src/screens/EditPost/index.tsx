@@ -41,6 +41,7 @@ const EditPost = () => {
   const { postId } = params;
   const [postIdCur, setPostIdCur] = useState("");
   const { userInfo } = useSelector((state: RootState) => state.users);
+  const [notFoundLazy, setNotFoundLazy] = useState(false);
 
   const getPostDetailById = async () => {
     let accessToken = localStorage.getItem("accessToken");
@@ -92,6 +93,7 @@ const EditPost = () => {
             setTags(tempTagsForm);
           }
           if (categories.status === 201) {
+            console.log(curPost.category);
             let tempListCategory: iOption[] = [];
             console.log(categories.data);
             categories.data.result.data.forEach((element: iCategory) => {
@@ -116,12 +118,20 @@ const EditPost = () => {
 
           setCanNextStep(3);
           setLoading(false);
-        } else return <BlogNotFound />;
+        } else {
+          setLoading(false);
+
+          console.log("asas sanot foutn nd");
+          setNotFoundLazy(true);
+        }
       } else {
         localStorage.removeItem("accessToken");
         navigate("/login");
       }
-    } else return <BlogNotFound />;
+    } else {
+      setLoading(false);
+      setNotFoundLazy(true);
+    }
   };
 
   const [canNextStep, setCanNextStep] = useState(1);
@@ -157,7 +167,6 @@ const EditPost = () => {
 
   const editPost = async (postCreate: postCreate) => {
     setLoading(true);
-
     const toastId = toast.loading("Loading...");
     // ...
     const result = await postApi.editPost(postIdCur, postCreate);
@@ -179,12 +188,12 @@ const EditPost = () => {
           setIsChange(false);
         }, 2500);
       }
+      setLoading(false);
     }, 2000);
   };
   useEffect(() => {
     let temp: postCreate;
     if (isChange) {
-      console.log("call api create");
       if (tags !== null) {
         temp = {
           title: title,
@@ -230,6 +239,7 @@ const EditPost = () => {
   }, []);
   if (loading) return <EditPostSkeleton />;
 
+  if (notFoundLazy) return <BlogNotFound />;
   return (
     <>
       <div
