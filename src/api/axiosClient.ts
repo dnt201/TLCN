@@ -1,11 +1,11 @@
 import { AppDispatch } from "./../app/store";
-import { useDispatch } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 // api/axiosClient.js
 import axios, { AxiosRequestConfig } from "axios";
 import { log } from "console";
 import queryString from "query-string";
 import { clearAllUser } from "@redux/userSlice";
+import { toast } from "react-hot-toast";
 // Set up default config for http requests here
 
 // Please have a look at here `https://github.com/axios/axios#request -
@@ -43,8 +43,10 @@ axiosClient.interceptors.response.use(
       return error.message;
     } else if (
       error.response.status === 401 &&
-      error.response.data.message === "Unauthorized"
+      error.response.data.message === "Unauthorized" &&
+      prevRequest._retry !== true
     ) {
+      prevRequest._retry = true;
       try {
         const config = {
           headers: {
@@ -81,15 +83,19 @@ axiosClient.interceptors.response.use(
         // console.log((await lazyAxios(prevRequest)).config);
         return await lazyAxios(prevRequest);
       } catch (_error: any) {
-        console.log(
-          _error,
-          "---------------dsad à à sa fas a f à f á a-------"
-        );
+        // console.log(
+        //   _error,
+        //   "day neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+        // );
+        console.log("dispatch");
+        window.dispatchEvent(new Event("storage"));
+        // localStorage.clear();
         if (
           _error.response.status === 401 &&
           _error.response.data.message === "Unauthorized"
         )
-          localStorage.clear();
+          toast.error("Refresh hết hạn");
+        Promise.reject(_error);
       }
     } else if (error.response) {
       console.log("error.response", error.response);

@@ -37,7 +37,7 @@ const BlogDetail = () => {
   );
 
   const checkOwner = async () => {
-    if (post !== null) {
+    if (post !== null && accessToken) {
       const data = await userApi.getMe();
       if (data.status === 200) {
         if (data.data.id === post.owner.id) setIsOwner(true);

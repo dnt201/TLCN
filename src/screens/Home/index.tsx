@@ -9,7 +9,6 @@ const Home = () => {
   const { accessToken } = useSelector((state: RootState) => state.users);
   const [searchParams] = useSearchParams();
   useEffect(() => {
-    console.log("mouteddđ-----------------------");
     window.scrollTo(0, 0);
   }, [accessToken]);
   return (

@@ -1,5 +1,6 @@
 import axiosClient from "@api/axiosClient";
 import { ChangePassWordValues } from "@screens/ChangePassWord";
+import axios from "axios";
 import queryString from "query-string";
 
 export interface userApiAuth {
@@ -82,6 +83,14 @@ const userApi = {
       pageNumber: pageNumber || 1,
       order: [],
     });
+  },
+  getMyFollower: () => {
+    const url = `/users/my/follower`;
+    return axiosClient.get(url);
+  },
+  getMyFollowing: () => {
+    const url = `/users/my/follow`;
+    return axiosClient.get(url);
   },
 };
 export default userApi;

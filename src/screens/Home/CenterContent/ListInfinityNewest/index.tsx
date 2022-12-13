@@ -20,7 +20,6 @@ const ListInfinityNewest = () => {
   const { accessToken } = useSelector((state: RootState) => state.users);
   const divListRef = useRef<HTMLDivElement>(null);
 
-  console.log(maxRoiLazyQuaTroi);
   useEffect(() => {
     window.scrollTo(0, 0);
     setListBlogTag(null);

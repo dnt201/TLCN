@@ -119,7 +119,7 @@ const user = createSlice({
     setUserError: (state, action) => {
       if (action.payload) state.error = action.payload;
     },
-    clearAllUser: (state, action) => {
+    clearAllUser: (state) => {
       state.loading = false;
       state.userInfo = null;
       state.error = "";
@@ -127,6 +127,16 @@ const user = createSlice({
       state.refreshToken = "";
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
+    },
+    reduceFollowing: (state, action) => {
+      if (state.userInfo !== null && parseInt(action.payload)) {
+        // let user = {
+        //   ...state.userInfo,
+        //   following: state.userInfo.following - parseInt(action.payload),
+        // };
+        state.userInfo.following =
+          state.userInfo.following - parseInt(action.payload);
+      }
     },
   },
   extraReducers: (builder) => {
@@ -227,6 +237,11 @@ const user = createSlice({
   },
 });
 const { reducer, actions } = user;
-export const { setUserMessage, setUserError, resetUserState, clearAllUser } =
-  actions;
+export const {
+  setUserMessage,
+  setUserError,
+  resetUserState,
+  clearAllUser,
+  reduceFollowing,
+} = actions;
 export default reducer;

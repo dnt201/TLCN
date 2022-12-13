@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import avatarDefault from "@images/userDefault.png";
 import { Gender, PhoneFill, Setting, Write } from "@icons/index";
 // import userApi from "@api/userApi";
 import { useDispatch, Selector, useSelector } from "react-redux";
@@ -10,6 +9,8 @@ import MainContent from "./MainContent";
 import ImageSection from "./ImageSection";
 import Skeleton from "react-loading-skeleton";
 import { BeatLoader } from "react-spinners";
+import UserFollowModal from "./UserFollowModal";
+import { userGetMe } from "@redux/userSlice";
 
 const Me = () => {
   const { userInfo, loading, error } = useSelector(
@@ -17,8 +18,11 @@ const Me = () => {
   );
   const [showInForPopup, setShowInForPopup] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
+
+  const [showModal, setShowModal] = useState(false);
+  const [select, setSelect] = useState<"Follower" | "Following">("Follower");
   useEffect(() => {
-    // dispatch(userGetMe());
+    dispatch(userGetMe());
     // if (error && error !== null) toast.error(error);
     // dispatch(resetUserState);
   }, []);
@@ -30,11 +34,14 @@ const Me = () => {
     );
   return (
     <>
-      <div className=" min-h-[calc(100vh-52px)] bg-bg flex flex-col ">
+      <div className="  min-h-[calc(100vh-52px)] bg-bg flex flex-col overflow-hidden ">
         {showInForPopup ? (
           <InForPopup show={showInForPopup} setShow={setShowInForPopup} />
         ) : null}
 
+        {showModal && (
+          <UserFollowModal select={select} setShow={setShowModal} />
+        )}
         {/* Infor */}
         <div className=" pt-2 flex flex-col items-center border-b-[1px] border-hover pb-4  lg:justify-center lg:mx-[5%]">
           {/* Infor block 1 */}
@@ -62,17 +69,29 @@ const Me = () => {
               )}
 
               {!loading ? (
-                <div className="flex w-full mt-1">
-                  <div className="flex-1 text-xs py-2  text-center rounded-md hover:bg-hover hover:cursor-pointer ">
+                <div className="flex w-full mt-2">
+                  <button
+                    className="flex-1 text-xs py-2  text-center rounded-md hover:bg-hover "
+                    onClick={() => {
+                      setSelect("Follower");
+                      setShowModal(true);
+                    }}
+                  >
                     <span className="font-bold mr-1">{userInfo?.follower}</span>
                     Follower
-                  </div>
-                  <div className="flex-1 text-xs py-2  text-center rounded-md hover:bg-hover hover:cursor-pointer ">
+                  </button>
+                  <button
+                    className="flex-1 text-xs py-2  text-center rounded-md hover:bg-hover  "
+                    onClick={() => {
+                      setSelect("Following");
+                      setShowModal(true);
+                    }}
+                  >
                     <span className="font-bold mr-1">
                       {userInfo?.following}
                     </span>
                     Following
-                  </div>
+                  </button>
                 </div>
               ) : (
                 <Skeleton />

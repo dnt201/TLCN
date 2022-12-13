@@ -56,12 +56,7 @@ const listTabItem: tabItem[] = [
     iconFill: CategoryFill,
     linkTo: "/categories",
   },
-  {
-    title: "Saved",
-    icon: List,
-    iconFill: ListFill,
-    linkTo: "/list-save",
-  },
+
   {
     title: "Course",
     icon: Book,
@@ -78,7 +73,10 @@ const Navbar = () => {
   const [isSearchFocus, setSearchFocus] = useState(false);
   const popUpSearchBox = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-
+  // const accessToken = localStorage.getItem("accessToken");
+  // useEffect(() => {
+  //   console.log("r const accessToken = localStorage.getItem");
+  // }, [accessToken]);
   const { accessToken, userInfo } = useSelector(
     (state: RootState) => state.users
   );

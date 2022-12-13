@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
 import { isFulfilled } from "@reduxjs/toolkit";
 import {
+  reduceFollowing,
   resetUserState,
   setUserError,
   setUserMessage,
@@ -34,7 +35,7 @@ const Login = () => {
 
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { accessToken, message, error } = useSelector(
+  const { accessToken, message, error, userInfo } = useSelector(
     (state: RootState) => state.users
   );
 
@@ -62,60 +63,60 @@ const Login = () => {
 
   const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
   useEffect(() => {
-    // console.log("accessToken", accessToken);
     if (accessTokenFromLocalStorage !== null) {
       navigate("/");
-    } else {
-      if (accessToken !== "") {
-        let actionFromURL = searchParams.get("redirect");
-        let idFromURL = searchParams.get("id");
-        console.log(actionFromURL, idFromURL);
-        if (actionFromURL !== null && idFromURL !== null) {
-          if (actionFromURL === "followPost") {
-            postApi.getPostDetailById(idFromURL).then((result) => {
-              if (result.status === 200) {
-                console.log(result);
-                if (result.data.isFollow === true) {
-                  console.log("navigate followed");
-                  navigate(`/blog/${searchParams.get("id")}?message=followed`);
-                } else if (result.data.isFollow === false) {
-                  console.log("navigate chưa follow và follow");
-                  navigate(
-                    `/blog/${searchParams.get("id")}?message=followSuccess`
-                  );
-                } else navigate("/");
-              }
-            });
-          } else if (actionFromURL === "followUser") {
-            userApi.getMe().then((result) => {
-              if (result.status === 200) {
-                if (result.data.id === idFromURL) {
-                  dispatch(setUserMessage("ErrorFlowYourself"));
-                  navigate(`/me`);
-                } else {
-                  if (idFromURL) {
-                    userApi.followUser(idFromURL).then((result) => {
-                      if (result.status === 201) {
-                        dispatch(
-                          setMessagePublicState("Đã follow thành công!")
-                        );
-                        navigate(`/user-detail/${idFromURL}`);
-                      } else {
-                        // dispatch(setUserError("Something went wrong"));
-                        navigate(`/user-detail/${idFromURL}?success=false`);
-                      }
-                    });
-                  }
-                }
-              } else navigate("/");
-            });
-          } else if (actionFromURL === "commentPost") {
-            navigate(`/blog/${idFromURL}?ref=postComment`);
-          } else navigate("/");
-        } else navigate("/");
-      }
     }
-  }, [accessToken, accessTokenFromLocalStorage]);
+  }, []);
+
+  useEffect(() => {
+    // console.log("accessToken", accessToken);
+
+    if (accessTokenFromLocalStorage !== "" && userInfo) {
+      let actionFromURL = searchParams.get("redirect");
+      let idFromURL = searchParams.get("id");
+      console.log(actionFromURL, idFromURL);
+      if (actionFromURL !== null && idFromURL !== null) {
+        if (actionFromURL === "followPost") {
+          postApi.getPostDetailById(idFromURL).then((result) => {
+            if (result.status === 200) {
+              console.log(result);
+              if (result.data.isFollow === true) {
+                console.log("navigate followed");
+                navigate(`/blog/${searchParams.get("id")}?message=followed`);
+              } else if (result.data.isFollow === false) {
+                console.log("navigate chưa follow và follow");
+                navigate(
+                  `/blog/${searchParams.get("id")}?message=followSuccess`
+                );
+              } else navigate("/");
+            }
+          });
+        } else if (actionFromURL === "followUser") {
+          userApi.getMe().then((result) => {
+            if (result.status === 200) {
+              if (result.data.id === idFromURL) {
+                dispatch(setUserMessage("ErrorFlowYourself"));
+                navigate(`/me`);
+              } else {
+                if (idFromURL) {
+                  userApi.followUser(idFromURL).then((result) => {
+                    if (result.status === 201) {
+                      dispatch(setMessagePublicState("Đã follow thành công!"));
+                      navigate(`/user-detail/${idFromURL}`);
+                    } else {
+                      navigate(`/user-detail/${idFromURL}?success=false`);
+                    }
+                  });
+                }
+              }
+            } else navigate("/");
+          });
+        } else if (actionFromURL === "commentPost") {
+          navigate(`/blog/${idFromURL}?ref=postComment`);
+        } else navigate("/");
+      } else navigate("/");
+    }
+  }, [accessToken, accessTokenFromLocalStorage, userInfo]);
 
   const showToastOnUpdate = () => {
     setPause(true);

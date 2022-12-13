@@ -6,6 +6,8 @@ import { Check } from "@icons/index";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import userApi from "@api/userApi";
+import { toast } from "react-hot-toast";
 
 interface iProps extends iUserTag {}
 const UserTagItem: React.FC<iProps> = (props) => {
@@ -21,17 +23,41 @@ const UserTagItem: React.FC<iProps> = (props) => {
   } = props;
   const navigate = useNavigate();
   const [isFollowState, setIsFollowState] = useState(isFollow);
+  const [loadingS, setLoadingS] = useState(false);
   const { userInfo, loading, error } = useSelector(
     (state: RootState) => state.users
   );
 
-  if (!userInfo) return <div>Loader</div>;
-  const handleFollow = () => {};
+  const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
+  const handleFollow = async () => {
+    if (accessTokenFromLocalStorage && userInfo) {
+      let rs = null;
+      if (isFollowState) {
+        rs = await userApi.unFollowUser(id);
+        if (rs.status === 201 || rs.status === 200) {
+          toast.error("Unfollow success");
+          setIsFollowState(false);
+        } else {
+          toast.error("Unfollow error");
+        }
+      } else {
+        rs = await userApi.followUser(id);
+        if (rs.status === 201 || rs.status === 200) {
+          toast.success("Follow success");
+          setIsFollowState(true);
+        } else {
+          toast.error("Follow error");
+        }
+      }
+    } else {
+      navigate(`/login?redirect=followUser&id=${id}`);
+    }
+  };
   return (
     <div
       className={"flex items-center hover:cursor-pointer px-2 py-1 flex-1"}
       onClick={() => {
-        if (userInfo.id === id) navigate("/me");
+        if (userInfo && userInfo.id === id) navigate("/me");
         else navigate(`/user-detail/${id}`);
       }}
     >
@@ -44,13 +70,16 @@ const UserTagItem: React.FC<iProps> = (props) => {
           {username}
         </span>
         {/* <div>{email}</div> */}
-        {userInfo.id === id ? (
+        {userInfo && userInfo.id === id ? (
           <span>Bạn</span>
         ) : (
           <button
-            onClick={() => handleFollow()}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleFollow();
+            }}
             className={
-              " text-xs mt-1 max-w-[50%] py-2 text-center rounded-md  hover:cursor-pointer " +
+              " text-xs mt-1 max-w-[50%] py-2 text-center rounded-md  hover:cursor-pointer disabled:cursor-not-allowed " +
               (!isFollowState
                 ? "  bg-primary  "
                 : " border-[1px] border-white ")

@@ -21,7 +21,6 @@ const CenterContent: React.FC<iProps> = (props) => {
   const [paging, setPaging] = useState<iPage | null>(null);
   // const [errorKeyKiLaLamLun, setErrorKeyKiLaLamLun] = useState(true);
   const divListBlog = useRef<HTMLDivElement>(null);
-  console.log(loading);
   const navigate = useNavigate();
   const curPath = window.location.pathname;
   const { accessToken, userInfo } = useSelector(

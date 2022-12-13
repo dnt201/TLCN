@@ -39,7 +39,6 @@ const postApi = {
   },
   getAllPost: (name?: string, pageNumber?: number, size?: number) => {
     let url = ``;
-    console.log("get all post", name, pageNumber, size);
     if (name !== undefined && name !== "") url = `/post/all?name=${name}`;
     else url = `/post/all?name`;
     return axiosClient.post(url, {

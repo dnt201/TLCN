@@ -65,12 +65,12 @@ const UserDetail = () => {
   const [loading, setLoading] = useState(false);
   const [notFound, setNotFound] = useState(false);
   const [searchParams] = useSearchParams();
-
   //
   const [isConfirm, setIsConfirm] = useState(false);
   const [isShowConfirm, setIsShowConfirm] = useState(false);
   const [loadingConfirm, setLoadingConfirm] = useState(false);
   //
+
   //#region handle follow and unfollow
   useEffect(() => {
     const unFollowConfirmHandle = async () => {
@@ -96,18 +96,13 @@ const UserDetail = () => {
   }, [isConfirm]);
 
   const handleFollow = async () => {
-    if (
-      userInfo === null ||
-      accessToken === null ||
-      accessToken.length <= 0 ||
-      accessToken === undefined ||
-      accessToken === null
-    ) {
-      localStorage.clear();
+    if (accessToken === null) {
       if (userInfoState !== undefined && userInfoState.id !== undefined)
         navigate(`/login?redirect=followUser&id=${userInfoState.id}`);
       else navigate(`/login`);
     } else {
+      console.log("2");
+
       if (userInfoState === null || userInfoState === undefined) {
         toast.error("Something went wrong please reload!!!");
       } else if (userInfoState.isFollowing) {
@@ -162,8 +157,6 @@ const UserDetail = () => {
     console.log(curPage);
     if (userInfo !== null && userId !== undefined) {
       if (notFound === false) {
-        console.log(curPage, "----------");
-
         getData(userId);
       }
     }
@@ -183,7 +176,7 @@ const UserDetail = () => {
           img={userInfoState?.avatarLink || avatarDefault}
         />
       ) : null}
-      <div className=" min-h-[calc(100vh-52px)] bg-bg flex flex-col ">
+      <div className="  min-h-[calc(100vh-52px)] bg-bg flex flex-col ">
         {/* Infor */}
         <div className=" pt-2 flex flex-col items-center border-b-[1px] border-hover pb-4  lg:justify-center lg:mx-[5%]">
           {/* Infor block 1 */}
@@ -292,7 +285,7 @@ const UserDetail = () => {
             </span>
             <div className="w-full flex-1">
               {listPostOfUser.map((post) => (
-                <BlogTag {...post} />
+                <BlogTag key={post.id} {...post} />
               ))}
             </div>
             <Pagination changePageNumber={setCurPage} {...pagingList} />

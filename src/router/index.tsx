@@ -13,7 +13,12 @@ import ProtectedRoute from "src/router/ProtectedRoute";
 import { useDispatch, useSelector } from "react-redux";
 import Notify from "@icons/NotifyFill";
 import App from "src/App";
-import { userGetMe, userLogin } from "@redux/userSlice";
+import {
+  clearAllUser,
+  resetUserState,
+  userGetMe,
+  userLogin,
+} from "@redux/userSlice";
 import NetWorkError from "@screens/NetWorkError";
 import ChangePassWord from "@screens/ChangePassWord";
 import Search from "@screens/Search";
@@ -32,43 +37,44 @@ import ListPostByCategory from "@screens/ListPostByCategory";
 import ListPostByTag from "@screens/ListPostByTag";
 import ForgotPassWord from "@screens/Auth/ForgotPassWord";
 const DeClareRouter = () => {
-  const { error, accessToken } = useSelector((state: RootState) => state.users);
+  const { error, accessToken, userInfo } = useSelector(
+    (state: RootState) => state.users
+  );
   const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
-  console.log(accessTokenFromLocalStorage !== null);
   const [beLogged, setLogged] = useState(accessTokenFromLocalStorage !== null);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [socket, setSocket] = useState<Socket | null>(null);
 
   React.useEffect(() => {
-    // console.log("Access thay đổi");
     const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
+
     if (
       accessTokenFromLocalStorage !== null &&
       accessTokenFromLocalStorage.length > 0
     ) {
       initiateSocketConnection(accessTokenFromLocalStorage);
-
-      // console.log("socket", socket);
-      // console.log("connected", socket.connected);
-
-      // socket.on("Post_Vote", (res) => {
-      //   console.log("ok");
-      //   console.log("res", res);
-      // });
-
-      // setSocket(socket);
       Post_Vote();
       setLogged(true);
-      dispatch(userGetMe());
-    } else setLogged(false);
+      window.addEventListener("storage", (e) => {
+        console.log("Eventne");
+        dispatch(clearAllUser());
+      });
+
+      if (userInfo === null && accessTokenFromLocalStorage && accessToken)
+        dispatch(userGetMe());
+      // else dispatch(clearAllUser);
+    }
     if (error && error === "Network Error") {
       navigate("/networkError");
+    }
+    if (accessToken === null) {
+      navigate(0);
     }
     return () => {
       disconnectSocket();
     };
-  }, [accessToken, error, setSocket]);
+  }, [accessToken, accessTokenFromLocalStorage, setSocket]);
   return (
     <div>
       <Routes>
