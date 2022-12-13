@@ -26,7 +26,6 @@ String.prototype.formatH1 = function () {
   tempStr = tempStr.trim();
   return tempStr;
 };
-
 String.prototype.getNumberOfDayFromNow = function () {
   let tempStr = this + "";
 
@@ -41,10 +40,19 @@ String.prototype.getNumberOfDayFromNow = function () {
   var Difference_In_Time = nowDate.getTime() - dateCreate.getTime();
   var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
 
-  let result = Math.round(Difference_In_Days) + " ngày trước";
-  if (Difference_In_Days <= 0.1) result = "Gần đây";
-  else if (Difference_In_Days <= 1) result = "1 ngày trước";
-  else if (Math.round(Difference_In_Days) <= 31)
+  let result = Math.round(Difference_In_Days) + " s trước";
+  if (Difference_In_Days < 1) {
+    if (Difference_In_Time <= 1000) result = "1 giây trước";
+    else if (Difference_In_Time < 1000 * 60)
+      result = Math.round(Difference_In_Time / 1000) + " giây trước";
+    else if (Difference_In_Time < 2 * 1000 * 60) result = "1 phút trước";
+    else if (Difference_In_Time < 1000 * 60 * 60)
+      result = Math.round(Difference_In_Time / 1000 / 60) + " phút trước";
+    else if (Difference_In_Time <= 2 * 1000 * 60 * 60) result = "1 giờ trước";
+    else
+      result = Math.round(Difference_In_Time / 1000 / 60 / 60) + " giờ trước";
+  } else if (Difference_In_Days < 2) result = "1 ngày trước";
+  else if (Math.round(Difference_In_Days) < 31)
     result = Math.round(Difference_In_Days) + " ngày trước";
   else {
     let temp = Math.round(Difference_In_Days / 30);
