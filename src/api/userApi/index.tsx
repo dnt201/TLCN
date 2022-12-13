@@ -92,5 +92,21 @@ const userApi = {
     const url = `/users/my/follow`;
     return axiosClient.get(url);
   },
+  forgotPassword: (email: string) => {
+    const url = `/users/forgot-password`;
+    return axiosClient.post(url, { email });
+  },
+  verifyForgotPassWordToken: (token: string) => {
+    const url = `/users/validate-forgot-token`;
+    return axiosClient.post(url, { token });
+  },
+  changePasswordWithToken: (
+    token: string,
+    password: string,
+    confirmPassWord: string
+  ) => {
+    const url = `/users/validate-forgot-token`;
+    return axiosClient.post(url, { token, password, confirmPassWord });
+  },
 };
 export default userApi;

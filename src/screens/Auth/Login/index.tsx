@@ -274,9 +274,12 @@ const Login = () => {
                 Đăng ký
               </Link>
             </span>
-            <a className="mt-2 text-sm text-primary font-semibold">
+            <Link
+              className="mt-2 text-sm text-primary font-semibold"
+              to={"/forgotpassword"}
+            >
               Quên mật khẩu?
-            </a>
+            </Link>
           </>
         ) : null}
       </div>

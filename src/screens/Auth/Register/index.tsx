@@ -24,7 +24,7 @@ const Register = () => {
   const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
 
   useEffect(() => {
-    if (accessToken !== null) {
+    if (accessTokenFromLocalStorage !== null) {
       navigate("/");
     }
   }, [accessToken]);
@@ -155,9 +155,12 @@ md:flex-col-reverse
             Đăng nhập
           </Link>
         </span>
-        <a className="mt-2 text-sm text-primary font-semibold">
+        <Link
+          className="mt-2 text-sm text-primary font-semibold"
+          to={"/forgotpassword"}
+        >
           Quên mật khẩu?
-        </a>
+        </Link>
       </div>
       <div className=" flex  flex-1 justify-center items-center phone:hidden">
         <img className="w-[40vw] " src={imgRegister} alt="img" />
