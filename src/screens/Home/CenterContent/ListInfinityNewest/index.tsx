@@ -19,7 +19,6 @@ const ListInfinityNewest = () => {
   const [maxRoiLazyQuaTroi, setMaxRoiLazyQuaTroi] = useState(false);
   const { accessToken } = useSelector((state: RootState) => state.users);
   const divListRef = useRef<HTMLDivElement>(null);
-  console.log(divListRef.current?.getBoundingClientRect());
 
   console.log(maxRoiLazyQuaTroi);
   useEffect(() => {

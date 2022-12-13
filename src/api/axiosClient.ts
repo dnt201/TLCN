@@ -58,6 +58,7 @@ axiosClient.interceptors.response.use(
         );
 
         const { accessToken } = newAccessToken.data;
+        localStorage.removeItem(accessToken);
         localStorage.setItem("accessToken", accessToken);
 
         let lazyAxios = await axios.create({
@@ -70,18 +71,25 @@ axiosClient.interceptors.response.use(
           async (config: AxiosRequestConfig) => {
             config.headers = {
               ...config.headers,
-              Authorization: `Bearer ${newAccessToken.data.accessToken}`,
+              Authorization: `Bearer ${newAccessToken.data.refreshToken}`,
               // Cookie: `Refresh=${refreshToken}`,
             };
             return await config;
           }
         );
-        console.log(prevRequest);
-
-        console.log((await lazyAxios(prevRequest)).config);
+        // console.log(prevRequest);
+        // console.log((await lazyAxios(prevRequest)).config);
         return await lazyAxios(prevRequest);
-      } catch (_error) {
-        localStorage.clear();
+      } catch (_error: any) {
+        console.log(
+          _error,
+          "---------------dsad à à sa fas a f à f á a-------"
+        );
+        if (
+          _error.response.status === 401 &&
+          _error.response.data.message === "Unauthorized"
+        )
+          localStorage.clear();
       }
     } else if (error.response) {
       console.log("error.response", error.response);

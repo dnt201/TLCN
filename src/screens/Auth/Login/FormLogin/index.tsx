@@ -1,16 +1,7 @@
 import React from "react";
 
-import {
-  Formik,
-  FormikHelpers,
-  FormikProps,
-  Form,
-  Field,
-  FieldProps,
-  FastField,
-} from "formik";
+import { Formik, Form, FastField } from "formik";
 import userApi, { userApiAuth } from "@api/userApi";
-import toast from "react-hot-toast";
 import * as Yup from "yup";
 import { CheckCircle, ChevronLeft, XCircle } from "@icons/index";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,7 +9,6 @@ import { userLogin } from "@redux/userSlice";
 import { AppDispatch, RootState } from "src/app/store";
 import ClipLoader from "react-spinners/ClipLoader";
 import axios from "axios";
-import { useNavigate, useSearchParams } from "react-router-dom";
 interface LoginFormValues {
   email: string;
   password: string;

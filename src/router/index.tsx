@@ -30,6 +30,7 @@ import Categories from "@screens/Categories";
 import EditPost from "@screens/EditPost";
 import ListPostByCategory from "@screens/ListPostByCategory";
 import ListPostByTag from "@screens/ListPostByTag";
+import ForgotPassWord from "@screens/Auth/ForgotPassWord";
 const DeClareRouter = () => {
   const { error, accessToken } = useSelector((state: RootState) => state.users);
   const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
@@ -115,6 +116,7 @@ const DeClareRouter = () => {
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgotPassword" element={<ForgotPassWord />} />
 
         <Route
           path="/edit-post/:postId"
