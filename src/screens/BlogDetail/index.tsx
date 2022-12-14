@@ -111,7 +111,7 @@ const BlogDetail = () => {
             <div className=" max-w-[1016px]   w-full mx-auto">
               <div className=" my-8 w-full mx-auto">
                 <h4 className="pb-2">
-                  Bài viết khác từ
+                  Bài viết khác từ{" "}
                   <b
                     className="text-primary hover:cursor-pointer"
                     onClick={(e) => {

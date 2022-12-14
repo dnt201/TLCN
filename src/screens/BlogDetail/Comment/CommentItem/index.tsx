@@ -1,6 +1,6 @@
 import { iComment, iCommentCreate, iReply } from "@DTO/Blog";
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UserDefault from "@images/userDefault.png";
 import {
   ChevronUp,
@@ -17,7 +17,6 @@ import avatarDefault from "@images/userDefault.png";
 import commentApi from "@api/commentApi";
 import { iPage } from "@DTO/Pagination";
 import ReplyComment from "../ReplyComment";
-import { userInfo } from "os";
 
 interface iProps extends iComment {
   isOwner: boolean;
@@ -42,7 +41,6 @@ const CommentItem: React.FC<iProps> = (props) => {
     sender,
     idPost,
     curUserImg,
-    curUserName,
   } = props;
   const [showActionModal, setShowActionModal] = useState(false);
   const [showReply, setShowReply] = useState(false);
@@ -56,14 +54,14 @@ const CommentItem: React.FC<iProps> = (props) => {
     useState(content);
 
   const [valueReply, setValueReply] = useState("");
-
+  const navigate = useNavigate();
   const [listReply, setListReply] = useState<iReply[] | null>(null);
 
   const [loading, setLoading] = useState(false);
-  const [loadingShowReply, setLoadingShowReply] = useState(false);
 
   const refDivActionModal = useRef<HTMLDivElement>(null);
   const [isEditComment, setIsEditComment] = useState(false);
+  const accessFromLocal = localStorage.getItem("accessToken");
 
   // console.log(curPage, pagingListReply, "--------------------");
 
@@ -283,8 +281,12 @@ const CommentItem: React.FC<iProps> = (props) => {
               data-tip="Trả lời"
               data-for="replyComment"
               onClick={() => {
-                setShowReply(!showReply);
-                setValueReply("");
+                if (accessFromLocal === null || accessFromLocal.length <= 0) {
+                  navigate("/login");
+                } else {
+                  setShowReply(!showReply);
+                  setValueReply("");
+                }
               }}
             >
               Trả lời ({countReplyState})

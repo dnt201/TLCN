@@ -89,7 +89,7 @@ const PopUpMessenger: React.FC<iPopUpMessageProps> = (props) => {
             </div>
           </div>
           {/* List */}
-          <div className=" mt-4  mb-2 px-2 ">
+          <div className=" my-4 px-2 w-full text-center  ">
             <i>Tính năng đang được cập nhật</i>
           </div>
         </div>
