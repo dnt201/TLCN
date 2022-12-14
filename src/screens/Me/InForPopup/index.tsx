@@ -51,7 +51,7 @@ const InForPopup: React.FC<iInForPopups> = (props) => {
           setLoading(false);
           setShow(false);
           dispatch(userGetMe());
-          return "Update profile success!";
+          return "Update profile thành công!";
         },
         error: (err) => {
           return err + "";

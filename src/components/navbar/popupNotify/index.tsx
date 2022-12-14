@@ -31,7 +31,7 @@ const PopUpNotify: React.FC<iPopUpNotifyProps> = (props) => {
           if (result.status === 201) {
             setListNotify(result.data.data);
             setPaging(result.data.page);
-          } else toast.error("Fetch list notify error!");
+          } else toast.error("Lỗi load thông báo!");
         });
       } else {
         notifyApi.getAllNotify().then((result) => {
@@ -43,7 +43,7 @@ const PopUpNotify: React.FC<iPopUpNotifyProps> = (props) => {
           } else if (result.status === 201 && !listNotify) {
             setListNotify(result.data.data);
             setPaging(result.data.page);
-          } else toast.error("Fetch list notify error!");
+          } else toast.error("Lỗi load thông báo!");
         });
       }
     }

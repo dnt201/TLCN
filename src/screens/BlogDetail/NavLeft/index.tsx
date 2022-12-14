@@ -134,21 +134,21 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
                   const result = await postApi.voteUp(idPost);
                   if (result.status === 201) {
                     if (voteDataState === null) {
-                      toast.success(`Vote success`);
+                      toast.success(`Vote thành công`);
                       setVoteDataState("Upvote");
                       setLikeState(likeState + 1);
                     } else if (voteDataState === "DownVote") {
-                      toast.success(`Vote success`);
+                      toast.success(`Vote thành công`);
                       setVoteDataState("Upvote");
                       setLikeState(likeState + 2);
                     } else {
-                      toast.error(`UnVote success`);
+                      toast.error(`UnVote thành công`);
                       setVoteDataState(null);
                       setLikeState(likeState - 1);
                     }
                   } else {
                     toast.error(
-                      `Something went wrong ${result.data.message} vote up`
+                      `Có gì đó không đúng ${result.data.message} vote up`
                     );
                   }
                 }
@@ -203,21 +203,21 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
                   const result = await postApi.voteDown(idPost);
                   if (result.status === 201) {
                     if (voteDataState === null) {
-                      toast.success(`Down vote success`);
+                      toast.success(`Down vote thành công`);
                       setVoteDataState("DownVote");
                       setLikeState(likeState - 1);
                     } else if (voteDataState === "Upvote") {
-                      toast.success(`Down vote success`);
+                      toast.success(`Down vote thành công`);
                       setVoteDataState("DownVote");
                       setLikeState(likeState - 2);
                     } else {
-                      toast.error(`UnVote success`);
+                      toast.error(`UnVote thành công`);
                       setVoteDataState(null);
                       setLikeState(likeState + 1);
                     }
                   } else {
                     toast.error(
-                      `Something went wrong ${result.data.message} vote up`
+                      `Có gì đó không đúng ${result.data.message} vote up`
                     );
                   }
                 }

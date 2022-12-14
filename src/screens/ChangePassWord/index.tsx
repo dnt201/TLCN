@@ -58,7 +58,7 @@ const ChangePassWord: React.FC<iFormChangePassword> = (props) => {
     // ...
     const result = await userApi.updatePassword(values);
     if (result.status === 201) {
-      toast.success("Change password success", {
+      toast.success("Thay đổi password thành công", {
         id: toastId,
         duration: 2500,
       });

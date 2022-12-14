@@ -103,7 +103,7 @@ const SearchBox: React.FC<iProps> = (props) => {
                   className=""
                   onClick={() => {
                     if (inputSearch.length <= 0) {
-                      toast.error("Empty name search!!!");
+                      toast.error("Search không được trống!");
                     } else {
                       navigate(`/search?q=${inputSearch}&type=posts`);
                       // setInputSearch("");
@@ -136,7 +136,7 @@ const SearchBox: React.FC<iProps> = (props) => {
                 <button
                   onClick={() => {
                     if (inputSearch.length <= 0) {
-                      toast.error("Empty name search!!!");
+                      toast.error("Search không được trống!");
                     } else {
                       navigate(`/search?q=${inputSearch}&type=users`);
                       // setInputSearch("");

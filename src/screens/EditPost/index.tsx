@@ -172,14 +172,14 @@ const EditPost = () => {
     const result = await postApi.editPost(postIdCur, postCreate);
     await setTimeout(() => {
       if (result.status === 201 || result.status === 200) {
-        toast.success("Change post success", {
+        toast.success("Thay đổi post thành công", {
           id: toastId,
           duration: 2500,
         });
         navigate(`/blog/${result.data.id}`);
       } else {
         console.log(result);
-        toast.error(result.data.message || "Something went wrong", {
+        toast.error(result.data.message || "Có gì đó không đúng", {
           id: toastId,
           duration: 2500,
         });

@@ -75,7 +75,7 @@ const UserDetail = () => {
   useEffect(() => {
     const unFollowConfirmHandle = async () => {
       if (userInfoState === null || userInfoState === undefined) {
-        toast.error("Something went wrong please reload!!!");
+        toast.error("Có gì đó không đúng, vui lòng tải lại trang!");
       } else {
         toast.error("UnFollow");
         const result = await userApi.unFollowUser(userInfoState.id);
@@ -104,7 +104,7 @@ const UserDetail = () => {
       console.log("2");
 
       if (userInfoState === null || userInfoState === undefined) {
-        toast.error("Something went wrong please reload!!!");
+        toast.error("Có gì đó không đúng, vui lòng tải lại trang!");
       } else if (userInfoState.isFollowing) {
         setIsShowConfirm(true);
       } else if (!userInfoState.isFollowing) {
@@ -128,7 +128,7 @@ const UserDetail = () => {
     }
     setLoading(true);
     if (userId === undefined || userId === null) {
-      toast.error("Something went wrong");
+      toast.error("Có gì đó không đúng");
       navigate("/");
     } else {
       setTimeout(async () => {

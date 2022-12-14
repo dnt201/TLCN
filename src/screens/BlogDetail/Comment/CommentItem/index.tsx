@@ -83,7 +83,7 @@ const CommentItem: React.FC<iProps> = (props) => {
             setListReply([...listReply, ...result.data.data]);
           else setListReply(result.data.data);
           setPagingListReply(result.data.page);
-        } else toast.error("Fetch list reply comment error");
+        } else toast.error("Lấy dữ liệu reply comment lỗi");
       };
       fetchList();
     }

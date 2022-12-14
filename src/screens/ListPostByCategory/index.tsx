@@ -80,7 +80,7 @@ const ListPostByCategory = () => {
                   setListPost(result.data.result.data);
                   setPaging(result.data.result.page);
                 } else {
-                  toast.error(result.data + "Some thing went wrong");
+                  toast.error(result.data + "có gì đó không đúng");
                 }
               });
           } else {

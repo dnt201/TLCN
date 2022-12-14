@@ -164,7 +164,7 @@ const Navbar = () => {
                       searchValue.length === 0 ||
                       (searchValue === "" && searchValue.trim().length === 0)
                     ) {
-                      toast.error("Empty name search!!!");
+                      toast.error("Search không được trống!!!");
                     } else {
                       navigate(`/search?q=${searchValue.trim()}&type=posts`);
                       // setSearchValue("");

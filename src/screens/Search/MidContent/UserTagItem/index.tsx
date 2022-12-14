@@ -35,18 +35,18 @@ const UserTagItem: React.FC<iProps> = (props) => {
       if (isFollowState) {
         rs = await userApi.unFollowUser(id);
         if (rs.status === 201 || rs.status === 200) {
-          toast.error("Unfollow success");
+          toast.error("Unfollow thành công");
           setIsFollowState(false);
         } else {
-          toast.error("Unfollow error");
+          toast.error("Unfollow lỗi");
         }
       } else {
         rs = await userApi.followUser(id);
         if (rs.status === 201 || rs.status === 200) {
-          toast.success("Follow success");
+          toast.success("Follow thành công");
           setIsFollowState(true);
         } else {
-          toast.error("Follow error");
+          toast.error("Follow lỗi");
         }
       }
     } else {

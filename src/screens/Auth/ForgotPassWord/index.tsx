@@ -110,7 +110,7 @@ const ForgotPassWord: React.FC<iProps> = (props) => {
                   if (rs.status === 201) {
                     setStep(2);
                   } else {
-                    toast.error(rs.data.message || "Forgot password error");
+                    toast.error(rs.data.message || "Forgot password lỗi!");
                   }
 
                   setLoading(false);
@@ -223,11 +223,11 @@ const ForgotPassWord: React.FC<iProps> = (props) => {
                   setTimeout(() => {
                     if (rs.status === 201) {
                       toast.success(
-                        "Verify token success! Let's change your password!"
+                        "Xác thực token thành công! Thay đổi mật khẩu của bạn!"
                       );
                       setStep(3);
                     } else {
-                      toast.error(rs.data.message || "Error token");
+                      toast.error(rs.data.message || "Token Lỗi");
                     }
                     setLoading(false);
                   }, 1000);
@@ -270,13 +270,13 @@ const ForgotPassWord: React.FC<iProps> = (props) => {
                   setTimeout(() => {
                     if (rs.status === 201) {
                       toast.success(
-                        "Change password success! Lets login with new password!"
+                        "Đổi password thành công! Đăng nhập với password mới!"
                       );
                       navigate("/login");
                     } else
                       toast.error(
                         rs.data.message ||
-                          "Cant' change password. Press F5 and try again!"
+                          "Không thể thay đổi password. Ấn F5 để thử lại!"
                       );
                     console.log(rs);
                     setLoading(false);

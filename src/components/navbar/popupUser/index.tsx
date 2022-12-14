@@ -24,7 +24,7 @@ const PopUpUser: React.FC<iPopUpUserProps> = (props) => {
       setTimeout(() => {
         toast.remove();
       }, 2000);
-      toast.success("Log out successful");
+      toast.success("Đăng xuất thành công!");
     }
   };
   useEffect(() => {

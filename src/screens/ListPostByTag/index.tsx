@@ -72,7 +72,7 @@ const ListPostByTag = () => {
                   setListPost(result.data.result.data);
                   setPaging(result.data.result.page);
                 } else {
-                  toast.error(result.data + "Some thing went wrong");
+                  toast.error(result.data + "Có gì đó không đúng");
                 }
               });
           } else {

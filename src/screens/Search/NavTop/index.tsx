@@ -39,7 +39,7 @@ const NavTop: React.FC<iProps> = (props) => {
     let nameFromSearch = searchParams.get("q");
     if (nameFromSearch !== null) setSearchValue(nameFromSearch);
     else {
-      toast.error("Search value invalid");
+      toast.error("Giá trị tìm kiếm không khả dụng");
       setSearchValue("");
     }
     let filterFromSearch = searchParams.get("filter");

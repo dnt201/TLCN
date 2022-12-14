@@ -30,7 +30,7 @@ const PopUpChangeImage: React.FC<iPopUpChangeImageProps> = (props) => {
   }, [selectedImage]);
   const handleSummit = async () => {
     if (selectedImage === null) {
-      toast.error("Something went wrong! Select again,");
+      toast.error("Có gì đó không đúng! Vui lòng chọn lại,");
     } else {
       console.log(selectedImage);
       setLoading(true);
@@ -41,7 +41,7 @@ const PopUpChangeImage: React.FC<iPopUpChangeImageProps> = (props) => {
           setLoading(false);
           setShow(false);
           dispatch(userGetMe());
-          return "Change image success";
+          return "thay đổi ảnh thành công";
         },
         error: (err) => {
           return err + "";

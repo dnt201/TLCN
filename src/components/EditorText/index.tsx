@@ -114,7 +114,7 @@ const EditorText: React.FC<iEditorProps> = (props) => {
           });
           console.log("-----------------------", temp.innerHTML);
           if (flag) {
-            toast.error("Link youtube not valid");
+            toast.error("Link youtube không khả dụng");
             let StateAgain = EditorState.createWithContent(
               ContentState.createFromBlockArray(
                 htmlToDraft(temp.innerHTML).contentBlocks

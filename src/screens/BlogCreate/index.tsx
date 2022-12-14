@@ -79,7 +79,7 @@ const BlogCreate = () => {
         setLoading(false);
         navigate(`/blog/${result.data.id}`);
       } else {
-        toast.error(result.data.message || "Something went wrong", {
+        toast.error(result.data.message || "CÓ gì đó không đúng!", {
           id: toastId,
           duration: 2500,
         });
