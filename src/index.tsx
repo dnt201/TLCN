@@ -12,17 +12,19 @@ import DeclareRouter from "./router";
 import "react-loading-skeleton/dist/skeleton.css";
 import { SkeletonTheme } from "react-loading-skeleton";
 
+/* </React.StrictMode>, */
+
+// <React.StrictMode>
+
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <SkeletonTheme baseColor="#262D34" highlightColor="#444">
-          <Toaster position="bottom-right" containerStyle={{ zIndex: 10100 }} />
-          <DeclareRouter />
-        </SkeletonTheme>
-      </BrowserRouter>
-    </Provider>
-  </React.StrictMode>,
+  <Provider store={store}>
+    <BrowserRouter>
+      <SkeletonTheme baseColor="#262D34" highlightColor="#444">
+        <Toaster position="bottom-right" containerStyle={{ zIndex: 10100 }} />
+        <DeclareRouter />
+      </SkeletonTheme>
+    </BrowserRouter>
+  </Provider>,
   document.getElementById("root")
 );
 

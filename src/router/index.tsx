@@ -46,13 +46,13 @@ const DeClareRouter = () => {
   const navigate = useNavigate();
   const [socket, setSocket] = useState<Socket | null>(null);
 
-  const eventClear = () => {
-    dispatch(clearAllUser());
-    navigate("/login");
-  };
+  // const eventClear = () => {
+  //   dispatch(clearAllUser());
+  //   navigate("/login");
+  // };
   React.useEffect(() => {
     window.addEventListener("storage", (e) => {
-      eventClear();
+      // eventClear();
     });
   }, []);
   React.useEffect(() => {

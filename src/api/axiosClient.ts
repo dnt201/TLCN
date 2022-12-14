@@ -79,16 +79,10 @@ axiosClient.interceptors.response.use(
             return await config;
           }
         );
-        // console.log(prevRequest);
-        // console.log((await lazyAxios(prevRequest)).config);
         return await lazyAxios(prevRequest);
       } catch (_error: any) {
-        // console.log(
-        //   _error,
-        //   "day neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
-        // );
         console.log("dispatch");
-        window.dispatchEvent(new Event("storage"));
+        // window.dispatchEvent(new Event("storage"));
         // localStorage.clear();
         if (
           _error.response.status === 401 &&
