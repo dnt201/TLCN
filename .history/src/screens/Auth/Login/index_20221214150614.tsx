@@ -160,7 +160,7 @@ const Login = () => {
           </svg>
         </Link>
         {step !== 3 ? (
-          <h1 className="font-bold text-primary text-xl text-center">
+          <h1 className=" mt-4 font-bold text-primary text-xl text-center">
             Đăng nhập vào Teaching Me
           </h1>
         ) : (
