@@ -9,7 +9,7 @@ const TagItem: React.FC<iTag> = (props) => {
   return (
     <Link
       to={`${props.id}`}
-      className="w-1/3 min-w-[200px] h-fit flex items-center px-4  "
+      className="w-1/3 min-w-[200px] h-fit flex items-center px-4 mb-4 "
     >
       <img
         className=" rounded-md w-20 h-20 mr-2"
@@ -17,7 +17,10 @@ const TagItem: React.FC<iTag> = (props) => {
         // effect="blur"
       />
 
-      <h3 className="text-base">{postTagName}</h3>
+      <div className="flex flex-col">
+        <h3 className="text-base">{postTagName}</h3>
+        <span className="font-light text-sm">{PostCount} bài viết</span>
+      </div>
     </Link>
   );
 };

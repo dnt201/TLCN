@@ -10,8 +10,7 @@ interface iLazy extends iPage {
   changePageNumber: (number: number) => void;
 }
 const Pagination: React.FC<iLazy> = (props) => {
-  const { order, pageNumber, totalElement, size, changePageNumber, loading } =
-    props;
+  const { pageNumber, totalElement, size, changePageNumber, loading } = props;
 
   const [curPage, setCurPage] = useState(pageNumber);
   const [maxPage, setMaxPage] = useState(Math.ceil(totalElement / size));

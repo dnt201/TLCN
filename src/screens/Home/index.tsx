@@ -1,9 +1,9 @@
 import { RootState } from "@app/store";
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import CenterContent from "./CenterContent";
-import LeftContent, { listChose } from "./LeftContent";
+import LeftContent from "./LeftContent";
 
 const Home = () => {
   const { accessToken } = useSelector((state: RootState) => state.users);

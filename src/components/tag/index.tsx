@@ -1,4 +1,3 @@
-import { Javascript, Tutorial } from "@icons/index";
 import React from "react";
 import { Link } from "react-router-dom";
 import defaultIMG from "@images/default.jpg";

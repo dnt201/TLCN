@@ -1,4 +1,3 @@
-import postTagApi from "@api/postTagApi";
 import { AppDispatch, RootState } from "@app/store";
 import Pagination from "@components/pagination";
 import { getAllPostTag } from "@redux/postTagSlice";
@@ -6,11 +5,10 @@ import React, { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useDispatch, useSelector } from "react-redux";
 import { ClipLoader } from "react-spinners";
-import { iTag } from "src/DTO";
 import TagItem from "./TagItem";
 const Tags = () => {
   const width = (window.screen.width * 70) / 100 / 3;
-  const { listTag, page, error, loading } = useSelector(
+  const { listTag, page, loading } = useSelector(
     (state: RootState) => state.postTags
   );
   const dispatch = useDispatch<AppDispatch>();
@@ -54,13 +52,17 @@ const Tags = () => {
             </i>
           </div>
         </div>
-        <div className="flex-[9999] flex flex-wrap ">
-          {!loading ? (
+        <div className="flex-[9999] flex flex-wrap  ">
+          {!loading && listTag.length > 0 ? (
             listTag.map((tag) => (
               <React.Fragment key={tag.id}>
                 <TagItem {...tag}>{tag.displayName}</TagItem>
               </React.Fragment>
             ))
+          ) : !loading && listTag.length <= 0 ? (
+            <span className="text-center flex justify-center w-full">
+              Chưa có post tag...
+            </span>
           ) : (
             <>
               {Array(9)

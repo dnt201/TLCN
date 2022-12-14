@@ -1,17 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import qc from "@images/banner-quang-cao-du-khach-hang-hieu-qua-3.jpg";
-import {
-  Navigate,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import MenuRight from "./MenuRight";
 import MidContent from "./MidContent";
 import NavLeft from "./NavLeft";
-import postApi from "@api/postApi";
-import { iPostDetail } from "@DTO/Blog";
 import SkeletonBlogDetail from "./SkeletonBlogDetail";
 import BlogNotFound from "./NotFound";
 import { useDispatch, useSelector } from "react-redux";

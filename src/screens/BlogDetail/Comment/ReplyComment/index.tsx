@@ -1,8 +1,8 @@
-import { iComment, iCommentCreate } from "@DTO/Blog";
+import { iCommentCreate } from "@DTO/Blog";
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import UserDefault from "@images/userDefault.png";
-import { ChevronUp, ChevronDown, More, FaceSmile, Photo } from "@icons/index";
+import { More, FaceSmile, Photo } from "@icons/index";
 import ReactTooltip from "react-tooltip";
 import toast from "react-hot-toast";
 import avatarDefault from "@images/userDefault.png";
@@ -43,7 +43,6 @@ const ReplyComment: React.FC<iPropsReply> = (props) => {
     idPost,
     curUserId,
     replyId,
-    replyTag,
     curUserImg,
     status,
     sender,

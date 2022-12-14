@@ -1,6 +1,4 @@
-import axiosClient from "@api/axiosClient";
 import categoryApi from "@api/categoryApi";
-// import userApi, { userApiAuth } from "@api/userApi";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { iPage, iCategory } from "src/DTO";
 export const getAllCategory = createAsyncThunk(

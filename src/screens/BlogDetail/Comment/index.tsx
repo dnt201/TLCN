@@ -1,19 +1,14 @@
-import postApi from "@api/postApi";
-import userApi from "@api/userApi";
 import { RootState } from "@app/store";
-import { iUserTag } from "@components/navbar/searchBox/userTag";
 import { iComment, iCommentCreate } from "@DTO/Blog";
 import { iPage } from "@DTO/Pagination";
 import { ChatBubbleLeft, FaceSmile, Photo, UpImage } from "@icons/index";
 import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import Skeleton from "react-loading-skeleton";
 import { useSelector } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import CommentItem from "./CommentItem";
 import avatarDefault from "@images/userDefault.png";
 import ReactTooltip from "react-tooltip";
-import { isFulfilled } from "@reduxjs/toolkit";
 import Pagination from "@components/pagination";
 import commentApi from "@api/commentApi";
 

@@ -1,6 +1,5 @@
-import DialogBox from "@components/DialogBox";
 import EditorText from "@components/EditorText";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import DOMPurify from "dompurify";
 import Dropzone from "react-dropzone";

@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as Yup from "yup";
 import { ChangePassWord, ChevronLeft } from "@icons/index";
-// import ReCAPTCHA from "react-google-recaptcha";
 import img from "@images/forgot-password.gif";
-import { Formik, Form, Field, FieldProps, FastField } from "formik";
+import { Formik, Form, Field, FastField } from "formik";
 import { BarLoader, ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 import userApi from "@api/userApi";

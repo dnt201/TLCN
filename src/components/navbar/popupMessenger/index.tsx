@@ -90,17 +90,7 @@ const PopUpMessenger: React.FC<iPopUpMessageProps> = (props) => {
           </div>
           {/* List */}
           <div className=" mt-4  mb-2 px-2 ">
-            <MessengerTag /> <MessengerTag />
-            <MessengerTag />
-            <MessengerTag />
-            <MessengerTag />
-            <MessengerTag />
-            <MessengerTag />
-            <MessengerTag />
-            <MessengerTag />
-            <MessengerTag />
-            <MessengerTag />
-            <MessengerTag />
+            <i>Tính năng đang được cập nhật</i>
           </div>
         </div>
         <div className="flex items-center justify-center bg-hover  rounded-b-md py-1 border-t-[1px] border-t-dark3">

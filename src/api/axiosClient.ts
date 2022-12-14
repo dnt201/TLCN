@@ -1,11 +1,5 @@
-import { AppDispatch } from "./../app/store";
-import { configureStore } from "@reduxjs/toolkit";
-// api/axiosClient.js
 import axios, { AxiosRequestConfig } from "axios";
-import { log } from "console";
-import queryString from "query-string";
-import { clearAllUser } from "@redux/userSlice";
-import { toast } from "react-hot-toast";
+
 // Set up default config for http requests here
 
 // Please have a look at here `https://github.com/axios/axios#request -

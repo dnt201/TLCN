@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import avatarDefault from "@images/userDefault.png";
@@ -10,7 +10,6 @@ import { AppDispatch, RootState } from "@app/store";
 import BlogNotFound from "@screens/BlogDetail/NotFound";
 import PublishConfirm from "@screens/BlogCreate/PublishConfirm";
 import { resetPublicState } from "@redux/publicSlice";
-import { access } from "fs";
 import { iPostDetail } from "@DTO/Blog";
 import postApi from "@api/postApi";
 import { iPage } from "@DTO/Pagination";
@@ -64,7 +63,6 @@ const UserDetail = () => {
   const [curPage, setCurPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [notFound, setNotFound] = useState(false);
-  const [searchParams] = useSearchParams();
   //
   const [isConfirm, setIsConfirm] = useState(false);
   const [isShowConfirm, setIsShowConfirm] = useState(false);

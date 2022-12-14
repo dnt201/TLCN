@@ -1,11 +1,9 @@
 import Tag from "@components/tag";
 import DOMPurify from "dompurify";
 import React, { useEffect, useRef, useState } from "react";
-import reactSelect from "react-select";
 import ReactTooltip from "react-tooltip";
 import { FacebookLogo, More, Twitter } from "@icons/index";
 import { useNavigate } from "react-router-dom";
-import { idText } from "typescript";
 import defaultIMG from "@images/default.jpg";
 
 interface iMidContentProps extends React.HTMLProps<HTMLDivElement> {
@@ -31,8 +29,7 @@ interface iTagLazyDeclareQuaNe {
 }
 
 const MidContent: React.FC<iMidContentProps> = (props) => {
-  const { className, owner, content, title, setIdCurActive, tags, status } =
-    props;
+  const { className, content, title, setIdCurActive, tags, status } = props;
   const midContentRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   useEffect(() => {

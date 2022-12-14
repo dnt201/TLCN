@@ -27,7 +27,7 @@ const Register = () => {
     if (accessTokenFromLocalStorage !== null) {
       navigate("/");
     }
-  }, [accessToken]);
+  }, [accessTokenFromLocalStorage, accessToken]);
 
   const dispatch = useDispatch<AppDispatch>();
 

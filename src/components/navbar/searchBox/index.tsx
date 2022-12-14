@@ -1,12 +1,10 @@
-import categoryApi from "@api/categoryApi";
 import postApi from "@api/postApi";
 import userApi from "@api/userApi";
 import { iPostDetail } from "@DTO/Blog";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { BeatLoader, CircleLoader } from "react-spinners";
+import { BeatLoader } from "react-spinners";
 import BlogSearchTag from "./blogTag";
 import UserTag, { iUserTag } from "./userTag";
 
@@ -22,7 +20,6 @@ const SearchBox: React.FC<iProps> = (props) => {
   const [loading, setLoading] = useState(false);
   const [listUser, setListUser] = useState<iUserTag[] | null>(null);
   const [listPost, setListPost] = useState<iPostDetail[] | null>(null);
-  const [listCategory, setListCategory] = useState<iUserTag[] | null>(null);
   const navigate = useNavigate();
   // console.log("show ne", listUser);
 

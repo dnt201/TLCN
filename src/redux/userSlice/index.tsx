@@ -1,4 +1,3 @@
-import axiosClient from "@api/axiosClient";
 import userApi, { userApiAuth } from "@api/userApi";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 

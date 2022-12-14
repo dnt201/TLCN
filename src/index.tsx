@@ -1,9 +1,7 @@
-import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import "@util/prototype";
 import { Toaster } from "react-hot-toast";
@@ -11,10 +9,6 @@ import store from "@app/store";
 import DeclareRouter from "./router";
 import "react-loading-skeleton/dist/skeleton.css";
 import { SkeletonTheme } from "react-loading-skeleton";
-
-/* </React.StrictMode>, */
-
-// <React.StrictMode>
 
 ReactDOM.render(
   <Provider store={store}>

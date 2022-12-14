@@ -1,9 +1,6 @@
-import axiosClient from "@api/axiosClient";
 import postApi from "@api/postApi";
-import postTagApi from "@api/postTagApi";
-import userApi, { userApiAuth } from "@api/userApi";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { iTag, iPage, iPostDetail } from "@DTO/index";
+import { iPostDetail } from "@DTO/index";
 export const getPostDetailById = createAsyncThunk(
   "post/getPostDetailById",
   async (id: string) => {

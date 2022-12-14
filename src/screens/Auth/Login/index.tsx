@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { Link, redirect, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import userApi, { userApiAuth } from "@api/userApi";
+import userApi from "@api/userApi";
 import { AppDispatch, RootState } from "src/app/store";
 import imgUserLogin from "@assets/images/userLogin.gif";
 import successConfirmImage from "@assets/images/registerSuccess.gif";
@@ -10,19 +10,11 @@ import {
   FacebookLogo,
   GithubLogo,
   GoogleLogo,
-  ChevronLeft,
 } from "@icons/index";
 import FormLogin from "./FormLogin";
 import { useDispatch, useSelector } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
-import { isFulfilled } from "@reduxjs/toolkit";
-import {
-  reduceFollowing,
-  resetUserState,
-  setUserError,
-  setUserMessage,
-  userGetMe,
-} from "@redux/userSlice";
+import { resetUserState, setUserMessage } from "@redux/userSlice";
 import postApi from "@api/postApi";
 import { setMessagePublicState } from "@redux/publicSlice";
 const Login = () => {
