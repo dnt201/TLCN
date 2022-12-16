@@ -18,8 +18,6 @@ const Pagination: React.FC<iLazy> = (props) => {
   const [onClickNe, setOnClickNe] = useState(false);
 
   useEffect(() => {
-    console.log(curPage, maxPage);
-
     let timer: NodeJS.Timeout;
     const funcFake = async () => {
       timer = setTimeout(() => {

@@ -23,8 +23,6 @@ const BlogDetail = () => {
   const [isOwner, setIsOwner] = useState(false);
   const accessToken = localStorage.getItem("accessToken");
 
-  // console.log("Blog detail rerender");
-  // console.log(idCurActive);
   const { post, error, loading } = useSelector(
     (state: RootState) => state.blog
   );
@@ -55,7 +53,6 @@ const BlogDetail = () => {
     if (currentYOffset >= vH) setStick(true);
     else setStick(false);
   }
-  console.log(post?.tags);
 
   useEffect(() => {
     if (blogId) {
