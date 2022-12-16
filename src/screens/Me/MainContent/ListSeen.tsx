@@ -29,7 +29,7 @@ const ListSeen: React.FC<iProps> = (props) => {
   const getListSeen = async (page: number) => {
     if (userInfo) {
       setLoading(true);
-      const result = await postApi.getListPostHaveBeenVote(page);
+      const result = await postApi.getListPostHaveBeenView(page);
       if (result.status === 201) {
         setListSeen(result.data.result.data);
         setPagingListSeen(result.data.result.page);
