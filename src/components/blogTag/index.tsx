@@ -81,7 +81,7 @@ const BlogTag: React.FC<iLazy> = (props) => {
             toast.success("Đã follow bài viết!");
             setIsFollowState(!isFollowState);
           }
-        }
+        } else toast.error("You can't follow this post!");
         setTimeout(() => {
           setLoadingPrevent(false);
         }, 2000);
