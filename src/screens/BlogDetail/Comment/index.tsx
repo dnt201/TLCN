@@ -58,18 +58,25 @@ const ReplyComment: React.FC<iProps> = (props) => {
   const [pagingListComment, setPagingListComment] = useState<iPage>();
   const [loading, setLoading] = useState(true);
   const [curPage, setCurPage] = useState(1);
+  const [first, setFirst] = useState(true);
 
   const [valueComment, setValueComment] = useState("");
 
   useEffect(() => {
     commentApi.getListCommentOfPost(idPost, curPage, 5).then((result) => {
+      setFirst(false);
+
       if (curPage === -1) setCurPage(1);
       else {
+        console.log(first);
+
         if (result.status === 201) {
           setListComment(result.data.data);
           setPagingListComment(result.data.page);
           console.log(commentRef.current);
-          if (commentRef.current) commentRef.current.scrollIntoView();
+          if (commentRef.current && first !== true) {
+            commentRef.current.scrollIntoView();
+          }
         } else {
           toast.error("Lấy dữ liệu comment có lỗi!");
         }
