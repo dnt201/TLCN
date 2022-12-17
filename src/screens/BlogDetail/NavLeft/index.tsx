@@ -7,7 +7,7 @@ import {
   Twitter,
 } from "@icons/index";
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import avatarDefault from "@images/userDefault.png";
 import userApi from "@api/userApi";
@@ -45,8 +45,9 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
   const [isFollowState, setIsFollowState] = useState<boolean>(
     isFollow || false
   );
+  const navigate = useNavigate();
   const [disabledNotSpam, setDisableNotSpam] = useState(false);
-
+  const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
   const [voteDataState, setVoteDataState] = useState<
     "Upvote" | "DownVote" | null
   >(null);
@@ -185,6 +186,9 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
             disabled={disabledNotSpam}
             data-for="downVote"
             onClick={async () => {
+              if (accessTokenFromLocalStorage === null) {
+                // navigate(``)
+              }
               if (status === undefined || status !== "Approve") {
                 toast.error("Bài viết chưa được phê duyệt");
               } else {
@@ -248,25 +252,30 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
           }
           disabled={isDisable}
           onClick={async () => {
-            setDisable(true);
-            var result;
-            if (isFollowState === true) {
-              result = await userApi.followPost(idPost);
+            console.log(accessTokenFromLocalStorage);
+            if (!accessTokenFromLocalStorage) {
+              navigate(`/login?redirect=followPost&id=${idPost}`);
             } else {
-              result = await userApi.followPost(idPost);
+              setDisable(true);
+              var result;
+              if (isFollowState === true) {
+                result = await userApi.followPost(idPost);
+              } else {
+                result = await userApi.followPost(idPost);
+              }
+              if (result.status === 201) {
+                if (isFollowState === true)
+                  toast.error("Unfollow bài viết thành công!");
+                else toast.success("Follow bài viết thành công!");
+                setIsFollowState(!isFollowState);
+              } else {
+                if (result.status === 404)
+                  toast.error("Bài viết chưa được phê duyệt");
+              }
+              await setTimeout(() => {
+                setDisable(false);
+              }, 1000);
             }
-            if (result.status === 201) {
-              if (isFollowState === true)
-                toast.error("Unfollow bài viết thành công!");
-              else toast.success("Follow bài viết thành công!");
-              setIsFollowState(!isFollowState);
-            } else {
-              if (result.status === 404)
-                toast.error("Bài viết chưa được phê duyệt");
-            }
-            await setTimeout(() => {
-              setDisable(false);
-            }, 1000);
           }}
         >
           <ListFill

@@ -321,7 +321,7 @@ const CommentItem: React.FC<iProps> = (props) => {
                 } else {
                   setDisableNotSpam(true);
                   if (isOwner) {
-                    toast("Không thể vote bài viết của chính bạn", {
+                    toast("Không thể vote bình luận của chính bạn", {
                       icon: "⚠️",
                     });
                   } else {

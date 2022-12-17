@@ -3,6 +3,7 @@ import { iNotify } from "@DTO/Notify";
 import { useNavigate } from "react-router-dom";
 import { clickNotification } from "src/router/Socket";
 import userDefault from "@images/userDefault.png";
+import { isFulfilled } from "@reduxjs/toolkit";
 
 interface iProps extends iNotify {
   idToast: string;
@@ -22,6 +23,8 @@ const PopUpNotify: React.FC<iProps> = (props) => {
     extendData,
     id,
   } = props;
+  if (extendData) console.log(JSON.parse(extendData).post);
+
   const navigate = useNavigate();
   return (
     <div
@@ -43,13 +46,16 @@ const PopUpNotify: React.FC<iProps> = (props) => {
           } else if (type === "Post_Comment_Vote" && extendData) {
             clickNotification(id);
             dismiss(idToast);
-
-            navigate(`/blog/${JSON.parse(extendData).post}?ref=postComment`);
+            navigate(
+              `/blog/${
+                JSON.parse(extendData).post
+              }?ref=postComment&idComment=${refId}`
+            );
           } else if (type === "Post_Reply" && extendData) {
             clickNotification(id);
             dismiss(idToast);
             navigate(
-              `/blog/${refId}?ref=postComment&idComment=${
+              `/blog/${JSON.parse(extendData).post}?ref=postComment&idComment=${
                 JSON.parse(extendData).comment
               }`
             );

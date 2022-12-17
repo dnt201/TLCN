@@ -38,14 +38,13 @@ const NotifyTag: React.FC<iProps> = (props) => {
     } else if (type === "Post_Comment_Vote" && extendData) {
       clickNotification(id);
       setIsClickedState(true);
-
       navigate(`/blog/${JSON.parse(extendData).post}?ref=postComment`);
     } else if (type === "Post_Reply" && extendData) {
       clickNotification(id);
       setIsClickedState(true);
       navigate(
         `/blog/${refId}?ref=postComment&idComment=${
-          JSON.parse(extendData).comment
+          JSON.parse(extendData).post
         }`
       );
     }

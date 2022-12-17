@@ -70,10 +70,21 @@ const Login = () => {
             if (result.status === 200) {
               if (result.data.isFollow === true) {
                 navigate(`/blog/${searchParams.get("id")}?message=followed`);
-              } else if (result.data.isFollow === false) {
-                navigate(
-                  `/blog/${searchParams.get("id")}?message=followSuccess`
-                );
+                toast("Bài viết đã được follow trước đó!", {
+                  icon: "⚠️",
+                });
+              } else if (result.data.isFollow === false && idFromURL !== null) {
+                userApi.followPost(idFromURL).then((result) => {
+                  if (result.status === 200 || result.status === 201) {
+                    navigate(`/blog/${idFromURL}?message=followSuccess`);
+                    toast.success("Đã follow bài viết thành công!");
+                  } else {
+                    navigate(`/blog/${idFromURL}}`);
+                    toast.error(
+                      "Lỗi, Không thể follow bài viết! Vui lòng thử lại"
+                    );
+                  }
+                });
               } else navigate("/");
             }
           });
