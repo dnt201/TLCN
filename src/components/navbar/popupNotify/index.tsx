@@ -5,7 +5,7 @@ import { iNotify } from "@DTO/Notify";
 import { iPage } from "@DTO/Pagination";
 import notifyApi from "@api/notifyApi";
 import toast from "react-hot-toast";
-import { ClipLoader } from "react-spinners";
+import { BarLoader, ClipLoader } from "react-spinners";
 interface iPopUpNotifyProps extends React.HTMLProps<HTMLDivElement> {
   setShow: (number: number) => void;
 }
@@ -125,7 +125,11 @@ const PopUpNotify: React.FC<iPopUpNotifyProps> = (props) => {
             </div>
           ) : (
             <div>
-              {listNotify && listNotify.length > 0 && paging ? (
+              {loading ? (
+                <div className="flex justify-center py-8">
+                  <BarLoader color="#fff" />
+                </div>
+              ) : listNotify && listNotify.length > 0 && paging ? (
                 <div>
                   {listNotify.map((result) => (
                     <NotifyTag
