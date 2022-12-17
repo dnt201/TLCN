@@ -2,6 +2,7 @@ import { Javascript, Tutorial } from "@icons/index";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import defaultIMG from "@images/default.jpg";
+import { toast } from "react-hot-toast";
 export interface iTagProp extends React.HTMLAttributes<HTMLDivElement> {
   href: string;
   icon?: React.ElementType;
@@ -25,7 +26,6 @@ const Filter: React.FC<iTagProp> = (props) => {
             " bg-hover ")
         }
         onClick={() => {
-          // navigate(`/props.href`);
           if (props.href === curPath) {
             navigate(0);
           }
@@ -65,8 +65,17 @@ const Filter: React.FC<iTagProp> = (props) => {
           (curPath === "/" && props.href === "/newest")) &&
           " bg-hover ")
       }
-      onClick={() => {
+      onClick={(e) => {
         // navigate(`/props.href`);
+        if (props.href === "/popular") {
+          toast("Tính năng đang được nâng cấp", {
+            icon: "⚠️",
+          });
+          e.stopPropagation();
+          e.preventDefault();
+
+          return;
+        }
         if (props.href === curPath) {
           navigate(0);
         }

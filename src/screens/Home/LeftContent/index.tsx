@@ -1,21 +1,11 @@
 import Tag, { iTagProp } from "@components/tag";
 import React, { useEffect, useState } from "react";
-import {
-  Business,
-  Design,
-  Following,
-  Javascript,
-  Newest,
-  Popular,
-  BitCoin,
-  Innovation,
-} from "@icons/index";
+import { Following, Newest, Popular } from "@icons/index";
 import postTagApi from "@api/postTagApi";
 import categoryApi from "@api/categoryApi";
 import { iTag } from "src/DTO";
 import { iCategory } from "src/DTO/Category";
 import Filter from "./Filter";
-import { useNavigate } from "react-router-dom";
 import SkeletonTag from "./SkeletonTag";
 import SkeletonCategory from "./SkeletonCategory";
 

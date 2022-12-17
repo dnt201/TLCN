@@ -30,9 +30,7 @@ axiosClient.interceptors.response.use(
     const prevRequest = error.config;
 
     const refreshToken = await localStorage.getItem("refreshToken");
-    error;
     if (error.message === "Network Error") {
-      ("!error.status");
       return error.message;
     } else if (
       error.response.status === 401 &&
@@ -74,7 +72,6 @@ axiosClient.interceptors.response.use(
         );
         return await lazyAxios(prevRequest);
       } catch (_error: any) {
-        ("dispatch");
         // window.dispatchEvent(new Event("storage"));
         // localStorage.clear();
         if (

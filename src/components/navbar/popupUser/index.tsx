@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import ava1 from "@assets/images/userDefault.png";
 import { ChangePassWord, LogOut, Setting } from "@icons/index";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@app/store";
 import { userLogout } from "@redux/userSlice";

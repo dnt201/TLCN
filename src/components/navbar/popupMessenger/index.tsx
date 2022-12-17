@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { MagnifyingGlass, More, Expand, ArrowLeft } from "@icons/index";
-import MessengerTag from "@components/navbar/popupMessenger/messengerTag";
 interface iPopUpMessageProps extends React.HTMLProps<HTMLDivElement> {
   setShow: (show: number) => void;
 }

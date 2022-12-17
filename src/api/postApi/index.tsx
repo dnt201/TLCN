@@ -1,8 +1,4 @@
 import axiosClient from "@api/axiosClient";
-import { iCommentCreate } from "@DTO/Blog";
-import { ChangePassWordValues } from "@screens/ChangePassWord";
-import queryString from "query-string";
-
 export interface postCreate {
   file?: File;
   title: string;

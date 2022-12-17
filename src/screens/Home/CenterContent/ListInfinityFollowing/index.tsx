@@ -1,7 +1,7 @@
 import postApi from "@api/postApi";
 import BlogTag from "@components/blogTag";
 import { iPage } from "@DTO/Pagination";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ListSkeleton from "../ListSkeleton";
 import { ArrowUpTray } from "@icons/index";
 import NoPost from "../NoPost";

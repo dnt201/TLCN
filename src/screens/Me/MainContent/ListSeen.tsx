@@ -4,13 +4,11 @@ import BlogTag from "@components/blogTag";
 import Pagination from "@components/pagination";
 import { iPostDetail } from "@DTO/Blog";
 import { iPage } from "@DTO/Pagination";
-import BlogNotFound from "@screens/BlogDetail/NotFound";
 import ListSkeleton from "@screens/Home/CenterContent/ListSkeleton";
 import NoPost from "@screens/Home/CenterContent/NoPost";
-import SkeletonTag from "@screens/Home/LeftContent/SkeletonTag";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface iProps {
   selectId: number;

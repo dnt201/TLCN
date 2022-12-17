@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { MagnifyingGlass, More, Expand, ArrowLeft } from "@icons/index";
+import { More } from "@icons/index";
 import NotifyTag from "./notifyTag";
 import { iNotify } from "@DTO/Notify";
 import { iPage } from "@DTO/Pagination";

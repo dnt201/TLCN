@@ -5,7 +5,6 @@ import {
   ListFill,
   More,
   Twitter,
-  Write,
 } from "@icons/index";
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";

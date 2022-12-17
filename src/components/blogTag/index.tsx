@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Book, BookFill, Heart, ListFill, More } from "@icons/index";
+import { ListFill, More } from "@icons/index";
 import { Link, useNavigate } from "react-router-dom";
 import defaultPost from "@images/default-placeholder.png";
 import avatarDefault from "@images/userDefault.png";

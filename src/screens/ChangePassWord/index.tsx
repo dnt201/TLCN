@@ -1,5 +1,4 @@
 import { AppDispatch } from "@app/store";
-import { userGetMe } from "@redux/userSlice";
 import { Field, Form, Formik } from "formik";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -18,7 +17,6 @@ const ChangePassWord: React.FC<iFormChangePassword> = (props) => {
   const {} = props;
   const [isVisible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch<AppDispatch>();
 
   const initialValues: ChangePassWordValues = {
     oldPassword: "",

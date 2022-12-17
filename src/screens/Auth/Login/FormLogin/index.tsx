@@ -1,14 +1,13 @@
 import React from "react";
 
 import { Formik, Form, FastField } from "formik";
-import userApi, { userApiAuth } from "@api/userApi";
+import { userApiAuth } from "@api/userApi";
 import * as Yup from "yup";
 import { CheckCircle, ChevronLeft, XCircle } from "@icons/index";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "@redux/userSlice";
 import { AppDispatch, RootState } from "src/app/store";
 import ClipLoader from "react-spinners/ClipLoader";
-import axios from "axios";
 interface LoginFormValues {
   email: string;
   password: string;

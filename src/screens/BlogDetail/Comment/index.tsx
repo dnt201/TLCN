@@ -1,7 +1,7 @@
 import { RootState } from "@app/store";
 import { iComment, iCommentCreate } from "@DTO/Blog";
 import { iPage } from "@DTO/Pagination";
-import { ChatBubbleLeft, FaceSmile, Photo, UpImage } from "@icons/index";
+import { ChatBubbleLeft, FaceSmile, Photo } from "@icons/index";
 import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
