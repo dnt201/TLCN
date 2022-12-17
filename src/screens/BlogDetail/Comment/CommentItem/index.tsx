@@ -259,34 +259,38 @@ const CommentItem: React.FC<iProps> = (props) => {
               disabled={disabledNotSpam}
               onClick={async (e) => {
                 e.preventDefault();
-                setDisableNotSpam(true);
-                if (isOwner) {
-                  toast("Không thể vote bình luận của chính bạn", {
-                    icon: "⚠️",
-                  });
+                if (accessFromLocal === null || accessFromLocal.length <= 0) {
+                  navigate(`/login?redirect=commentPost&id=${idPost}`);
                 } else {
-                  const result = await commentApi.voteUpComment(commentId);
-                  if (result.status === 201) {
-                    if (voteDataState === null) {
-                      toast.success(`Vote thành công`);
-                      setVoteDataState("Upvote");
-                      setCountVote(countVote + 1);
-                    } else if (voteDataState === "DownVote") {
-                      toast.success(`Vote thành công`);
-                      setVoteDataState("Upvote");
-                      setCountVote(countVote + 2);
-                    } else {
-                      toast.error(`UnVote thành công`);
-                      setVoteDataState(null);
-                      setCountVote(countVote - 1);
-                    }
+                  setDisableNotSpam(true);
+                  if (isOwner) {
+                    toast("Không thể vote bình luận của chính bạn", {
+                      icon: "⚠️",
+                    });
                   } else {
-                    toast.error(
-                      `Có gì đó không đúng ${result.data.message} vote up`
-                    );
+                    const result = await commentApi.voteUpComment(commentId);
+                    if (result.status === 201) {
+                      if (voteDataState === null) {
+                        toast.success(`Vote thành công`);
+                        setVoteDataState("Upvote");
+                        setCountVote(countVote + 1);
+                      } else if (voteDataState === "DownVote") {
+                        toast.success(`Vote thành công`);
+                        setVoteDataState("Upvote");
+                        setCountVote(countVote + 2);
+                      } else {
+                        toast.error(`UnVote thành công`);
+                        setVoteDataState(null);
+                        setCountVote(countVote - 1);
+                      }
+                    } else {
+                      toast.error(
+                        `Có gì đó không đúng ${result.data.message} vote up`
+                      );
+                    }
                   }
+                  setTimeout(() => setDisableNotSpam(false), 2500);
                 }
-                setTimeout(() => setDisableNotSpam(false), 2500);
               }}
             >
               <ChevronUp
@@ -316,38 +320,44 @@ const CommentItem: React.FC<iProps> = (props) => {
               data-for="voteDownComment"
               disabled={disabledNotSpam}
               onClick={async () => {
-                if (status === undefined || status !== "Approve") {
-                  toast.error("Bài viết chưa được phê duyệt");
+                if (accessFromLocal === null || accessFromLocal.length <= 0) {
+                  navigate(`/login?redirect=commentPost&id=${idPost}`);
                 } else {
-                  setDisableNotSpam(true);
-                  if (isOwner) {
-                    toast("Không thể vote bình luận của chính bạn", {
-                      icon: "⚠️",
-                    });
+                  if (status === undefined || status !== "Approve") {
+                    toast.error("Bài viết chưa được phê duyệt");
                   } else {
-                    const result = await commentApi.voteDownComment(commentId);
-
-                    if (result.status === 201) {
-                      if (voteDataState === null) {
-                        toast.success(`Down vote thành công`);
-                        setVoteDataState("DownVote");
-                        setCountVote(countVote - 1);
-                      } else if (voteDataState === "Upvote") {
-                        toast.success(`Down vote thành công`);
-                        setVoteDataState("DownVote");
-                        setCountVote(countVote - 2);
-                      } else {
-                        toast.error(`UnVote thành công`);
-                        setVoteDataState(null);
-                        setCountVote(countVote + 1);
-                      }
+                    setDisableNotSpam(true);
+                    if (isOwner) {
+                      toast("Không thể vote bình luận của chính bạn", {
+                        icon: "⚠️",
+                      });
                     } else {
-                      toast.error(
-                        `Có gì đó không đúng ${result.data.message} vote up`
+                      const result = await commentApi.voteDownComment(
+                        commentId
                       );
+
+                      if (result.status === 201) {
+                        if (voteDataState === null) {
+                          toast.success(`Down vote thành công`);
+                          setVoteDataState("DownVote");
+                          setCountVote(countVote - 1);
+                        } else if (voteDataState === "Upvote") {
+                          toast.success(`Down vote thành công`);
+                          setVoteDataState("DownVote");
+                          setCountVote(countVote - 2);
+                        } else {
+                          toast.error(`UnVote thành công`);
+                          setVoteDataState(null);
+                          setCountVote(countVote + 1);
+                        }
+                      } else {
+                        toast.error(
+                          `Có gì đó không đúng ${result.data.message} vote up`
+                        );
+                      }
                     }
+                    setTimeout(() => setDisableNotSpam(false), 2500);
                   }
-                  setTimeout(() => setDisableNotSpam(false), 2500);
                 }
               }}
             >
@@ -371,7 +381,7 @@ const CommentItem: React.FC<iProps> = (props) => {
               data-for="replyComment"
               onClick={() => {
                 if (accessFromLocal === null || accessFromLocal.length <= 0) {
-                  navigate("/login");
+                  navigate(`/login?redirect=commentPost&id=${idPost}`);
                 } else {
                   setShowReply(!showReply);
                   setValueReply("");

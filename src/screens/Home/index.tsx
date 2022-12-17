@@ -21,7 +21,6 @@ const Home = () => {
         />
       </div>
       <CenterContent className="flex-1 mt-6   mx-2  rounded-lg overflow-y-hidden overflow-hidden   " />
-      {/* <RightContent className="w-1/4 pt-6 rounded-lg hover:overflow-y-scroll" /> */}
     </div>
   );
 };

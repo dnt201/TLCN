@@ -110,6 +110,97 @@ const Login = () => {
           });
         } else if (actionFromURL === "commentPost") {
           navigate(`/blog/${idFromURL}?ref=postComment`);
+        } else if (actionFromURL === "upVote") {
+          userApi.getMe().then((user) => {
+            if (user.status === 200 && idFromURL) {
+              postApi.getPostDetailById(idFromURL).then((post) => {
+                console.log(user);
+                console.log(post);
+                if (!post.data.owner || !user.data.id) {
+                  navigate(`/blog/${idFromURL}`);
+                  toast.error("Lỗi không thể vote bài viết, vui lòng thử lại!");
+                } else {
+                  if (post.status === 200 && post.data.owner) {
+                    if (
+                      post.data.status === undefined ||
+                      post.data.status !== "Approve"
+                    ) {
+                      navigate(`/blog/${idFromURL}`);
+                      toast.error("Bài viết chưa được phê duyệt");
+                    } else if (user.data.id === post.data.owner.id) {
+                      navigate(`/blog/${idFromURL}`);
+                      toast.error("Không thể vote bài viết của bản thân!");
+                    } else {
+                      if (idFromURL) {
+                        console.log(post);
+                        if (post.data.voteData === "Upvote") {
+                          navigate(`/blog/${idFromURL}`);
+                          toast.error(`Bạn đã up vote trước đó! `);
+                        } else {
+                          postApi.voteUp(idFromURL).then((vote) => {
+                            if (vote.status === 201) {
+                              navigate(`/blog/${idFromURL}`);
+                              toast.success(`Vote thành công`);
+                            } else {
+                              navigate(`/blog/${idFromURL}`);
+                              toast.error(
+                                "Lỗi không thể vote bài viết, vui lòng thử lại!"
+                              );
+                            }
+                          });
+                        }
+                      }
+                    }
+                  }
+                }
+              });
+            } else navigate("/");
+          });
+        } else if (actionFromURL === "downVote") {
+          userApi.getMe().then((user) => {
+            if (user.status === 200 && idFromURL) {
+              postApi.getPostDetailById(idFromURL).then((post) => {
+                console.log(user);
+                console.log(post);
+                if (!post.data.owner || !user.data.id) {
+                  navigate(`/blog/${idFromURL}`);
+                  toast.error("Lỗi không thể vote bài viết, vui lòng thử lại!");
+                } else {
+                  if (post.status === 200 && post.data.owner) {
+                    if (
+                      post.data.status === undefined ||
+                      post.data.status !== "Approve"
+                    ) {
+                      navigate(`/blog/${idFromURL}`);
+                      toast.error("Bài viết chưa được phê duyệt");
+                    } else if (user.data.id === post.data.owner.id) {
+                      navigate(`/blog/${idFromURL}`);
+                      toast.error("Không thể vote bài viết của bản thân!");
+                    } else {
+                      if (idFromURL) {
+                        if (post.data.voteData === "DownVote") {
+                          navigate(`/blog/${idFromURL}`);
+                          toast.error(`Bạn đã down vote trước đó! `);
+                        } else {
+                          postApi.voteDown(idFromURL).then((vote) => {
+                            if (vote.status === 201) {
+                              navigate(`/blog/${idFromURL}`);
+                              toast.success(`Down vote thành công`);
+                            } else {
+                              navigate(`/blog/${idFromURL}`);
+                              toast.error(
+                                "Lỗi không thể vote bài viết, vui lòng thử lại!"
+                              );
+                            }
+                          });
+                        }
+                      }
+                    }
+                  }
+                }
+              });
+            } else navigate("/");
+          });
         } else navigate("/");
       } else navigate("/");
     }

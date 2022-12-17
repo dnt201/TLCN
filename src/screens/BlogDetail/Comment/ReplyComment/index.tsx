@@ -1,6 +1,6 @@
 import { iCommentCreate } from "@DTO/Blog";
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UserDefault from "@images/userDefault.png";
 import { More, FaceSmile, Photo } from "@icons/index";
 import ReactTooltip from "react-tooltip";
@@ -54,6 +54,8 @@ const ReplyComment: React.FC<iPropsReply> = (props) => {
 
   const [showActionModalReply, setShowActionModalReply] = useState(false);
   const [showReply, setShowReply] = useState(false);
+  const accessFromLocal = localStorage.getItem("accessToken");
+  const navigate = useNavigate();
   const [valueCommentReply, setValueCommentReply] = useState(content);
   const [valueCommentFromDataBaseReply, setValueCommentFromDataBaseReply] =
     useState(content);
@@ -234,7 +236,12 @@ const ReplyComment: React.FC<iPropsReply> = (props) => {
               data-tip="Trả lời"
               data-for="replyComment"
               onClick={() => {
-                setShowReply(!showReply);
+                if (accessFromLocal === null || accessFromLocal.length <= 0) {
+                  navigate(`/login?redirect=commentPost&id=${idPost}`);
+                } else {
+                  setShowReply(!showReply);
+                  setValueReply("");
+                }
               }}
             >
               Trả lời

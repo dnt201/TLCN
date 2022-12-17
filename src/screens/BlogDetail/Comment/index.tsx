@@ -68,6 +68,8 @@ const ReplyComment: React.FC<iProps> = (props) => {
         if (result.status === 201) {
           setListComment(result.data.data);
           setPagingListComment(result.data.page);
+          console.log(commentRef.current);
+          if (commentRef.current) commentRef.current.scrollIntoView();
         } else {
           toast.error("Lấy dữ liệu comment có lỗi!");
         }
@@ -77,11 +79,11 @@ const ReplyComment: React.FC<iProps> = (props) => {
   }, [curPage]);
   if (listComment === undefined) return <div>lazy undefined list comment</div>;
   return (
-    <div className="flex flex-col pb-10" ref={commentRef}>
+    <div className="flex flex-col pb-10">
       <h4 className="pb-2">
         Bình luận ({pagingListComment && pagingListComment.totalElement})
       </h4>
-
+      <div ref={commentRef}></div>
       {accessToken !== null && accessToken.length > 0 && userInfo ? (
         <div className="w-full bg-[#f1f1f1]  rounded-md ">
           <div className=" flex flex-col p-4 pb-0 border-gray border-[1px] rounded-md">

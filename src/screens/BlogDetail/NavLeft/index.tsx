@@ -117,37 +117,41 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
             }
             disabled={disabledNotSpam}
             onClick={async () => {
-              if (status === undefined || status !== "Approve") {
-                toast.error("Bài viết chưa được phê duyệt");
+              if (!accessTokenFromLocalStorage) {
+                navigate(`/login?redirect=upVote&id=${idPost}`);
               } else {
-                setDisableNotSpam(true);
-                if (isOwner) {
-                  toast("Không thể vote bài viết của chính bạn", {
-                    icon: "⚠️",
-                  });
+                if (status === undefined || status !== "Approve") {
+                  toast.error("Bài viết chưa được phê duyệt");
                 } else {
-                  const result = await postApi.voteUp(idPost);
-                  if (result.status === 201) {
-                    if (voteDataState === null) {
-                      toast.success(`Vote thành công`);
-                      setVoteDataState("Upvote");
-                      setLikeState(likeState + 1);
-                    } else if (voteDataState === "DownVote") {
-                      toast.success(`Vote thành công`);
-                      setVoteDataState("Upvote");
-                      setLikeState(likeState + 2);
-                    } else {
-                      toast.error(`UnVote thành công`);
-                      setVoteDataState(null);
-                      setLikeState(likeState - 1);
-                    }
+                  setDisableNotSpam(true);
+                  if (isOwner) {
+                    toast("Không thể vote bài viết của chính bạn", {
+                      icon: "⚠️",
+                    });
                   } else {
-                    toast.error(
-                      `Có gì đó không đúng ${result.data.message} vote up`
-                    );
+                    const result = await postApi.voteUp(idPost);
+                    if (result.status === 201) {
+                      if (voteDataState === null) {
+                        toast.success(`Vote thành công`);
+                        setVoteDataState("Upvote");
+                        setLikeState(likeState + 1);
+                      } else if (voteDataState === "DownVote") {
+                        toast.success(`Vote thành công`);
+                        setVoteDataState("Upvote");
+                        setLikeState(likeState + 2);
+                      } else {
+                        toast.error(`UnVote thành công`);
+                        setVoteDataState(null);
+                        setLikeState(likeState - 1);
+                      }
+                    } else {
+                      toast.error(
+                        `Có gì đó không đúng ${result.data.message} vote up`
+                      );
+                    }
                   }
+                  setTimeout(() => setDisableNotSpam(false), 2500);
                 }
-                setTimeout(() => setDisableNotSpam(false), 2500);
               }
             }}
           >
@@ -186,40 +190,41 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
             disabled={disabledNotSpam}
             data-for="downVote"
             onClick={async () => {
-              if (accessTokenFromLocalStorage === null) {
-                // navigate(``)
-              }
-              if (status === undefined || status !== "Approve") {
-                toast.error("Bài viết chưa được phê duyệt");
+              if (!accessTokenFromLocalStorage) {
+                navigate(`/login?redirect=downVote&id=${idPost}`);
               } else {
-                setDisableNotSpam(true);
-                if (isOwner) {
-                  toast("Không thể vote bài viết của chính bạn", {
-                    icon: "⚠️",
-                  });
+                if (status === undefined || status !== "Approve") {
+                  toast.error("Bài viết chưa được phê duyệt");
                 } else {
-                  const result = await postApi.voteDown(idPost);
-                  if (result.status === 201) {
-                    if (voteDataState === null) {
-                      toast.success(`Down vote thành công`);
-                      setVoteDataState("DownVote");
-                      setLikeState(likeState - 1);
-                    } else if (voteDataState === "Upvote") {
-                      toast.success(`Down vote thành công`);
-                      setVoteDataState("DownVote");
-                      setLikeState(likeState - 2);
-                    } else {
-                      toast.error(`UnVote thành công`);
-                      setVoteDataState(null);
-                      setLikeState(likeState + 1);
-                    }
+                  setDisableNotSpam(true);
+                  if (isOwner) {
+                    toast("Không thể vote bài viết của chính bạn", {
+                      icon: "⚠️",
+                    });
                   } else {
-                    toast.error(
-                      `Có gì đó không đúng ${result.data.message} vote up`
-                    );
+                    const result = await postApi.voteDown(idPost);
+                    if (result.status === 201) {
+                      if (voteDataState === null) {
+                        toast.success(`Down vote thành công`);
+                        setVoteDataState("DownVote");
+                        setLikeState(likeState - 1);
+                      } else if (voteDataState === "Upvote") {
+                        toast.success(`Down vote thành công`);
+                        setVoteDataState("DownVote");
+                        setLikeState(likeState - 2);
+                      } else {
+                        toast.error(`UnVote thành công`);
+                        setVoteDataState(null);
+                        setLikeState(likeState + 1);
+                      }
+                    } else {
+                      toast.error(
+                        `Có gì đó không đúng ${result.data.message} vote up`
+                      );
+                    }
                   }
+                  setTimeout(() => setDisableNotSpam(false), 2500);
                 }
-                setTimeout(() => setDisableNotSpam(false), 2500);
               }
             }}
           >
