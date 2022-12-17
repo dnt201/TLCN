@@ -21,7 +21,11 @@ const PublishConfirm: React.FC<iProps> = (props) => {
     <div className="top-0 right-0 fixed  w-full h-full flex justify-center items-center  z-[12001] ">
       <div
         className="  w-full h-full bg-[#000] opacity-50"
-        onClick={() => setShow(false)}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setShow(false);
+        }}
       ></div>
       <div className="w-full fixed max-h-[240px] z-[12001] max-w-[420px] bg-bg  flex flex-col   border-[1px] border-smokeDark  rounded-md text-[#000]">
         {/* Start Header */}
