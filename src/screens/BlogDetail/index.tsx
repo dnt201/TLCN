@@ -70,7 +70,7 @@ const BlogDetail = () => {
         <>
           <img
             className="mx-auto  w-[80ch] max-h-[25vh]"
-            src={qc}
+            src={post.thumbnailLink || qc}
             alt="banner"
           />
           <div className="flex flex-col">
