@@ -10,8 +10,6 @@ export const initiateSocketConnection = (token: string) => {
       token: `Bearer ${token}`,
     },
   });
-  `Connecting socket...`;
-  process.env.REACT_APP_SOCKET_URL, socket;
 };
 
 export const disconnectSocket = () => {

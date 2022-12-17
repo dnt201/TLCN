@@ -238,7 +238,6 @@ const CommentItem: React.FC<iProps> = (props) => {
                     setValueComment(commentTemp.commentContent.trim());
                     setIsEditComment(false);
                   } else toast.error("Chỉnh sửa thất bại" + result.status);
-                  result;
                 } else toast.error("Bình luận không được rỗng!");
               }}
             >
@@ -540,7 +539,6 @@ const CommentItem: React.FC<iProps> = (props) => {
                         setCurPage(-1);
                         setListReply(null);
                       } else toast.error("Reply thất bại" + result.status);
-                      result;
                     } else toast.error("Reply không được rỗng!");
                   }
                 }}
