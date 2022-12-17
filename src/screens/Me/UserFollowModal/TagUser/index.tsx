@@ -70,7 +70,9 @@ const TagUser: React.FC<iProps> = (props) => {
       </div>
       {select === "Following" ? (
         <button
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
             setShowConfirm(true);
           }}
           className="font-medium flex items-center gap-1 text-sm bg-[#f1f1f1] hover:bg-[#a1a1a1] disabled:hover:bg-[#f1f1f1] px-4 py-[6px] rounded-md disabled:cursor-not-allowed"
