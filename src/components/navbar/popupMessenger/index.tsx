@@ -12,7 +12,6 @@ const PopUpMessenger: React.FC<iPopUpMessageProps> = (props) => {
   useEffect(() => {
     const handleClickOutMessage = (event: any) => {
       const buttonShowMessage = document.getElementById("showMessage");
-      console.log(buttonShowMessage);
 
       if (
         popUpMessengerRef.current &&

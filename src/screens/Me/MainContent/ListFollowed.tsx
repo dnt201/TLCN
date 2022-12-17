@@ -27,7 +27,6 @@ const ListFollowed: React.FC<iProps> = (props) => {
   const getListFollow = async (page: number) => {
     if (userInfo) {
       const result = await postApi.getListPostHaveBeenFollow("", page);
-      console.log(result);
       if (result.status === 201) {
         setListFollow(result.data.result.data);
         setPagingListFollow(result.data.result.page);
@@ -41,7 +40,6 @@ const ListFollowed: React.FC<iProps> = (props) => {
   };
 
   useEffect(() => {
-    console.log("List rerender");
     if (!userInfo) {
       navigate("/login");
     } else if (selectId === 2) {

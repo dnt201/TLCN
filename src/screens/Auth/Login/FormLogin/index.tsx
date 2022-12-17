@@ -147,7 +147,6 @@ const FormLogin: React.FC<iPropsLogin> = (props) => {
                 "flex-1 border-[1px] border-bg text-bg bg-white rounded-md px-2 py-1 text-sm relative "
               }
               onClick={() => {
-                console.log(props);
                 setStep(1);
               }}
             >

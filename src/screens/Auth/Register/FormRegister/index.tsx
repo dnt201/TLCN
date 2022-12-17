@@ -50,9 +50,7 @@ const FormRegister: React.FC<iFormRegisterProps> = (props) => {
       email: values.email,
       password: values.password,
     };
-    console.log(props);
     const result = await dispatch(userRegister(user));
-    // console.log(result, "---------------");
     if (result.payload.error === undefined || result.payload.error === null) {
       setStep(2);
     }

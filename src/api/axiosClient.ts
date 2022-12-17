@@ -19,7 +19,6 @@ axiosClient.interceptors.request.use(async (config: AxiosRequestConfig) => {
       ...config.headers,
       Authorization: `Bearer ${accessToken}`,
     };
-  console.log("config ne: ", config);
   return await config;
 });
 axiosClient.interceptors.response.use(
@@ -31,9 +30,9 @@ axiosClient.interceptors.response.use(
     const prevRequest = error.config;
 
     const refreshToken = await localStorage.getItem("refreshToken");
-    console.log(error);
+    error;
     if (error.message === "Network Error") {
-      console.log("!error.status");
+      ("!error.status");
       return error.message;
     } else if (
       error.response.status === 401 &&
@@ -75,18 +74,17 @@ axiosClient.interceptors.response.use(
         );
         return await lazyAxios(prevRequest);
       } catch (_error: any) {
-        console.log("dispatch");
+        ("dispatch");
         // window.dispatchEvent(new Event("storage"));
         // localStorage.clear();
         if (
           _error.response.status === 401 &&
           _error.response.data.message === "Unauthorized"
-        )
-          // toast.error("Refresh hết hạn");
-          Promise.reject(_error);
+        ) {
+        }
+        // toast.error("Refresh hết hạn");
       }
     } else if (error.response) {
-      console.log("error.response", error.response);
       return error.response;
     } else throw error;
   }

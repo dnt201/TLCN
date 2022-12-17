@@ -30,8 +30,6 @@ const PopUpUser: React.FC<iPopUpUserProps> = (props) => {
   useEffect(() => {
     const handleClickOutUser = (event: any) => {
       const buttonShowUser = document.getElementById("showUser");
-      console.log(buttonShowUser);
-
       if (
         popUpUser.current &&
         !popUpUser.current.contains(event.target) &&

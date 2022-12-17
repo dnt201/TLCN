@@ -71,7 +71,6 @@ const MidContent: React.FC<iMidContentProps> = (props) => {
             }
         }
       });
-      console.log(i);
       i = 0;
     }
   }
@@ -115,7 +114,6 @@ const MidContent: React.FC<iMidContentProps> = (props) => {
                       className="flex w-fit hover:cursor-pointer rounded-md  flex-row items-center p-3 bg-[#f1f1f1]"
                       onClick={(e) => {
                         navigate(`/tags/${tag.id}`);
-                        console.log("navigate qua all post of tag");
                         e.preventDefault();
                       }}
                     >

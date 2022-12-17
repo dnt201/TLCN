@@ -18,9 +18,7 @@ export const getAllCategory = createAsyncThunk(
       } else result = await categoryApi.getAllCategory(pageNum, nameCategory);
 
       return result.data.result;
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }
 );
 

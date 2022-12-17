@@ -19,7 +19,6 @@ const ChangePassWord: React.FC<iFormChangePassword> = (props) => {
   const [isVisible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
-  console.log("re render");
 
   const initialValues: ChangePassWordValues = {
     oldPassword: "",
@@ -51,7 +50,6 @@ const ChangePassWord: React.FC<iFormChangePassword> = (props) => {
   });
 
   const handleSubmit = async (values: ChangePassWordValues, props: any) => {
-    console.log("aaaaa", props);
     setLoading(true);
     const toastId = toast.loading("Loading...");
 

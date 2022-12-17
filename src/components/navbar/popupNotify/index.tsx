@@ -27,7 +27,6 @@ const PopUpNotify: React.FC<iPopUpNotifyProps> = (props) => {
       if (paging === null && curPage === 1) {
         notifyApi.getAllNotify().then((result) => {
           setLoading(false);
-          console.log(result);
           if (result.status === 201) {
             setListNotify(result.data.data);
             setPaging(result.data.page);
@@ -36,7 +35,6 @@ const PopUpNotify: React.FC<iPopUpNotifyProps> = (props) => {
       } else {
         notifyApi.getAllNotify().then((result) => {
           setLoading(false);
-          console.log(result);
           if (result.status === 201 && listNotify) {
             setListNotify([...listNotify, ...result.data.data]);
             setPaging(result.data.page);
@@ -52,7 +50,6 @@ const PopUpNotify: React.FC<iPopUpNotifyProps> = (props) => {
   useEffect(() => {
     const handleClickOutNotify = (event: any) => {
       const buttonShowNotify = document.getElementById("showNotifyA");
-      console.log(buttonShowNotify);
 
       if (
         popupNotify.current &&

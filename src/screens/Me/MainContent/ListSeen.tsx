@@ -43,7 +43,6 @@ const ListSeen: React.FC<iProps> = (props) => {
   };
 
   useEffect(() => {
-    console.log("List rerender");
     if (!userInfo) {
       navigate("/login");
     } else if (selectId === 4) {

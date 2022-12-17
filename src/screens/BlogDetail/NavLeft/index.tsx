@@ -61,13 +61,8 @@ const NavLeft: React.FC<iNavLeftProps> = (props) => {
   const [showActionModal, setShowActionModal] = useState(false);
   const refDivActionModal = useRef<HTMLDivElement>(null);
 
-  // console.log(isFollow);
-
   useEffect(() => {
     const handleClickOutActionModal = (event: any) => {
-      // const buttonShowUser = document.getElementById("showUser");
-      // console.log(buttonShowUser);
-
       if (
         refDivActionModal.current &&
         !refDivActionModal.current.contains(event.target)

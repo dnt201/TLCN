@@ -64,7 +64,6 @@ const ListInfinityFollowing = () => {
       setPage(1);
     } else handlePageChange(page);
   }, [page]);
-  console.log(listBlogTag);
   useEffect(() => {
     if (
       document.documentElement.scrollHeight -

@@ -83,7 +83,6 @@ const postApi = {
     });
   },
   getPostNotApprove: (pageNumber?: number) => {
-    console.log("not approve");
     const url = `/post/all-not-approve`;
     return axiosClient.post(url, {
       size: 5,

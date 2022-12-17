@@ -14,7 +14,6 @@ const publicState = createSlice({
   initialState,
   reducers: {
     setMessagePublicState: (state, action) => {
-      console.log("Set message");
       if (action.payload) state.message = action.payload;
     },
     setErrorPublicState: (state, action) => {

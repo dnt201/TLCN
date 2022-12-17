@@ -191,7 +191,6 @@ const ReplyComment: React.FC<iProps> = (props) => {
                       setListComment(null);
                     } else
                       toast.error("Thêm bình luận thất bại" + result.status);
-                    console.log(result);
                   } else toast.error("Bình luận không được rỗng!");
                 }
               }}

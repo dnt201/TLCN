@@ -8,9 +8,7 @@ export const getPostDetailById = createAsyncThunk(
     try {
       const result = await postApi.getPostDetailById(id);
       return result.data;
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }
 );
 
@@ -38,7 +36,6 @@ const postTag = createSlice({
       state.message = action.payload;
     },
     resetPostTagState: (state) => {
-      console.log("resetState");
       state.message = "";
       state.error = "";
     },
@@ -57,7 +54,6 @@ const postTag = createSlice({
       state.error = "";
     });
     builder.addCase(getPostDetailById.fulfilled, (state, action) => {
-      console.log(action);
       if (action.payload) {
         // state.listTag = action.payload.data;
         state.post = action.payload;

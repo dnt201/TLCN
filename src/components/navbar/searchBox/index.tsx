@@ -21,7 +21,6 @@ const SearchBox: React.FC<iProps> = (props) => {
   const [listUser, setListUser] = useState<iUserTag[] | null>(null);
   const [listPost, setListPost] = useState<iPostDetail[] | null>(null);
   const navigate = useNavigate();
-  // console.log("show ne", listUser);
 
   const handleChange = async () => {
     const [users, posts] = await Promise.all([

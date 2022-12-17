@@ -60,7 +60,6 @@ const PublishConfirm: React.FC<iProps> = (props) => {
             onClick={() => {
               setConfirmed(true);
               setShow(false);
-              console.log("change conffirm");
             }}
           >
             <span>Yes</span>
