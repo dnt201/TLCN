@@ -19,13 +19,11 @@ interface FormValuesStep3 {
 interface iProps {}
 const ForgotPassWord: React.FC<iProps> = (props) => {
   const navigate = useNavigate();
-
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [curGmail, setCurGmail] = useState("");
   const [curToken, setCurToken] = useState("");
 
-  const typeKey = process.env.REACT_APP_SITE_KEY;
   //#region
   useEffect(() => {
     if (localStorage.getItem("accessToken") !== null) navigate("/");
@@ -66,9 +64,8 @@ const ForgotPassWord: React.FC<iProps> = (props) => {
   });
   //Step 3
 
-  if (typeKey === undefined) return <div>a</div>;
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen ">
       {/* Start Step 1: Enter Email */}
       <div className="flex-1 flex flex-col justify-center items-center ">
         <div className="flex flex-col items-center text-bg justify-center  max-w-[480px] ">
