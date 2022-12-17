@@ -27,17 +27,8 @@ const SearchBox: React.FC<iProps> = (props) => {
     const [users, posts] = await Promise.all([
       userApi.findUserByDisplayName(inputSearch.trim()),
       postApi.getAllPost(inputSearch.trim(), 1, 7),
-      // categoryApi.getCategoryByName(inputSearch),
     ]);
-    console.log(
-      // "users ",
-      // users,
-      "posts",
-      posts.data.result.data
-      // "categories",
-      // categories
-    );
-    // const result = await userApi.findUserByDisplayName(inputSearch);
+
     await setTimeout(() => {
       if (users.status === 200) {
         if (users.data.data.length >= 5) {
@@ -48,7 +39,6 @@ const SearchBox: React.FC<iProps> = (props) => {
       if (posts.status === 201) {
         if (posts.data.result.data.length >= 5) {
           let temp = posts.data.result.data.slice(0, 5);
-          console.log(temp, "```````````");
           setListPost(temp);
         } else setListPost(posts.data.result.data);
       }

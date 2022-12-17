@@ -27,12 +27,6 @@ const ImageSection: React.FC<iImageSecTionProps> = (props) => {
             ? avatarLink
             : avatarDefault
         }
-        onMouseOver={() => {
-          console.log("hover");
-        }}
-        onMouseOut={() => {
-          console.log("no");
-        }}
         onClick={() => {
           setShowChange(true);
         }}

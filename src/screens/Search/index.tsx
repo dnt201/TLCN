@@ -7,10 +7,6 @@ interface iProps {}
 const Search: React.FC<iProps> = (props) => {
   const [searchParams] = useSearchParams();
 
-  // console.log(searchParams.get("q"));
-  // console.log(searchParams.get("type"));
-
-  // if()
   const [lazyFalse, setLazyFalse] = useState(false);
 
   useEffect(() => {

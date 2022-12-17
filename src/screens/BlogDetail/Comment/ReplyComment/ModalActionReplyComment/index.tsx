@@ -49,7 +49,6 @@ const ModalActionReplyComment: React.FC<iProps> = (props) => {
               const toastId = toast.loading("Loading...");
 
               const result = await commentApi.deleteReply(idReply);
-              console.log(result);
               if (result.status === 200 || result.status === 202) {
                 toast.success("Xóa bình luận thành công", {
                   id: toastId,

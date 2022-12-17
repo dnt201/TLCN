@@ -33,7 +33,6 @@ const ListNotApprove: React.FC<iProps> = (props) => {
     if (userInfo) {
       setLoading(true);
       const result = await postApi.getPostNotApprove(page);
-      console.log(result);
       if (result.status === 201) {
         setListNotApproved(result.data.result.data);
         setPagingListNotApproved(result.data.result.page);
@@ -47,7 +46,6 @@ const ListNotApprove: React.FC<iProps> = (props) => {
   };
 
   useEffect(() => {
-    console.log("List rerender");
     if (!userInfo) {
       navigate("/login");
     } else if (selectId === 5) {

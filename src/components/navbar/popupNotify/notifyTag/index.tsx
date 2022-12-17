@@ -4,7 +4,7 @@ import { iNotify } from "@DTO/Notify";
 import { useNavigate } from "react-router-dom";
 import { clickNotification } from "src/router/Socket";
 interface iProps extends iNotify {
-  fbiCloseTheDoor: () => void;
+  close: () => void;
   // name: string;
   // nearMess: string;
   // time: number;
@@ -20,7 +20,7 @@ const NotifyTag: React.FC<iProps> = (props) => {
     userSend,
     isClicked,
     dateCreated,
-    fbiCloseTheDoor,
+    close,
   } = props;
 
   const [isClickedState, setIsClickedState] = useState(isClicked);
@@ -35,14 +35,38 @@ const NotifyTag: React.FC<iProps> = (props) => {
       clickNotification(id);
       setIsClickedState(true);
       navigate(`/blog/${refId}?ref=postComment`);
-    } else if (type === "Post_Reply") {
+    } else if (type === "Post_Comment_Vote" && extendData) {
+      clickNotification(id);
+      setIsClickedState(true);
+
+      navigate(`/blog/${JSON.parse(extendData).post}?ref=postComment`);
+    } else if (type === "Post_Reply" && extendData) {
       clickNotification(id);
       setIsClickedState(true);
       navigate(
-        `/blog/${refId}?ref=postComment&idComment=${extendData?.comment}`
+        `/blog/${refId}?ref=postComment&idComment=${
+          JSON.parse(extendData).comment
+        }`
       );
     }
-    fbiCloseTheDoor();
+    // if (type === "Post_Vote") {
+    //   clickNotification(id);
+    //   setIsClickedState(true);
+    //   navigate(`/blog/${refId}`);
+    // } else if (type === "Post_Comment") {
+    //   clickNotification(id);
+    //   setIsClickedState(true);
+    //   navigate(`/blog/${refId}?ref=postComment`);
+    // } else if (type === "Post_Reply" && extendData) {
+    //   clickNotification(id);
+    //   setIsClickedState(true);
+    //   navigate(
+    //     `/blog/${refId}?ref=postComment&idComment=${
+    //       JSON.parse(extendData).comment
+    //     }`
+    //   );
+    // }
+    close();
   };
 
   return (

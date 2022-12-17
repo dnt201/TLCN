@@ -187,8 +187,6 @@ const ForgotPassWord: React.FC<iProps> = (props) => {
                         "flex-1 border-[1px] border-bg text-bg bg-white rounded-md px-2 py-1 text-sm relative "
                       }
                       onClick={() => {
-                        console.log(props);
-
                         // setStep(1);
                         navigate(-1);
                       }}
@@ -277,7 +275,6 @@ const ForgotPassWord: React.FC<iProps> = (props) => {
                         rs.data.message ||
                           "Không thể thay đổi password. Ấn F5 để thử lại!"
                       );
-                    console.log(rs);
                     setLoading(false);
                   }, 1000);
                 }}

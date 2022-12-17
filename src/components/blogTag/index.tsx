@@ -91,14 +91,9 @@ const BlogTag: React.FC<iLazy> = (props) => {
   const [showActionModal, setShowActionModal] = useState(false);
   const refDivActionModal = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    console.log(showActionModal);
-  }, [showActionModal]);
+  useEffect(() => {}, [showActionModal]);
   useEffect(() => {
     const handleClickOutActionModal = (event: any) => {
-      // const buttonShowUser = document.getElementById("showUser");
-      // console.log(buttonShowUser);
-
       if (
         refDivActionModal.current &&
         !refDivActionModal.current.contains(event.target)

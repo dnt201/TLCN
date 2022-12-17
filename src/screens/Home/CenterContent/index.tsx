@@ -43,26 +43,21 @@ const CenterContent: React.FC<iProps> = (props) => {
       if (accessToken === null || accessToken.length <= 0) {
         navigate("/login");
       } else {
-        console.log("Get following");
         const getData = async () => {
           const result = await postApi.getListPostHaveBeenFollow();
-          console.log("result", result);
         };
         getData();
       }
     } else {
       const a = async () => {
         const result = await postApi.getAllPost();
-        console.log("result", result);
         if (result.status === 201) {
         }
       };
       a();
     }
 
-    return () => {
-      console.log("UnMounted");
-    };
+    return () => {};
   }, [curPath]);
 
   return (

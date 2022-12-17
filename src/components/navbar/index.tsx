@@ -75,7 +75,6 @@ const Navbar = () => {
   const navigate = useNavigate();
   // const accessToken = localStorage.getItem("accessToken");
   // useEffect(() => {
-  //   console.log("r const accessToken = localStorage.getItem");
   // }, [accessToken]);
   const { accessToken, userInfo } = useSelector(
     (state: RootState) => state.users
@@ -178,7 +177,6 @@ const Navbar = () => {
                 if (e.key === "Enter") {
                   if (searchValue.trim().length <= 0) {
                   } else {
-                    console.log("navigate with", searchValue);
                     if (
                       searchValue.length === 0 ||
                       (searchValue === "" && searchValue.trim().length === 0)

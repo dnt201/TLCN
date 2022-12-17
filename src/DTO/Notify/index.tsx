@@ -11,10 +11,7 @@ export interface iNotify {
   refId: string;
   dateCreated: string;
   isClicked: boolean;
-  extendData: {
-    post: string;
-    comment: string;
-  } | null;
+  extendData?: string;
 
   userSend: {
     id: string;

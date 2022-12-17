@@ -134,7 +134,7 @@ const PopUpNotify: React.FC<iPopUpNotifyProps> = (props) => {
                     <NotifyTag
                       key={result.id}
                       {...result}
-                      fbiCloseTheDoor={() => setShow(0)}
+                      close={() => setShow(0)}
                     />
                   ))}
                   {curPage < Math.ceil(paging.totalElement / paging.size) ? (

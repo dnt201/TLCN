@@ -29,7 +29,7 @@ const EditorText: React.FC<iEditorProps> = (props) => {
   //     item.style.display = "flex";
   //     item.style.alignSelf = "center";
   //     if (item.offsetHeight > 620) item.style.width = "50%";
-  //     console.log(item);
+
   //   });
   //   temp.querySelectorAll("h1").forEach((item) => {
   //     item.id = item.innerText.toString().formatH1().toString();
@@ -55,47 +55,15 @@ const EditorText: React.FC<iEditorProps> = (props) => {
           var flag = false;
 
           temp.innerHTML = a;
-          // temp.querySelectorAll("h1").forEach((item) => {
-          //   item.style.backgroundColor = "transparent";
-          // });
-          // temp.querySelectorAll("h2").forEach((item) => {
-          //   item.style.backgroundColor = "transparent";
-          //   console.log(item.style.color);
-          // });
-          // temp.querySelectorAll("h3").forEach((item) => {
-          //   item.style.backgroundColor = "transparent";
-          // });
-          // temp.querySelectorAll("h4").forEach((item) => {
-          //   item.style.backgroundColor = "transparent";
-          // });
-          // temp.querySelectorAll("h5").forEach((item) => {
-          //   item.style.backgroundColor = "transparent";
-          // });
-          // temp.querySelectorAll("h6").forEach((item) => {
-          //   item.style.backgroundColor = "transparent";
-          // });
-          // temp.querySelectorAll("div").forEach((item) => {
-          //   item.style.backgroundColor = "transparent";
-          // });
-          // temp.querySelectorAll("a").forEach((item) => {
-          //   item.style.backgroundColor = "transparent";
-          // });
+
           temp.querySelectorAll("img").forEach((item) => {
             item.style.marginLeft = "auto";
             item.style.marginRight = "auto";
             item.style.alignSelf = "center";
-            console.log("-----------------------------");
-            console.log(item.height);
-            console.log(item.width);
-            console.log(item.offsetHeight);
-            console.log(item.offsetTop);
-            console.log(item.offsetWidth);
 
             if (item.height > 620) {
               item.style.width = "50%";
-              console.log(item);
             }
-            console.log("-----------------------------");
           });
           temp.querySelectorAll("h1").forEach((item, key) => {
             item.id = key + item.innerText.toString().formatH1().toString();
@@ -112,7 +80,7 @@ const EditorText: React.FC<iEditorProps> = (props) => {
               flag = true;
             }
           });
-          console.log("-----------------------", temp.innerHTML);
+
           if (flag) {
             toast.error("Link youtube không khả dụng");
             let StateAgain = EditorState.createWithContent(
@@ -168,19 +136,15 @@ const EditorText: React.FC<iEditorProps> = (props) => {
           previewImage: true,
           inputAccept: "image/jpeg,image/jpg,image/png",
           uploadCallback: async (file: File) => {
-            // console.log(file);
-            // console.log(typeof file);
             const result = await fileApi.updateImage(file);
             if (result.status === 201) {
             }
             var reader = new FileReader();
-            console.log(reader.readAsDataURL(file));
 
             // const imageObject = {
             //   file: file,
             //   localSrc: URL.createObjectURL(file),
             // };
-            // console.log(file);
 
             return new Promise((resolve, reject) => {
               resolve({

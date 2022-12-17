@@ -41,7 +41,6 @@ const MidContent: React.FC<iProps> = (props) => {
         setListPost(result.data.result.data);
         setPaging(result.data.result.page);
       } else setListPost(null);
-      console.log(result);
     } else {
     }
     setLoading(false);
@@ -51,11 +50,9 @@ const MidContent: React.FC<iProps> = (props) => {
     const result = await userApi.getAllUser(q || searchValue, curPage, 6);
     if (result.status === 201) {
       if (result.data.result.data.length > 0) {
-        console.log(result);
         setListUser(result.data.result.data);
         setPaging(result.data.result.page);
       } else setListUser(null);
-      console.log(result);
     } else {
     }
     setLoading(false);
@@ -72,14 +69,14 @@ const MidContent: React.FC<iProps> = (props) => {
       let q = searchParams.get("q");
       if (typeFromSearch === "posts") {
         setSelect("posts");
-        console.log("call api post by name");
+
         getAllPost();
       } else if (typeFromSearch === "users") {
         setSelect("users");
         getAllUser();
         //call api user by name
         // userApi.findUserByDisplayName(inputSearch),
-        console.log("call api user by name");
+
         const width = (window.screen.width * 70) / 100 / 3;
       }
 

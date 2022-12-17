@@ -25,16 +25,13 @@ const PopUpChangeImage: React.FC<iPopUpChangeImageProps> = (props) => {
   //     setSelectedImage(e.target.files[0]);
   //   }
   // };
-  useEffect(() => {
-    console.log("selectedImage", selectedImage);
-  }, [selectedImage]);
+  useEffect(() => {}, [selectedImage]);
   const handleSummit = async () => {
     if (selectedImage === null) {
       toast.error("Có gì đó không đúng! Vui lòng chọn lại,");
     } else {
-      console.log(selectedImage);
       setLoading(true);
-      console.log(" setLoading(true)");
+
       toast.promise(userApi.updateImage(selectedImage), {
         loading: "Saving...",
         success: () => {
@@ -47,8 +44,6 @@ const PopUpChangeImage: React.FC<iPopUpChangeImageProps> = (props) => {
           return err + "";
         },
       });
-
-      console.log("setLoading(false);");
     }
   };
 
@@ -108,19 +103,16 @@ const PopUpChangeImage: React.FC<iPopUpChangeImageProps> = (props) => {
             accept={{ "image/jpeg": [".jpeg", ".png"] }}
             onDragEnter={() => {
               setDropOn(true);
-              console.log("onDragEnter");
             }}
             onDragLeave={() => {
               setDropOn(false);
-              console.log("onDragLeave");
             }}
             // onDropRejected={(files) => {
-            //   console.log("onDropRejected", files);
+
             //   if (files.length > 1)
             //     toast.error('Vui lòng chọn duy nhất "1" ảnh!');
             // }}
             onDrop={(files) => {
-              console.log(files);
               if (files.length > 1)
                 toast.error('Vui lòng chọn duy nhất "1" ảnh!');
               else if (files[0]) setSelectedImage(files[0]);

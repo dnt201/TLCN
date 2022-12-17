@@ -60,7 +60,6 @@ const ReplyComment: React.FC<iPropsReply> = (props) => {
 
   const [valueReply, setValueReply] = useState("");
 
-  console.log(replyId);
   const [loading, setLoading] = useState(false);
   const refDivActionModal = useRef<HTMLDivElement>(null);
   const [isEditComment, setIsEditComment] = useState(false);
@@ -216,7 +215,6 @@ const ReplyComment: React.FC<iPropsReply> = (props) => {
                     setValueCommentReply(replyTemp.commentContent.trim());
                     setIsEditComment(false);
                   } else toast.error("Chỉnh sửa thất bại" + result.status);
-                  console.log(result);
                 } else toast.error("Bình luận không được rỗng!");
               }}
             >
@@ -407,7 +405,6 @@ const ReplyComment: React.FC<iPropsReply> = (props) => {
                         setCurPage(-1);
                         setListReply(null);
                       } else toast.error("Reply thất bại" + result.status);
-                      console.log(result);
                     } else toast.error("Reply không được rỗng!");
                   }
                 }}

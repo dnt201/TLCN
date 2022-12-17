@@ -77,7 +77,7 @@ const UserDetail = () => {
       } else {
         toast.error("UnFollow");
         const result = await userApi.unFollowUser(userInfoState.id);
-        console.log(result);
+
         let a: iUserDetail = {
           ...userInfoState,
           isFollowing: false,
@@ -99,8 +99,6 @@ const UserDetail = () => {
         navigate(`/login?redirect=followUser&id=${userInfoState.id}`);
       else navigate(`/login`);
     } else {
-      console.log("2");
-
       if (userInfoState === null || userInfoState === undefined) {
         toast.error("Có gì đó không đúng, vui lòng tải lại trang!");
       } else if (userInfoState.isFollowing) {
@@ -108,7 +106,7 @@ const UserDetail = () => {
       } else if (!userInfoState.isFollowing) {
         toast.success("Follow");
         const result = await userApi.followUser(userInfoState.id);
-        console.log(result);
+
         let a: iUserDetail = {
           ...userInfoState,
           isFollowing: true,
@@ -138,7 +136,7 @@ const UserDetail = () => {
         } else {
           setNotFound(true);
         }
-        console.log(result);
+
         setLoading(false);
       }, 1000);
     }
@@ -146,13 +144,11 @@ const UserDetail = () => {
   const getData = async (userId: string) => {
     const listPostTemp = await postApi.getAllPostByUser(userId, curPage, 1);
     if (listPostTemp.status === 200 || listPostTemp.status === 201) {
-      console.log(listPostTemp, "--------------------");
       setListOfPost(listPostTemp.data.result.data);
       setPagingList(listPostTemp.data.result.page);
     }
   };
   useEffect(() => {
-    console.log(curPage);
     if (userInfo !== null && userId !== undefined) {
       if (notFound === false) {
         getData(userId);

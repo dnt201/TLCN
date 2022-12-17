@@ -24,11 +24,7 @@ import ChangePassWord from "@screens/ChangePassWord";
 import Search from "@screens/Search";
 
 import io, { Socket } from "socket.io-client";
-import {
-  disconnectSocket,
-  initiateSocketConnection,
-  Post_Vote,
-} from "./Socket";
+import { disconnectSocket, initiateSocketConnection, SocketOn } from "./Socket";
 import Tags from "@screens/Tags";
 import { listChose } from "@screens/Home/LeftContent";
 import Categories from "@screens/Categories";
@@ -62,7 +58,7 @@ const DeClareRouter = () => {
       accessTokenFromLocalStorage.length > 0
     ) {
       initiateSocketConnection(accessTokenFromLocalStorage);
-      Post_Vote();
+      SocketOn();
       setLogged(true);
 
       if (userInfo === null && accessTokenFromLocalStorage)

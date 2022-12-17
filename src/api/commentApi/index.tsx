@@ -26,9 +26,17 @@ const commentApi = {
     return axiosClient.delete(url);
   },
 
-  voteACommentPost: (idComment: string) => {
+  voteUpComment: (idComment: string) => {
     const url = `/post/comment/${idComment}/vote`;
-    return axiosClient.post(url);
+    return axiosClient.post(url, {
+      type: "Upvote",
+    });
+  },
+  voteDownComment: (idComment: string) => {
+    const url = `/post/comment/${idComment}/vote`;
+    return axiosClient.post(url, {
+      type: "Downvote",
+    });
   },
   editComment: (idComment: string, postData: iCommentCreate) => {
     const url = `/post/comment/edit/${idComment}`;

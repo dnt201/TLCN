@@ -52,7 +52,7 @@ const EditPost = () => {
         const result = await postApi.getPostDetailById(postId);
         if (result.status === 200 && user.data.id === result.data.owner.id) {
           setPostIdCur(postId);
-          console.log(result.data);
+
           const curPost: iPostDetail = result.data;
           setTitle(curPost.title);
           if (curPost.thumbnailLink !== null) {
@@ -70,13 +70,11 @@ const EditPost = () => {
             categoryApi.getAllCategory(),
           ]);
           if (tags.status === 201) {
-            console.log(tags);
             // setListTag(tags.data.result.data);
             let tempListTagSelected: iOption[] = [];
             let tempListTag: iOption[] = [];
             let tempTagsForm: string[] = [];
             tags.data.result.data.forEach((element: iTag) => {
-              // console.log(curPost.tags.findIndex((e) => e.id === element.id));
               let temp = {
                 value: element.id,
                 label: element.displayName,
@@ -84,7 +82,6 @@ const EditPost = () => {
               if (curPost.tags.findIndex((e) => e.id === element.id) >= 0) {
                 tempListTagSelected.push(temp);
                 tempTagsForm.push(temp.value);
-                console.log(temp);
               }
               tempListTag.push(temp);
             });
@@ -93,11 +90,9 @@ const EditPost = () => {
             setTags(tempTagsForm);
           }
           if (categories.status === 201) {
-            console.log(curPost.category);
             let tempListCategory: iOption[] = [];
-            console.log(categories.data);
+
             categories.data.result.data.forEach((element: iCategory) => {
-              // console.log(curPost.tags.findIndex((e) => e.id === element.id));
               let temp = {
                 value: element.id,
                 label: element.categoryName,
@@ -108,12 +103,11 @@ const EditPost = () => {
               }
               tempListCategory.push(temp);
               // tempTagsForm.push(temp.value);
-              console.log(temp);
             });
             setCategoriesOption(tempListCategory);
             // tempListTag.push(temp);
           }
-          // console.log(categories.data.result.data);
+
           // setListCategory(categories.data.result.data);
 
           setCanNextStep(3);
@@ -121,7 +115,6 @@ const EditPost = () => {
         } else {
           setLoading(false);
 
-          console.log("asas sanot foutn nd");
           setNotFoundLazy(true);
         }
       } else {
@@ -163,7 +156,6 @@ const EditPost = () => {
   const [categoriesOption, setCategoriesOption] = useState<iOption[] | null>(
     null
   );
-  console.log(loading, "--------editipost");
 
   const editPost = async (postCreate: postCreate) => {
     setLoading(true);
@@ -178,7 +170,6 @@ const EditPost = () => {
         });
         navigate(`/blog/${result.data.id}`);
       } else {
-        console.log(result);
         toast.error(result.data.message || "Có gì đó không đúng", {
           id: toastId,
           duration: 2500,
@@ -217,9 +208,6 @@ const EditPost = () => {
   }, [isChange]);
 
   useEffect(() => {
-    console.log("change ne tagsOption: ", tagsOption);
-    console.log("change ne categoriesOption: ", categoriesOption);
-
     if (
       title.length <= 0 ||
       category === null ||
@@ -338,12 +326,10 @@ const EditPost = () => {
                 : " bg-smokeDark hover:cursor-not-allowed")
             }
             onClick={async () => {
-              console.log(canNextStep);
               if (canNextStep === 3) {
-                // console.log(isChange);
                 // let temp: postCreate;
                 // if (isChange) {
-                //   console.log("call api create");
+
                 //   if (tags !== null) {
                 //     temp = {
                 //       title: title,
@@ -395,7 +381,6 @@ const EditPost = () => {
                   isClearable
                   options={categoriesOption ? categoriesOption : []}
                   onChange={(e) => {
-                    console.log(e);
                     if (e) {
                       setCategory(e.value);
                       let z: iOption[] = [];
@@ -414,7 +399,6 @@ const EditPost = () => {
                   className="basic-multi-select text-primary w-full"
                   options={tagsOption ? tagsOption : []}
                   onChange={(e) => {
-                    console.log(e);
                     let temp: string[] = [];
                     let z: iOption[] = [];
                     if (e) {
@@ -456,14 +440,11 @@ const EditPost = () => {
                     accept={{ "image/jpeg": [".jpeg", ".png"] }}
                     onDragEnter={() => {
                       setDropOn(true);
-                      console.log("onDragEnter");
                     }}
                     onDragLeave={() => {
                       setDropOn(false);
-                      console.log("onDragLeave");
                     }}
                     onDrop={(files) => {
-                      console.log(files);
                       if (files.length > 1)
                         toast.error('Vui lòng chọn duy nhất "1" ảnh!');
                       else if (files[0]) setThumbnail(files[0]);

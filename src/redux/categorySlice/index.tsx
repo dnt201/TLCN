@@ -48,7 +48,6 @@ const category = createSlice({
       state.message = action.payload;
     },
     resetCategoryState: (state) => {
-      console.log("resetState");
       state.message = "";
       state.error = "";
     },
@@ -61,9 +60,7 @@ const category = createSlice({
       state.error = "";
     });
     builder.addCase(getAllCategory.fulfilled, (state, action) => {
-      console.log(action);
       if (action.payload.data && action.payload.page) {
-        console.log(action);
         state.listCategory = action.payload.data;
         state.pageCategory = action.payload.page;
         state.error = "";

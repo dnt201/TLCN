@@ -35,11 +35,13 @@ const CommentItem: React.FC<iProps> = (props) => {
     status,
     commentId,
     curUserId,
+    voteData,
     countReply,
     dateModified,
     content,
     sender,
     idPost,
+    vote,
     curUserImg,
   } = props;
   const [showActionModal, setShowActionModal] = useState(false);
@@ -47,6 +49,7 @@ const CommentItem: React.FC<iProps> = (props) => {
   const [countReplyState, setCountReplyState] = useState(
     parseInt(countReply) || 0
   );
+  const [countVote, setCountVote] = useState(vote || 0);
   const [pagingListReply, setPagingListReply] = useState<iPage>();
   const [curPage, setCurPage] = useState(1);
   const [valueComment, setValueComment] = useState(content);
@@ -58,12 +61,15 @@ const CommentItem: React.FC<iProps> = (props) => {
   const [listReply, setListReply] = useState<iReply[] | null>(null);
 
   const [loading, setLoading] = useState(false);
+  const [disabledNotSpam, setDisableNotSpam] = useState(false);
 
   const refDivActionModal = useRef<HTMLDivElement>(null);
   const [isEditComment, setIsEditComment] = useState(false);
   const accessFromLocal = localStorage.getItem("accessToken");
 
-  // console.log(curPage, pagingListReply, "--------------------");
+  const [voteDataState, setVoteDataState] = useState<
+    "Upvote" | "DownVote" | null
+  >(voteData || null);
 
   //fetch list
   useEffect(() => {
@@ -76,7 +82,6 @@ const CommentItem: React.FC<iProps> = (props) => {
           sizeNumOnePage
         );
         if (result.status === 200 || result.status === 201) {
-          console.log(result);
           if (listReply !== null)
             setListReply([...listReply, ...result.data.data]);
           else setListReply(result.data.data);
@@ -233,7 +238,7 @@ const CommentItem: React.FC<iProps> = (props) => {
                     setValueComment(commentTemp.commentContent.trim());
                     setIsEditComment(false);
                   } else toast.error("Chỉnh sửa thất bại" + result.status);
-                  console.log(result);
+                  result;
                 } else toast.error("Bình luận không được rỗng!");
               }}
             >
@@ -249,11 +254,48 @@ const CommentItem: React.FC<iProps> = (props) => {
 
           <div className=" flex items-center">
             <button
-              className="p-[2px]"
+              className="p-[2px] disabled:cursor-not-allowed "
               data-tip="Vote Up"
               data-for="voteUpComment"
+              disabled={disabledNotSpam}
+              onClick={async (e) => {
+                e.preventDefault();
+                setDisableNotSpam(true);
+                if (isOwner) {
+                  toast("Không thể vote bình luận của chính bạn", {
+                    icon: "⚠️",
+                  });
+                } else {
+                  const result = await commentApi.voteUpComment(commentId);
+                  if (result.status === 201) {
+                    if (voteDataState === null) {
+                      toast.success(`Vote thành công`);
+                      setVoteDataState("Upvote");
+                      setCountVote(countVote + 1);
+                    } else if (voteDataState === "DownVote") {
+                      toast.success(`Vote thành công`);
+                      setVoteDataState("Upvote");
+                      setCountVote(countVote + 2);
+                    } else {
+                      toast.error(`UnVote thành công`);
+                      setVoteDataState(null);
+                      setCountVote(countVote - 1);
+                    }
+                  } else {
+                    toast.error(
+                      `Có gì đó không đúng ${result.data.message} vote up`
+                    );
+                  }
+                }
+                setTimeout(() => setDisableNotSpam(false), 2500);
+              }}
             >
-              <ChevronUp className="w-3 h-3  " />
+              <ChevronUp
+                className={
+                  "w-3 h-3  " +
+                  (voteDataState === "Upvote" ? " stroke-primary " : " ")
+                }
+              />
               <ReactTooltip
                 textColor="#FF4401"
                 id="voteUpComment"
@@ -261,13 +303,61 @@ const CommentItem: React.FC<iProps> = (props) => {
                 effect="solid"
               />
             </button>
-            <span className="px-[2px] text-sm">0</span>
+            <span
+              className={
+                "px-[2px] text-sm" +
+                (voteDataState !== null ? " text-primary font-semibold " : " ")
+              }
+            >
+              {countVote > 0 ? ` +${countVote}` : countVote < 0 ? countVote : 0}
+            </span>
             <button
-              className="p-[2px]"
+              className="p-[2px] disabled:cursor-not-allowed "
               data-tip="Vote Down"
               data-for="voteDownComment"
+              disabled={disabledNotSpam}
+              onClick={async () => {
+                if (status === undefined || status !== "Approve") {
+                  toast.error("Bài viết chưa được phê duyệt");
+                } else {
+                  setDisableNotSpam(true);
+                  if (isOwner) {
+                    toast("Không thể vote bài viết của chính bạn", {
+                      icon: "⚠️",
+                    });
+                  } else {
+                    const result = await commentApi.voteDownComment(commentId);
+
+                    if (result.status === 201) {
+                      if (voteDataState === null) {
+                        toast.success(`Down vote thành công`);
+                        setVoteDataState("DownVote");
+                        setCountVote(countVote - 1);
+                      } else if (voteDataState === "Upvote") {
+                        toast.success(`Down vote thành công`);
+                        setVoteDataState("DownVote");
+                        setCountVote(countVote - 2);
+                      } else {
+                        toast.error(`UnVote thành công`);
+                        setVoteDataState(null);
+                        setCountVote(countVote + 1);
+                      }
+                    } else {
+                      toast.error(
+                        `Có gì đó không đúng ${result.data.message} vote up`
+                      );
+                    }
+                  }
+                  setTimeout(() => setDisableNotSpam(false), 2500);
+                }
+              }}
             >
-              <ChevronDown className="w-3 h-3" />
+              <ChevronDown
+                className={
+                  "w-3 h-3" +
+                  (voteDataState === "DownVote" ? " stroke-primary " : " ")
+                }
+              />
               <ReactTooltip
                 textColor="#FF4401"
                 id="voteDownComment"
@@ -450,7 +540,7 @@ const CommentItem: React.FC<iProps> = (props) => {
                         setCurPage(-1);
                         setListReply(null);
                       } else toast.error("Reply thất bại" + result.status);
-                      console.log(result);
+                      result;
                     } else toast.error("Reply không được rỗng!");
                   }
                 }}

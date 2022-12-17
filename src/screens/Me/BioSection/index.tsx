@@ -45,7 +45,6 @@ const BioSection: React.FC<iBioProps> = (props) => {
     }
   };
 
-  // console.log("changeBio");
   return (
     <div
       className={

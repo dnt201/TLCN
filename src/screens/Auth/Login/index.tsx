@@ -43,7 +43,6 @@ const Login = () => {
     if (message !== "" && message.length > 0 && message.length !== null) {
       setPause(true);
 
-      console.log("setTimeout", message);
       setTimeout(() => {
         toast.remove();
         setPause(false);
@@ -61,22 +60,17 @@ const Login = () => {
   }, []);
 
   useEffect(() => {
-    // console.log("accessToken", accessToken);
-
     if (accessTokenFromLocalStorage !== "" && userInfo) {
       let actionFromURL = searchParams.get("redirect");
       let idFromURL = searchParams.get("id");
-      console.log(actionFromURL, idFromURL);
+
       if (actionFromURL !== null && idFromURL !== null) {
         if (actionFromURL === "followPost") {
           postApi.getPostDetailById(idFromURL).then((result) => {
             if (result.status === 200) {
-              console.log(result);
               if (result.data.isFollow === true) {
-                console.log("navigate followed");
                 navigate(`/blog/${searchParams.get("id")}?message=followed`);
               } else if (result.data.isFollow === false) {
-                console.log("navigate chưa follow và follow");
                 navigate(
                   `/blog/${searchParams.get("id")}?message=followSuccess`
                 );
@@ -228,7 +222,7 @@ const Login = () => {
               onClick={async () => {
                 if (tokenValidate.length > 0) {
                   setVerifyLoading(true);
-                  console.log("lazyyyy");
+
                   const result = await userApi.activate(tokenValidate);
                   if (result.status === 404) {
                     setPause(true);

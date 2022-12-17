@@ -28,9 +28,6 @@ const NavTop: React.FC<iProps> = (props) => {
   let navigate = useNavigate();
 
   useEffect(() => {
-    console.log(filter, "---------------------");
-    console.log("re render");
-    // console.log("---------------------------------");
     let typeFromSearch = searchParams.get("type");
     if (typeFromSearch === "posts") setSelected(1);
     else if (typeFromSearch === "users") setSelected(2);

@@ -8,9 +8,7 @@ export const userLogin = createAsyncThunk(
     try {
       const result = await userApi.login(user);
       return result.data;
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }
 );
 
@@ -19,9 +17,7 @@ export const userLogout = createAsyncThunk("user/logout", async () => {
   try {
     const result = await userApi.logout();
     return result.status;
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
 });
 
 export const userRegister = createAsyncThunk(
@@ -30,11 +26,10 @@ export const userRegister = createAsyncThunk(
     //thunkAPI.dispatch();
     try {
       const result = await userApi.register(user);
-      console.log(result, "result regis");
+
       return result.data;
     } catch (err) {
       // custom error
-      console.log(err, "err regis");
     }
   }
 );
@@ -45,8 +40,6 @@ export const userGetMe = createAsyncThunk("user/getMe", async () => {
     if (result.data) return result.data;
     return result;
   } catch (err) {
-    console.log("getMe error$", err);
-
     // custom error
   }
 });
@@ -58,7 +51,6 @@ export const userUpdateProfile = createAsyncThunk(
       return result.data;
     } catch (err) {
       // custom error
-      console.log(err);
     }
   }
 );
@@ -111,7 +103,6 @@ const user = createSlice({
       else state.message = action.payload;
     },
     resetUserState: (state) => {
-      console.log("resetState");
       state.message = "";
       state.error = "";
     },
@@ -146,7 +137,6 @@ const user = createSlice({
       state.error = "";
     });
     builder.addCase(userLogin.rejected, (state, action) => {
-      console.log(action);
       state.error = "";
       state.message = "";
 
@@ -159,13 +149,11 @@ const user = createSlice({
 
       if (action.payload.statusCode === 401) {
         state.error = action.payload.message;
-        console.log(action.payload.message);
       } else if (
         action.payload.statusCode === 400 &&
         action.payload.message ===
           "Please confirm email before login to the system"
       ) {
-        console.log(action.payload);
         state.error =
           action.payload.message + ". We will redirect to confirm form!";
       } else if (
@@ -178,7 +166,6 @@ const user = createSlice({
         localStorage.setItem("refreshToken", action.payload.refreshToken);
         state.accessToken = action.payload.accessToken;
         state.refreshToken = action.payload.refreshToken;
-        // console.log("faffafsa", userApi.getMe());
       }
     });
     //logout
@@ -205,7 +192,6 @@ const user = createSlice({
     });
     //register
     builder.addCase(userRegister.pending, (state, action) => {
-      // console.log("pending", action);
       state.loading = true;
       state.message = "";
       state.error = "";
@@ -226,7 +212,7 @@ const user = createSlice({
     });
     builder.addCase(userGetMe.fulfilled, (state, action) => {
       state.loading = false;
-      console.log(action);
+
       if (action.payload === "Network Error") {
         state.error = "Network Error";
       }

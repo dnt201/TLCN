@@ -24,13 +24,11 @@ const ListPostByTag = () => {
   const [curPage, setCurPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  console.log(listPost);
   useEffect(() => {
     if (curPage === 1 && listPost === null) {
     } else if (tagId !== undefined) {
       let temp = JSON.parse(JSON.stringify([tagId]));
       postApi.getAllPostByPostTag(temp, curPage, 3).then((result) => {
-        console.log(result);
         if (result.status === 200 || result.status === 201) {
           setListPost(result.data.result.data);
           setPaging(result.data.result.page);
@@ -52,7 +50,6 @@ const ListPostByTag = () => {
       setLoading(true);
       postTagApi.getAllPostTag10000().then((result) => {
         if (result.status === 200 || result.status === 201) {
-          console.log(result.data.result.data, "-0=-0-");
           let listTag: iTag[] = result.data.result.data;
           let tempTag: iTag | null = null;
           let idCurTag = "";

@@ -31,7 +31,6 @@ const ListInfinityNewest = () => {
       let temp = listBlogTag;
       await setTimeout(async () => {
         const result = await postApi.getAllPost("", pageNumber, 3);
-        console.log(result);
         if (result.status === 201) {
           setListBlogTag(result.data.result.data);
           setPaging(result.data.result.page);
@@ -45,7 +44,6 @@ const ListInfinityNewest = () => {
     } else {
       await setTimeout(async () => {
         const result = await postApi.getAllPost("", pageNumber, 3);
-        console.log(result);
         if (result.status === 201) {
           if (result.data.result.page.totalElement <= 3)
             setMaxRoiLazyQuaTroi(true);
@@ -99,7 +97,6 @@ const ListInfinityNewest = () => {
               setPage(1);
             }
           } else {
-            console.log(page, paging);
             if (page + 1 <= Math.ceil(paging.totalElement / paging.size)) {
               let pageNumber = page + 1;
               setPage(pageNumber);

@@ -60,7 +60,6 @@ const ListPostByCategory = () => {
       setLoading(true);
       categoryApi.getAllCategory10000().then((result) => {
         if (result.status === 200 || result.status === 201) {
-          console.log(result.data.result.data, "-0=-0-");
           let listCategory: iCategory[] = result.data.result.data;
           let tempCategory: iCategory | null = null;
           let idCurCategory = "";

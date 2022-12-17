@@ -8,17 +8,13 @@ export const getAllPostTag = createAsyncThunk(
   async ({ pageNum, nameTag }: { pageNum: number; nameTag: string }) => {
     //thunkAPI.dispatch();
     try {
-      console.log("set");
       let result;
       if (nameTag !== undefined && nameTag.length <= 0) {
         result = await postTagApi.getAllPostTag(pageNum);
-        console.log(pageNum + "và " + nameTag);
       } else result = await postTagApi.getAllPostTag(pageNum, nameTag);
 
       return result.data.result;
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }
 );
 
@@ -69,7 +65,6 @@ const notifySlice = createSlice({
       state.message = action.payload;
     },
     resetPostTagState: (state) => {
-      console.log("resetState");
       state.message = "";
       state.error = "";
     },
@@ -82,9 +77,7 @@ const notifySlice = createSlice({
       state.error = "";
     });
     builder.addCase(getAllPostTag.fulfilled, (state, action) => {
-      console.log(action);
       if (action.payload.data && action.payload.page) {
-        console.log(action);
         state.listTag = action.payload.data;
         state.page = action.payload.page;
         state.error = "";

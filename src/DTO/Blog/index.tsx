@@ -41,6 +41,8 @@ export interface iComment {
     avatarLink: string;
   };
   commentTag: string[];
+  vote: number;
+  voteData?: "Upvote" | "DownVote";
 }
 export interface iCommentCreate {
   file?: File;

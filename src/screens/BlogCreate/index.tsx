@@ -89,31 +89,11 @@ const BlogCreate = () => {
       }
     }, 2000);
 
-    // toast.promise(postApi.createPost(postCreate), {
-    //   loading: "Saving...",
-
-    //   success: (result) => {
-    //     console.log(result);
-    //     if (result.status === 201) {
-    //       setIsShowPublish(false);
-    //       navigate(`/me`);
-    //       return "Public post success!";
-    //     } else return "111";
-    //   },
-    //   error: (err) => {
-    //     setIsPublish(false);
-    //     return err + "";
-    //   },
-    // });
-
-    // console.log(result);
     setLoading(false);
   };
   useEffect(() => {
-    console.log(isPublish);
     let temp: postCreate;
     if (isPublish) {
-      console.log("call api create");
       if (tags !== null) {
         temp = {
           title: title,
@@ -136,9 +116,6 @@ const BlogCreate = () => {
   }, [isPublish]);
 
   useEffect(() => {
-    console.log("change ne tagsOption: ", tagsOption);
-    console.log("change ne categoriesOption: ", categoriesOption);
-
     if (
       title.length <= 0 ||
       category === null ||
@@ -192,19 +169,14 @@ const BlogCreate = () => {
   };
 
   const getData = async () => {
-    console.log("get data");
     const [tags, categories] = await Promise.all([
       postTagApi.getAllPostTag10000(),
       categoryApi.getAllCategory(),
     ]);
     if (tags.status === 201) {
-      console.log(tags);
-
       setListTag(tags.data.result.data);
     }
     if (categories.status === 201) {
-      console.log(categories.data.result.data);
-
       setListCategory(categories.data.result.data);
     }
   };
@@ -341,7 +313,6 @@ const BlogCreate = () => {
                   isClearable
                   options={categoriesOption ? categoriesOption : []}
                   onChange={(e) => {
-                    console.log(e);
                     if (e) {
                       setCategory(e.value);
                       let z: iOption[] = [];
@@ -360,7 +331,6 @@ const BlogCreate = () => {
                   className="basic-multi-select text-primary w-full"
                   options={tagsOption ? tagsOption : []}
                   onChange={(e) => {
-                    console.log(e);
                     let temp: string[] = [];
                     let z: iOption[] = [];
                     if (e) {
@@ -402,14 +372,11 @@ const BlogCreate = () => {
                     accept={{ "image/jpeg": [".jpeg", ".png"] }}
                     onDragEnter={() => {
                       setDropOn(true);
-                      console.log("onDragEnter");
                     }}
                     onDragLeave={() => {
                       setDropOn(false);
-                      console.log("onDragLeave");
                     }}
                     onDrop={(files) => {
-                      console.log(files);
                       if (files.length > 1)
                         toast.error('Vui lòng chọn duy nhất "1" ảnh!');
                       else if (files[0]) setThumbnail(files[0]);
@@ -452,7 +419,7 @@ const BlogCreate = () => {
             name="file"
             onChange={(event) => {
               if (event.target.files !== null) {
-                console.log(event.target.files[0]);
+
 
                 setThumbnail(event.target.files[0]);
               }
