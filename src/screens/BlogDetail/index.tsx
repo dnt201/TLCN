@@ -69,7 +69,7 @@ const BlogDetail = () => {
       {post ? (
         <>
           <img
-            className="mx-auto  w-[80ch] max-h-[25vh]"
+            className="mx-auto  max-w-[80ch] min-h-[25vh] max-h-[30vh]"
             src={post.thumbnailLink || qc}
             alt="banner"
           />
