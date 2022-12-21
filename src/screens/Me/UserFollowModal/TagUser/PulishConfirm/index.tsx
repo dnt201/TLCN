@@ -3,7 +3,6 @@ import { XMark } from "@icons/index";
 
 import SureImage from "@images/sure.gif";
 import { ClipLoader } from "react-spinners";
-import userApi from "@api/userApi";
 interface iProps {
   isShow: boolean;
   setShow: (b: boolean) => void;
@@ -18,12 +17,15 @@ interface iProps {
 const PublishConfirm: React.FC<iProps> = (props) => {
   const { setShow, setConfirmed, header, message, loading, img } = props;
   return (
-    <div className="top-0 right-0 fixed  w-full h-full flex justify-center items-center  z-[12001] ">
+    <div
+      className="top-0 right-0 fixed   w-full h-full flex justify-center items-center  z-[12001] "
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+    >
       <div
         className="  w-full h-full bg-[#000] opacity-50"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
+        onClick={() => {
           setShow(false);
         }}
       ></div>
@@ -36,7 +38,6 @@ const PublishConfirm: React.FC<iProps> = (props) => {
           <span
             className="hover:text-primary duration-300 hover:cursor-pointer p-1"
             onClick={(e) => {
-              e.preventDefault();
               e.stopPropagation();
               setShow(false);
             }}
@@ -67,7 +68,6 @@ const PublishConfirm: React.FC<iProps> = (props) => {
           <button
             className="flex items-center bg-primary border-[1px] border-primary text-white px-2 py-1 text-sm rounded-sm"
             onClick={(e) => {
-              e.preventDefault();
               e.stopPropagation();
               setConfirmed(true);
               setShow(false);
@@ -78,7 +78,9 @@ const PublishConfirm: React.FC<iProps> = (props) => {
           </button>
           <button
             className="  mr-1 border-smokeDark  border-[1px]  bg-smokeHover  px-2 py-1 text-sm rounded-sm"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
+
               setConfirmed(false);
               setShow(false);
             }}

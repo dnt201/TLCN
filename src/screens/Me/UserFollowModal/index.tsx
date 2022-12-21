@@ -71,14 +71,14 @@ const UserFollowModal: React.FC<iProps> = (props) => {
           ) : listUser !== null && listUser.length > 0 ? (
             <>
               {listUser.map((u) => (
-                <TagUser {...u} select={select} />
+                <TagUser key={u.id} {...u} select={select} />
               ))}
             </>
           ) : (
             <i className="flex items-center justify-center mt-4 text-sm">
               {select === "Follower"
-                ? "Bạn chưa theo dõi ai cả!"
-                : "Chưa có người theo dõi bạn!"}
+                ? "Chưa có người theo dõi bạn!"
+                : "Bạn chưa theo dõi ai cả!"}
             </i>
           )}
         </div>

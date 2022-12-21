@@ -43,8 +43,8 @@ const TagUser: React.FC<iProps> = (props) => {
     <div
       className="flex items-center px-3 py-2 "
       onClick={(e) => {
-        navigate(`/user-detail/${props.id}`);
         e.stopPropagation();
+        navigate(`/user-detail/${props.id}`);
       }}
     >
       {showConfirm && (
