@@ -35,7 +35,11 @@ const PublishConfirm: React.FC<iProps> = (props) => {
           </h3>
           <span
             className="hover:text-primary duration-300 hover:cursor-pointer p-1"
-            onClick={() => setShow(false)}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setShow(false);
+            }}
           >
             <XMark className="w-5 h-5" />
           </span>
@@ -62,7 +66,9 @@ const PublishConfirm: React.FC<iProps> = (props) => {
         <div className="px-4 py-2 border-t-[1px] rounded-b-md flex-row-reverse flex border-smokeDark bg-smoke">
           <button
             className="flex items-center bg-primary border-[1px] border-primary text-white px-2 py-1 text-sm rounded-sm"
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
               setConfirmed(true);
               setShow(false);
             }}
