@@ -120,7 +120,7 @@ const BlogTag: React.FC<iLazy> = (props) => {
       {/* left */}
       <div className=" h-[110px] md:h-[120px] lg:h-[140px] flex">
         <img
-          className=" w-[110px] md:w-[120px] lg:w-[140px] h-auto rounded-2xl "
+          className=" w-[110px] md:w-[120px] lg:w-[140px] h-auto rounded-2xl object-cover "
           // src={image || ""}
           src={thumbnailLink || defaultPost}
           alt="backdrop image"
